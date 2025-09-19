@@ -20,32 +20,69 @@
 	</head>
 
 	<body>
-		<div
-			title="Scramjet Logo"
-			class="flex-center logo-wrapper header-center"
-		>
-			<img class="logo" src="sj.png" alt="Scramjet" />
-			<h1>Scramjet | MW</h1>
-		</div>
-		<div class="flex-center desc left-margin">
-			<p>
-				Scramjet is an experimental interception based web proxy designed to evade internet censorship, 
-				bypass arbitrary web browser restrictions and innovate web proxy technologies.
-			</p>
+		<!-- Animated liquid background -->
+		<div class="liquid-bg" aria-hidden="true">
+			<span class="blob b1"></span>
+			<span class="blob b2"></span>
+			<span class="blob b3"></span>
 		</div>
 
-		<form id="sj-form" class="flex-center">
-			<input
-				id="sj-search-engine"
-				value="https://www.google.com/search?q=%s"
-				type="hidden"
-			/>
-			<input id="sj-address" type="text" placeholder="Search the web freely" />
-		</form>
-		<div class="desc left-margin">
-			<p id="sj-error"></p>
-			<pre id="sj-error-code"></pre>
-		</div>
+		<main class="hero">
+			<section class="glass-card">
+				<div
+					title="Scramjet Logo"
+					class="flex-center logo-wrapper header-center"
+				>
+					<img class="logo" src="sj.png" alt="Scramjet" />
+					<h1>Scramjet | MW</h1>
+				</div>
+				<div class="flex-center desc left-margin">
+					<p>
+						Scramjet is an experimental interception based web proxy designed to
+						evade internet censorship, bypass arbitrary web browser restrictions
+						and innovate web proxy technologies.
+					</p>
+				</div>
+
+				<form id="sj-form" class="flex-center">
+					<input
+						id="sj-search-engine"
+						value="https://www.google.com/search?q=%s"
+						type="hidden"
+					/>
+					<div class="input-row">
+						<input
+							id="sj-address"
+							type="text"
+							placeholder="Search the web freely"
+						/>
+						<button
+							type="submit"
+							class="glass-btn"
+							aria-label="Search"
+							title="Search"
+						>
+							<svg
+								viewBox="0 0 24 24"
+								fill="none"
+								xmlns="http://www.w3.org/2000/svg"
+								aria-hidden="true"
+							>
+								<path
+									d="M15.5 14h-.79l-.28-.27a6.471 6.471 0 0 0 1.57-4.23C15.99 6.01 13.48 3.5 10.49 3.5S5 6.01 5 9c0 2.99 2.51 5.5 5.49 5.5 1.61 0 3.06-.66 4.09-1.73l.27.28v.79l4.25 4.25c.41.41 1.07.41 1.48 0 .41-.41.41-1.07 0-1.48L15.5 14Zm-5.01 0C8.02 14 6 11.98 6 9.5S8.02 5 10.49 5 15 7.02 15 9.5 12.97 14 10.49 14Z"
+									fill="currentColor"
+								/>
+							</svg>
+						</button>
+					</div>
+				</form>
+				<div class="desc left-margin">
+					<p id="sj-error"></p>
+					<pre id="sj-error-code"></pre>
+				</div>
+			</section>
+		</main>
+
 		<footer>
 			<div>
 				<a
