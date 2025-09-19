@@ -9,11 +9,13 @@ Scramjet is an experimental interception based web proxy designed with security,
 ## Setup / Usage
 
 Install dependencies
+
 ```
 pnpm install
 ```
 
 Run the server
+
 ```
 pnpm start
 ```
