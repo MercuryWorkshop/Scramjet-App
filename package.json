@@ -31,5 +31,5 @@
 		"eslint": "^9.13.0",
 		"prettier": "^3.3.3"
 	},
-	"packageManager": "pnpm@9.12.2"
+	"packageManager": "pnpm@10.18.3"
 }
