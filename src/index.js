@@ -6,7 +6,7 @@ import Fastify from "fastify";
 import fastifyStatic from "@fastify/static";
 
 import { scramjetPath } from "@mercuryworkshop/scramjet/path";
-import { epoxyPath } from "@mercuryworkshop/epoxy-transport";
+import { libcurlPath } from "@mercuryworkshop/libcurl-transport";
 import { baremuxPath } from "@mercuryworkshop/bare-mux/node";
 
 const publicPath = fileURLToPath(new URL("../public/", import.meta.url));
@@ -15,9 +15,9 @@ const publicPath = fileURLToPath(new URL("../public/", import.meta.url));
 
 logging.set_level(logging.NONE);
 Object.assign(wisp.options, {
-  allow_udp_streams: false,
-  hostname_blacklist: [/example\.com/],
-  dns_servers: ["1.1.1.3", "1.0.0.3"]
+	allow_udp_streams: false,
+	hostname_blacklist: [/example\.com/],
+	dns_servers: ["1.1.1.3", "1.0.0.3"],
 });
 
 const fastify = Fastify({
@@ -41,14 +41,14 @@ fastify.register(fastifyStatic, {
 });
 
 fastify.register(fastifyStatic, {
-  root: scramjetPath,
-  prefix: "/scram/",
-  decorateReply: false,
+	root: scramjetPath,
+	prefix: "/scram/",
+	decorateReply: false,
 });
 
 fastify.register(fastifyStatic, {
-	root: epoxyPath,
-	prefix: "/epoxy/",
+	root: libcurlPath,
+	prefix: "/libcurl/",
 	decorateReply: false,
 });
 
@@ -59,8 +59,8 @@ fastify.register(fastifyStatic, {
 });
 
 fastify.setNotFoundHandler((res, reply) => {
-	return reply.code(404).type('text/html').sendFile('404.html');
-})
+	return reply.code(404).type("text/html").sendFile("404.html");
+});
 
 fastify.server.on("listening", () => {
 	const address = fastify.server.address();

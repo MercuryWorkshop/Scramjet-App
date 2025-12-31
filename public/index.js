@@ -24,9 +24,9 @@ const { ScramjetController } = $scramjetLoadController();
 
 const scramjet = new ScramjetController({
 	files: {
-		wasm: '/scram/scramjet.wasm.wasm',
-		all: '/scram/scramjet.all.js',
-		sync: '/scram/scramjet.sync.js',
+		wasm: "/scram/scramjet.wasm.wasm",
+		all: "/scram/scramjet.all.js",
+		sync: "/scram/scramjet.sync.js",
 	},
 });
 
@@ -52,11 +52,13 @@ form.addEventListener("submit", async (event) => {
 		"://" +
 		location.host +
 		"/wisp/";
-	if ((await connection.getTransport()) !== "/epoxy/index.mjs") {
-		await connection.setTransport("/epoxy/index.mjs", [{ wisp: wispUrl }]);
+	if ((await connection.getTransport()) !== "/libcurl/index.mjs") {
+		await connection.setTransport("/libcurl/index.mjs", [
+			{ websocket: wispUrl },
+		]);
 	}
-  const frame = scramjet.createFrame();
-  frame.frame.id = "sj-frame";
-	document.body.appendChild(frame.frame);	
+	const frame = scramjet.createFrame();
+	frame.frame.id = "sj-frame";
+	document.body.appendChild(frame.frame);
 	frame.go(url);
 });
