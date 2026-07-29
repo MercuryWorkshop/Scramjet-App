@@ -1,0 +1,71 @@
+/* main.css */
+:root {
+  --bg-color: #0b0f19;
+  --card-bg: rgba(22, 30, 46, 0.75);
+  --accent: #38bdf8;
+  --text-main: #f8fafc;
+  --text-muted: #94a3b8;
+  --border-color: rgba(255, 255, 255, 0.1);
+}
+
+body {
+  margin: 0;
+  background-color: var(--bg-color);
+  color: var(--text-main);
+  font-family: system-ui, -apple-system, sans-serif;
+}
+
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  padding: 1rem 2rem;
+  background: rgba(11, 15, 25, 0.9);
+  border-bottom: 1px solid var(--border-color);
+}
+
+.logo { font-weight: bold; font-size: 1.2rem; color: var(--accent); }
+
+.nav-tabs { display: flex; gap: 0.5rem; }
+.nav-btn {
+  background: transparent;
+  color: var(--text-muted);
+  border: none;
+  padding: 0.5rem 1rem;
+  cursor: pointer;
+  border-radius: 20px;
+}
+.nav-btn.active { background: var(--accent); color: #000; font-weight: bold; }
+
+.tab-content { display: none; padding: 2rem; text-align: center; }
+.tab-content.active { display: block; }
+
+.search-box {
+  margin: 2rem auto;
+  max-width: 600px;
+  display: flex;
+  background: var(--card-bg);
+  border: 1px solid var(--border-color);
+  border-radius: 30px;
+  padding: 0.3rem;
+}
+.search-box input { flex: 1; background: none; border: none; padding: 0.8rem; color: white; outline: none; }
+.search-box button { background: var(--accent); border: none; padding: 0.8rem 1.5rem; border-radius: 30px; cursor: pointer; }
+
+.grid-layout {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
+  gap: 1rem;
+  max-width: 900px;
+  margin: 0 auto;
+}
+
+.card {
+  background: var(--card-bg);
+  border: 1px solid var(--border-color);
+  border-radius: 12px;
+  padding: 1rem;
+  cursor: pointer;
+  transition: transform 0.2s ease;
+}
+.card:hover { transform: translateY(-4px); border-color: var(--accent); }
+.card-icon { font-size: 1.8rem; display: block; margin-bottom: 0.3rem; }
