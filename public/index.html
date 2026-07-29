@@ -1,66 +1,96 @@
-<!doctype html>
-<html>
-	<head>
-		<meta charset="utf-8" />
-		<meta
-			name="viewport"
-			content="width=device-width, initial-scale=1.0, shrink-to-fit=no"
-		/>
-		<title>Scramjet</title>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Light Unblocker</title>
+  <link rel="stylesheet" href="css/main.css" />
+  <link rel="stylesheet" href="css/games.css" />
+</head>
+<body>
 
-		<link rel="shortcut icon" content="favicon.webp" />
-	
-		<script src="/scram/scramjet.all.js"></script>
-		<script src="/baremux/index.js"></script>
-		
-		<link rel="stylesheet" href="index.css" />
-		<script src="register-sw.js" defer></script>
-		<script src="search.js" defer></script>
-		<script src="index.js" defer></script>
-	</head>
+  <!-- Top Navigation Bar -->
+  <header class="navbar">
+    <div class="logo">⚡ Light Unblocker</div>
+    <nav class="nav-tabs">
+      <button class="nav-btn active" data-tab="home">Home</button>
+      <button class="nav-btn" data-tab="games">Games 🎮</button>
+    </nav>
+  </header>
 
-	<body>
-		<div title="Scramjet Logo" class="flex-center logo-wrapper header-center">
-			<img class="logo" src="sj.png" alt="Scramjet" />
-			<h1>Scramjet | MW</h1>
-		</div>
-		<div class="flex-center desc left-margin">
-			<p>
-				Scramjet is an experimental interception based web proxy designed to
-				evade internet censorship, bypass arbitrary web browser restrictions and
-				innovate web proxy technologies.
-			</p>
-		</div>
+  <!-- HOME TAB -->
+  <main id="tab-home" class="tab-content active">
+    <h1 class="hero-title">Light Unblocker</h1>
+    <p class="hero-subtitle">Search the web or launch your favorite apps freely.</p>
 
-		<form id="sj-form" class="flex-center">
-			<input
-				id="sj-search-engine"
-				value="https://www.google.com/search?q=%s"
-				type="hidden"
-			/>
-			<input id="sj-address" type="text" placeholder="Search the web freely" />
-		</form>
-		<div class="desc left-margin">
-			<p id="sj-error"></p>
-			<pre id="sj-error-code"></pre>
-		</div>
-		<footer>
-			<div>
-				<a
-					title="The Mercury Workshop GitHub organization"
-					href="https://github.com/MercuryWorkshop"
-					>Mercury Workshop</a
-				>
-				<a
-					title="The example demo app for Scramjet"
-					href="https://github.com/MercuryWorkshop/Scramjet-Demo"
-					>GitHub</a
-				>
-				<a title="License information" href="credits.html">Credits</a>
-			</div>
-			<div>
-				<span>Scramjet &copy; MW 2025</span>
-			</div>
-		</footer>
-	</body>
+    <form class="search-box" id="proxy-form">
+      <input type="text" id="url-input" placeholder="Search Google or enter a URL..." required />
+      <button type="submit">Unblock</button>
+    </form>
+
+    <div class="section-header">
+      <h2>Quick Shortcuts</h2>
+    </div>
+
+    <div class="grid-layout">
+      <div class="card" onclick="launchUrl('https://google.com')">
+        <span class="card-icon">🔍</span>
+        <span>Google</span>
+      </div>
+
+      <div class="card" onclick="launchUrl('https://nowgg.fun/apps/a/19900/b.html')">
+        <span class="card-icon">🎮</span>
+        <span>Roblox</span>
+      </div>
+
+      <div class="card" onclick="launchUrl('https://now.gg')">
+        <span class="card-icon">🕹️</span>
+        <span>now.gg</span>
+      </div>
+
+      <div class="card" onclick="launchUrl('https://ciniby.com')">
+        <span class="card-icon">🎬</span>
+        <span>Ciniby</span>
+      </div>
+
+      <div class="card" onclick="launchUrl('https://youtube.com')">
+        <span class="card-icon">▶️</span>
+        <span>YouTube</span>
+      </div>
+
+      <div class="card" onclick="launchUrl('https://discord.com')">
+        <span class="card-icon">💬</span>
+        <span>Discord</span>
+      </div>
+    </div>
+  </main>
+
+  <!-- GAMES TAB -->
+  <main id="tab-games" class="tab-content">
+    <div class="games-header">
+      <h1 class="hero-title">Games Catalog</h1>
+      <p class="hero-subtitle">Play top titles imported from genizy-math.</p>
+      <input type="text" id="game-search" placeholder="Search games..." />
+    </div>
+
+    <div class="grid-layout" id="games-grid">
+      <!-- Populated dynamically by games-data.js -->
+    </div>
+  </main>
+
+  <!-- GAME PLAYER MODAL -->
+  <div class="game-modal" id="gameModal">
+    <div class="game-modal-bar">
+      <span id="activeGameTitle">Playing Game</span>
+      <div class="modal-controls">
+        <button id="fullscreenBtn" onclick="toggleFullscreen()">Fullscreen ⛶</button>
+        <button class="close-btn" onclick="closeGame()">Close Game ✖</button>
+      </div>
+    </div>
+    <iframe id="gameFrame" src="about:blank" allowfullscreen></iframe>
+  </div>
+
+  <script src="js/games-data.js"></script>
+  <script src="js/app.js"></script>
+</body>
 </html>

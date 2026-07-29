@@ -1,35 +1,34 @@
 {
-	"name": "scramjet-demo",
-	"version": "2.0.0",
-	"description": "The demo application for Scramjet, a high-performance web proxy.",
-	"type": "module",
-	"engines": {
-		"npm": ">=7.0.0",
-		"node": ">=16.0.0"
-	},
-	"scripts": {
-		"start": "node src/index.js",
-		"format": "prettier --write .",
-		"lint": "eslint ./src/",
-		"lint:fix": "eslint ./src/ --fix"
-	},
-	"keywords": [
-		"proxy"
-	],
-	"author": "Mercury Workshop",
-	"license": "GNU AFFERO",
-	"dependencies": {
-		"fastify": "^5.7.4",
-		"@fastify/static": "^9.0.0",
-		"@mercuryworkshop/bare-mux": "^2.1.9",
-		"@mercuryworkshop/libcurl-transport": "^1.5.2",
-		"@mercuryworkshop/scramjet": "https://github.com/MercuryWorkshop/scramjet/releases/download/v1.1.0/mercuryworkshop-scramjet-1.1.0.tgz",
-		"@mercuryworkshop/wisp-js": "^0.4.1",
-		"ws": "^8.18.3"
-	},
-	"devDependencies": {
-		"eslint": "^9.13.0",
-		"prettier": "^3.3.3"
-	},
-	"packageManager": "pnpm@10.18.3"
+  "name": "light-unblocker",
+  "version": "1.0.0",
+  "description": "A fast, modern web proxy interface built with Scramjet and Node.js",
+  "main": "server.js",
+  "type": "module",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node --watch server.js"
+  },
+  "keywords": [
+    "proxy",
+    "unblocker",
+    "scramjet",
+    "ultraviolet",
+    "bare-server",
+    "wisp"
+  ],
+  "author": "",
+  "license": "AGPL-3.0",
+  "dependencies": {
+    "@mercuryworkshop/scramjet": "^1.0.0",
+    "@titaniumnetwork-dev/ultraviolet": "^3.0.0",
+    "@tomphttp/bare-server-node": "^2.0.1",
+    "express": "^4.19.2",
+    "wisp-server-node": "^1.1.0"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.0"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  }
 }
