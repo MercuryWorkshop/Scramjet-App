@@ -569,6 +569,9 @@ footer:not(.foot) a:hover {
 	background: #04010a;
 	opacity: 1;
 	transition: opacity 1s ease;
+	touch-action: none;
+	height: 100vh;
+	height: 100dvh;
 	/* Safety net: if intro.js fails to load, the overlay still clears itself */
 	animation: intro-failsafe 0.01s 14s forwards;
 }
@@ -739,3 +742,135 @@ footer:not(.foot) a:hover {
 		transform: none;
 	}
 }
+
+/* Galaxy background (galaxy.js draws into this canvas) */
+#galaxy {
+	position: fixed;
+	inset: 0;
+	z-index: 0;
+	width: 100%;
+	height: 100%;
+	pointer-events: none;
+	animation: galaxy-in 1.8s ease both;
+}
+
+:root[data-theme="light"] #galaxy {
+	display: none;
+}
+
+.top,
+.stage,
+.foot {
+	position: relative;
+	z-index: 1;
+}
+
+@keyframes galaxy-in {
+	from {
+		opacity: 0;
+	}
+	to {
+		opacity: 0.85;
+	}
+}
+
+/* Dive into the black hole (dive.js on the home page) */
+body.diving .top,
+body.diving .stage,
+body.diving .foot {
+	opacity: 0;
+	pointer-events: none;
+	transition: opacity 0.6s ease;
+}
+
+body.diving #galaxy {
+	animation-duration: 0.4s;
+}
+
+/* The light theme hides the galaxy, so the dive brings in a dark sky for it first */
+:root[data-theme="light"] body.diving #galaxy {
+	display: block;
+}
+
+:root[data-theme="light"] body.diving::before {
+	content: "";
+	position: fixed;
+	inset: 0;
+	z-index: 0;
+	background: #09060f;
+	animation: dive-backdrop 0.5s ease both;
+}
+
+.dive-veil {
+	position: fixed;
+	inset: 0;
+	z-index: 1800;
+	background: #000;
+	opacity: 0;
+	pointer-events: none;
+	transition: opacity 0.3s ease;
+}
+
+.dive-veil.on {
+	opacity: 1;
+}
+
+/* Arriving from the dive (games.html sets html.from-dive): black first, then the page comes back out */
+html.from-dive body::after {
+	content: "";
+	position: fixed;
+	inset: 0;
+	z-index: 3000;
+	background: #000;
+	pointer-events: none;
+	animation: dive-out 0.6s ease 0.15s forwards;
+}
+
+html.from-dive .top,
+html.from-dive .stage,
+html.from-dive .games-page,
+html.from-dive .foot {
+	animation: dive-content-in 0.7s ease 0.6s both;
+}
+
+@keyframes dive-backdrop {
+	from {
+		opacity: 0;
+	}
+	to {
+		opacity: 1;
+	}
+}
+
+@keyframes dive-out {
+	to {
+		opacity: 0;
+		visibility: hidden;
+	}
+}
+
+@keyframes dive-content-in {
+	from {
+		opacity: 0;
+	}
+	to {
+		opacity: 1;
+	}
+}
+
+/* A real button to leave the intro, handy on phones */
+.intro-skip-btn {
+	position: absolute;
+	top: max(1rem, env(safe-area-inset-top));
+	right: 1rem;
+	z-index: 2;
+	padding: 0.55rem 1rem;
+	border-radius: 999px;
+	border: 1px solid rgba(201, 147, 255, 0.45);
+	background: rgba(20, 8, 40, 0.55);
+	color: #f0d9ff;
+	font: inherit;
+	font-size: 0.85rem;
+	cursor: pointer;
+}
+#intro.titled .intro-skip-btn { opacity: 0; pointer-events: none; }

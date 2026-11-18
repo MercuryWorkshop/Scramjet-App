@@ -1,0 +1,1846 @@
+<!DOCTYPE html>
+<html lang="en" class="dark" id="stash-root">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title id="site-tab-title">New Tab</title>
+  <link id="site-favicon" rel="icon" type="image/x-icon" href="https://raw.githubusercontent.com/andrewrodela447/STASH-STORE/5271ece1e8046937274d6c2e14f9588a58065bd9/Stash%20%5BLOGO%5D.png">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          fontFamily: { sans: ['"Plus Jakarta Sans"', 'sans-serif'] },
+          colors: { 
+            oled: { bg: '#0a0a0a', card: '#141414' }
+          }
+        }
+      }
+    }
+  </script>
+  <script src="https://cdn.jsdmirror.com/npm/@supabase/supabase-js@2"></script>
+
+  <style>
+    :root {
+      --bg-color: #0a0a0a;
+      --card-bg: #141414;
+      --accent-color: #2563eb;
+    }
+
+    body {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      background-color: var(--bg-color);
+      color: #ffffff;
+      overflow-x: hidden;
+      transition: background-color 0.3s ease;
+    }
+
+    ::-webkit-scrollbar { width: 6px; height: 6px; }
+    ::-webkit-scrollbar-track { background: var(--bg-color); }
+    ::-webkit-scrollbar-thumb { background: rgba(255, 255, 255, 0.15); border-radius: 9999px; }
+
+    #navbar {
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      z-index: 50;
+    }
+    .nav-at-top {
+      background-color: rgba(10, 10, 10, 0.85);
+    }
+    .nav-scrolled {
+      background-color: rgba(10, 10, 10, 0.65);
+      backdrop-filter: blur(28px) saturate(180%);
+      -webkit-backdrop-filter: blur(28px) saturate(180%);
+    }
+
+    #top-nav-row {
+      transition: max-height 0.35s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.25s ease, margin 0.25s ease;
+      max-height: 64px;
+    }
+
+    .no-scrollbar::-webkit-scrollbar { display: none; }
+    .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+
+    .tab-btn { 
+      transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      outline: none !important;
+      box-shadow: none !important;
+      border: none !important;
+      -webkit-tap-highlight-color: transparent;
+    }
+    .tab-btn.inactive {
+      background-color: rgba(255, 255, 255, 0.05);
+      color: #a1a1aa;
+    }
+    .tab-btn.inactive:hover {
+      background-color: rgba(255, 255, 255, 0.14);
+      color: #ffffff;
+    }
+    .tab-btn.active {
+      background-color: rgba(255, 255, 255, 0.22);
+      color: #ffffff;
+    }
+
+    .text-shadow-strong {
+      text-shadow: 0 2px 10px rgba(0, 0, 0, 0.9), 0 4px 20px rgba(0, 0, 0, 0.8);
+    }
+
+    .umbrel-card {
+      background-color: transparent;
+      border: none;
+      outline: none;
+      transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    .umbrel-card:hover {
+      background-color: rgba(38, 40, 42, 0.8);
+    }
+
+    .desc-12-lines {
+      display: -webkit-box;
+      -webkit-line-clamp: 12;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+      mask-image: linear-gradient(to bottom, black 75%, transparent 100%);
+      -webkit-mask-image: linear-gradient(to bottom, black 75%, transparent 100%);
+    }
+
+    .loader {
+      --dim: 3rem;
+      width: var(--dim);
+      height: var(--dim);
+      position: relative;
+      animation: spin988 2s linear infinite;
+    }
+
+    .loader .circle {
+      --color: #ffffff;
+      --dim: 1.2rem;
+      width: var(--dim);
+      height: var(--dim);
+      background-color: var(--color);
+      border-radius: 50%;
+      position: absolute;
+      box-shadow: 0 0 12px rgba(255, 255, 255, 0.5);
+    }
+
+    .loader .circle:nth-child(1) { top: 0; left: 0; }
+    .loader .circle:nth-child(2) { top: 0; right: 0; }
+    .loader .circle:nth-child(3) { bottom: 0; left: 0; }
+    .loader .circle:nth-child(4) { bottom: 0; right: 0; }
+
+    @keyframes spin988 {
+      0% { transform: scale(1) rotate(0); }
+      20%, 25% { transform: scale(1.3) rotate(90deg); }
+      45%, 50% { transform: scale(1) rotate(180deg); }
+      70%, 75% { transform: scale(1.3) rotate(270deg); }
+      95%, 100% { transform: scale(1) rotate(360deg); }
+    }
+
+    .player-spinner {
+      width: 48px;
+      height: 48px;
+      border: 4px solid rgba(255, 255, 255, 0.1);
+      border-left-color: #ffffff;
+      border-radius: 50%;
+      animation: spin 0.8s linear infinite;
+    }
+
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+
+    .tooltip-box { position: relative; }
+    .tooltip-bubble {
+      position: absolute;
+      top: 100%;
+      left: 50%;
+      transform: translateX(-50%) translateY(4px);
+      margin-top: 8px;
+      background-color: rgba(24, 24, 27, 0.95);
+      border: 1px solid rgba(255, 255, 255, 0.18);
+      backdrop-filter: blur(16px);
+      color: #ffffff;
+      padding: 6px 12px;
+      border-radius: 10px;
+      font-size: 11px;
+      font-weight: 700;
+      white-space: nowrap;
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.6);
+      opacity: 0;
+      pointer-events: none;
+      transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+      z-index: 60;
+    }
+
+    .sidebar-tooltip {
+      position: absolute;
+      left: 100%;
+      top: 50%;
+      transform: translateY(-50%) translateX(6px);
+      margin-left: 8px;
+      background-color: rgba(24, 24, 27, 0.95);
+      border: 1px solid rgba(255, 255, 255, 0.18);
+      backdrop-filter: blur(16px);
+      color: #ffffff;
+      padding: 6px 12px;
+      border-radius: 10px;
+      font-size: 11px;
+      font-weight: 700;
+      white-space: nowrap;
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.6);
+      opacity: 0;
+      pointer-events: none;
+      transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+      z-index: 60;
+    }
+
+    .sidebar-tooltip::before {
+      content: '';
+      position: absolute;
+      right: 100%;
+      top: 50%;
+      transform: translateY(-50%);
+      border-width: 5px;
+      border-style: solid;
+      border-color: transparent rgba(24, 24, 27, 0.95) transparent transparent;
+    }
+
+    .tooltip-box:hover .sidebar-tooltip {
+      opacity: 1;
+      pointer-events: auto;
+      transform: translateY(-50%) translateX(10px);
+    }
+
+    .tooltip-bubble::before {
+      content: '';
+      position: absolute;
+      bottom: 100%;
+      left: 50%;
+      transform: translateX(-50%);
+      border-width: 5px;
+      border-style: solid;
+      border-color: transparent transparent rgba(24, 24, 27, 0.95) transparent;
+    }
+
+    .tooltip-box:hover .tooltip-bubble {
+      opacity: 1;
+      pointer-events: auto;
+      transform: translateX(-50%) translateY(8px);
+    }
+
+    :fullscreen #player-topnav,
+    :-webkit-full-screen #player-topnav {
+      display: none !important;
+    }
+
+    :fullscreen #player-frame-container,
+    :-webkit-full-screen #player-frame-container {
+      position: fixed !important;
+      inset: 0 !important;
+      width: 100vw !important;
+      height: 100vh !important;
+      z-index: 99999 !important;
+      margin: 0 !important;
+      padding: 0 !important;
+    }
+
+    .view-section {
+      padding-top: 24px;
+      padding-bottom: 100px; 
+    }
+    @media (min-width: 640px) {
+      .view-section {
+        padding-top: 160px; 
+        padding-bottom: 40px;
+      }
+    }
+
+    .mobile-search-closed {
+      max-width: 0px;
+      opacity: 0;
+      padding: 0;
+      pointer-events: none;
+    }
+    .mobile-search-open {
+      max-width: 100%;
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    .slide-dot-btn {
+      outline: none !important;
+      -webkit-tap-highlight-color: transparent;
+    }
+    .slide-dot-btn .progress-fill {
+      transition: width 0.1s linear;
+    }
+
+ 
+    .setting-btn-top {
+      border-top-left-radius: 1.25rem;
+      border-top-right-radius: 1.25rem;
+      border-bottom-left-radius: 0px;
+      border-bottom-right-radius: 0px;
+    }
+    .setting-btn-bottom {
+      border-bottom-left-radius: 1.25rem;
+      border-bottom-right-radius: 1.25rem;
+      border-top-left-radius: 0px;
+      border-top-right-radius: 0px;
+    }
+    .setting-btn-single {
+      border-radius: 1.25rem;
+    }
+
+    .theme-circle {
+      width: 36px;
+      height: 36px;
+      border-radius: 9999px;
+      transition: all 0.2s ease;
+      cursor: pointer;
+    }
+    .theme-circle:hover {
+      transform: scale(1.1);
+    }
+    .theme-circle.active-theme {
+      box-shadow: 0 0 0 3px #ffffff;
+    }
+  </style>
+</head>
+<body class="bg-oled-bg text-gray-100 min-h-screen antialiased selection:bg-white/20 selection:text-white overflow-x-hidden">
+
+  <div id="fake-edu-page" class="fixed inset-0 z-[300] bg-black w-full h-full overflow-hidden flex flex-col">
+    <button id="edu-start-btn" onclick="openAppStore()" class="fixed top-4 right-4 z-[400] px-4 py-1.5 bg-blue-600 hover:bg-blue-500 active:scale-95 text-white font-bold text-xs rounded-full border border-white/20 transition-all cursor-pointer tracking-wider backdrop-blur-md">
+      Start
+    </button>
+    <iframe id="edu-extractor-iframe" class="w-full h-full border-0 bg-white" allow="fullscreen; autoplay; clipboard-write; encrypted-media"></iframe>
+  </div>
+
+  <script>
+    (function extractEducationalSite() {
+      const targetUrl = 'https://stash-files.b-cdn.net/www_mathletics_com.html';
+      fetch(targetUrl)
+        .then(response => {
+          if (!response.ok) throw new Error('Network response error');
+          return response.text();
+        })
+        .then(htmlCode => {
+          const iframe = document.getElementById('edu-extractor-iframe');
+          if (iframe) iframe.srcdoc = htmlCode;
+        })
+        .catch(() => {
+          const iframe = document.getElementById('edu-extractor-iframe');
+          if (iframe) iframe.src = targetUrl;
+        });
+    })();
+
+    function openAppStore() {
+      const eduOverlay = document.getElementById('fake-edu-page');
+      if (eduOverlay) {
+        eduOverlay.style.opacity = '0';
+        eduOverlay.style.pointerEvents = 'none';
+        eduOverlay.style.transition = 'opacity 0.3s ease';
+        setTimeout(() => eduOverlay.remove(), 300);
+      }
+    }
+  </script>
+
+
+  <div id="startup-overlay" class="fixed inset-0 z-[100] bg-black/90 backdrop-blur-2xl flex flex-col items-center justify-center">
+    <div class="loader">
+      <div class="circle"></div>
+      <div class="circle"></div>
+      <div class="circle"></div>
+      <div class="circle"></div>
+    </div>
+  </div>
+
+  <header id="navbar" class="hidden sm:block fixed top-0 left-0 right-0 z-50 transition-all duration-300 nav-at-top py-2">
+    <div class="w-full px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto flex flex-col justify-end h-full">
+      
+      <div id="top-nav-row" class="flex items-center justify-between h-14 md:h-16 transition-all duration-300 opacity-100 overflow-visible shrink-0">
+        <a href="#home" onclick="showView('home-page-view'); return false;" id="brand-logo" class="flex items-center gap-3 shrink-0 cursor-pointer">
+          <img 
+            src="https://raw.githubusercontent.com/andrewrodela447/STASH-STORE/5271ece1e8046937274d6c2e14f9588a58065bd9/Stash%20%5BLOGO%5D.png" 
+            alt="Stash OS Logo" 
+            class="h-7 sm:h-8 md:h-10 w-auto object-contain active:scale-95 transition-transform"
+          />
+          <span class="font-extrabold text-lg sm:text-xl md:text-2xl tracking-tight text-white">App Store</span>
+        </a>
+
+        <div class="flex items-center gap-3 relative z-[110]">
+          <div class="relative">
+            <form id="search-form" onsubmit="handleSearch(event)" class="relative flex items-center">
+              <div class="relative flex items-center w-56 sm:w-64 md:w-80">
+                <input
+                  id="search-input"
+                  type="text"
+                  placeholder="Search store apps..."
+                  autocomplete="off"
+                  oninput="onSearchInputChange(this.value)"
+                  onfocus="onSearchInputChange(this.value)"
+                  class="w-full bg-white/[0.07] hover:bg-white/[0.12] focus:bg-white/[0.14] border border-white/10 text-white placeholder-gray-400 pl-9 md:pl-10 pr-9 md:pr-10 py-2 rounded-full text-xs md:text-sm font-medium outline-none h-9 md:h-10 transition-all"
+                />
+                <button type="submit" class="absolute left-3 text-gray-400 hover:text-white cursor-pointer">
+                  <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
+                </button>
+                
+                <button 
+                  type="button" 
+                  id="search-clear-btn" 
+                  onclick="clearSearchInput()" 
+                  class="hidden absolute right-3 text-gray-400 hover:text-white text-xs font-bold w-4 h-4 rounded-full bg-white/10 hover:bg-white/20 flex items-center justify-center cursor-pointer transition-all"
+                >
+                  ✕
+                </button>
+              </div>
+            </form>
+
+            <div id="search-suggestions" class="hidden absolute top-full left-0 right-0 mt-2 bg-neutral-900/95 backdrop-blur-2xl border border-white/15 rounded-2xl p-2 shadow-[0_20px_50px_rgba(0,0,0,0.9)] z-[120]"></div>
+          </div>
+
+          <button 
+            onclick="showView('settings-page-view')" 
+            class="w-9 h-9 md:w-10 md:h-10 rounded-full bg-white/[0.07] hover:bg-white/[0.14] border border-white/10 flex items-center justify-center text-gray-300 hover:text-white transition-all active:scale-95 cursor-pointer shrink-0"
+            title="Settings"
+          >
+            <svg class="w-4 h-4 sm:w-5 sm:h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
+          </button>
+        </div>
+      </div>
+
+
+      <div class="py-2 flex items-center justify-center shrink-0 relative z-10" id="category-nav-wrapper">
+        <div class="overflow-x-auto no-scrollbar py-1 max-w-full">
+          <nav class="flex items-center justify-center gap-1.5 sm:gap-2 md:gap-3 min-w-max mx-auto px-1 py-0.5" id="category-nav">
+            <button onclick="setCategory('All', this);" class="tab-btn active flex items-center gap-2 px-4 sm:px-5 md:px-6 py-2 md:py-2.5 rounded-full text-xs md:text-sm font-bold cursor-pointer">
+              <img src="https://raw.githubusercontent.com/andrewrodela447/STASH-STORE/refs/heads/main/IMAGES/Discover.webp" class="w-4 md:w-5 h-4 md:h-5 object-contain" alt="All Apps">
+              <span>All Apps</span>
+            </button>
+
+            <button onclick="setCategory('AI', this);" class="tab-btn inactive flex items-center gap-2 px-4 sm:px-5 md:px-6 py-2 md:py-2.5 rounded-full text-xs md:text-sm font-semibold cursor-pointer">
+              <img src="https://raw.githubusercontent.com/andrewrodela447/STASH-STORE/refs/heads/main/IMAGES/AI.png" class="w-4 md:w-5 h-4 md:h-5 object-contain" alt="AI">
+              <span>AI</span>
+            </button>
+
+            <button onclick="setCategory('Game', this);" class="tab-btn inactive flex items-center gap-2 px-4 sm:px-5 md:px-6 py-2 md:py-2.5 rounded-full text-xs md:text-sm font-semibold cursor-pointer">
+              <img src="https://raw.githubusercontent.com/andrewrodela447/STASH-STORE/refs/heads/main/IMAGES/Media.png" class="w-4 md:w-5 h-4 md:h-5 object-contain" alt="Game and Media">
+              <span>Game&Media</span>
+            </button>
+
+            <button onclick="setCategory('Files & Productivity', this);" class="tab-btn inactive flex items-center gap-2 px-4 sm:px-5 md:px-6 py-2 md:py-2.5 rounded-full text-xs md:text-sm font-semibold cursor-pointer">
+              <img src="https://raw.githubusercontent.com/andrewrodela447/STASH-STORE/refs/heads/main/IMAGES/Files-Productivity.png" class="w-4 md:w-5 h-4 md:h-5 object-contain" alt="Files and Productivity">
+              <span>Files & Productivity</span>
+            </button>
+
+            <button onclick="setCategory('Social', this);" class="tab-btn inactive flex items-center gap-2 px-4 sm:px-5 md:px-6 py-2 md:py-2.5 rounded-full text-xs md:text-sm font-semibold cursor-pointer">
+              <img src="https://raw.githubusercontent.com/andrewrodela447/STASH-STORE/refs/heads/main/IMAGES/Social.png" class="w-4 md:w-5 h-4 md:h-5 object-contain" alt="Social">
+              <span>Social</span>
+            </button>
+
+            <a href="https://discord.gg/VVcCJxUuwC" target="_blank" rel="noopener noreferrer" class="tab-btn inactive flex items-center gap-2 px-4 sm:px-5 md:px-6 py-2 md:py-2.5 rounded-full text-xs md:text-sm font-bold ml-1 cursor-pointer">
+              <img src="https://raw.githubusercontent.com/andrewrodela447/STASH-STORE/refs/heads/main/IMAGES/launch-your-app.png" class="w-4 md:w-5 h-4 md:h-5 object-contain" alt="Submit App">
+              <span>Submit App</span>
+            </a>
+          </nav>
+        </div>
+      </div>
+
+    </div>
+  </header>
+
+  <div class="sm:hidden fixed bottom-4 inset-x-3 z-50 flex items-center justify-between gap-2 bg-neutral-900/85 backdrop-blur-2xl border border-white/15 rounded-full p-2 shadow-[0_12px_40px_rgba(0,0,0,0.8)]">
+    <div id="mobile-category-bar" class="flex-1 overflow-x-auto no-scrollbar flex items-center gap-1.5 transition-all duration-300">
+      <button onclick="setCategory('All', this);" class="tab-btn active shrink-0 flex items-center gap-2 px-3.5 py-2 rounded-full text-xs font-bold cursor-pointer">
+        <img src="https://raw.githubusercontent.com/andrewrodela447/STASH-STORE/refs/heads/main/IMAGES/Discover.webp" class="w-4 h-4 object-contain" alt="All">
+        <span>All</span>
+      </button>
+
+      <button onclick="setCategory('AI', this);" class="tab-btn inactive shrink-0 flex items-center gap-2 px-3.5 py-2 rounded-full text-xs font-semibold cursor-pointer">
+        <img src="https://raw.githubusercontent.com/andrewrodela447/STASH-STORE/refs/heads/main/IMAGES/AI.png" class="w-4 h-4 object-contain" alt="AI">
+        <span>AI</span>
+      </button>
+
+      <button onclick="setCategory('Game', this);" class="tab-btn inactive shrink-0 flex items-center gap-2 px-3.5 py-2 rounded-full text-xs font-semibold cursor-pointer">
+        <img src="https://raw.githubusercontent.com/andrewrodela447/STASH-STORE/refs/heads/main/IMAGES/Media.png" class="w-4 h-4 object-contain" alt="Games">
+        <span>Games</span>
+      </button>
+
+      <button onclick="setCategory('Files & Productivity', this);" class="tab-btn inactive shrink-0 flex items-center gap-2 px-3.5 py-2 rounded-full text-xs font-semibold cursor-pointer">
+        <img src="https://raw.githubusercontent.com/andrewrodela447/STASH-STORE/refs/heads/main/IMAGES/Files-Productivity.png" class="w-4 h-4 object-contain" alt="Files">
+        <span>Files</span>
+      </button>
+
+      <button onclick="setCategory('Social', this);" class="tab-btn inactive shrink-0 flex items-center gap-2 px-3.5 py-2 rounded-full text-xs font-semibold cursor-pointer">
+        <img src="https://raw.githubusercontent.com/andrewrodela447/STASH-STORE/refs/heads/main/IMAGES/Social.png" class="w-4 h-4 object-contain" alt="Social">
+        <span>Social</span>
+      </button>
+
+      <button onclick="showView('settings-page-view')" class="tab-btn inactive shrink-0 flex items-center justify-center p-2 rounded-full text-xs font-semibold cursor-pointer" title="Settings">
+        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
+      </button>
+    </div>
+
+    <div id="mobile-search-wrapper" class="mobile-search-closed flex-1 overflow-hidden transition-all duration-300 ease-out">
+      <form onsubmit="handleSearch(event)" class="relative flex items-center w-full">
+        <input
+          id="mobile-search-input"
+          type="text"
+          placeholder="Search apps..."
+          oninput="onSearchInputChange(this.value)"
+          class="w-full bg-white/10 border border-white/20 text-white placeholder-gray-400 pl-8 pr-8 py-2 rounded-full text-xs font-medium outline-none h-9"
+        />
+        <svg class="w-3.5 h-3.5 text-gray-400 absolute left-2.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
+        <button 
+          type="button" 
+          id="mobile-search-clear-btn" 
+          onclick="clearSearchInput()" 
+          class="hidden absolute right-2.5 text-gray-400 hover:text-white text-[10px] font-bold w-4 h-4 rounded-full bg-white/10 flex items-center justify-center cursor-pointer"
+        >
+          ✕
+        </button>
+      </form>
+    </div>
+
+    <button id="mobile-search-toggle-btn" onclick="toggleMobileSearch()" class="w-9 h-9 rounded-full bg-white/10 hover:bg-white/20 border border-white/15 shrink-0 flex items-center justify-center text-white backdrop-blur-xl active:scale-90 transition-all shadow-md cursor-pointer">
+      <svg id="mobile-search-icon" class="w-4 h-4 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
+    </button>
+  </div>
+
+  <div id="page-wrapper" class="w-full min-h-[100vh]">
+    
+    <div id="home-page-view" class="view-section">
+      <section id="hero-banner-section" class="w-full mb-6 sm:mb-8">
+        <div class="relative w-full h-[220px] sm:h-[300px] md:h-[380px] lg:h-[440px] overflow-hidden">
+          <img 
+            id="hero-banner-img"
+            src="https://raw.githubusercontent.com/andrewrodela447/STASH-STORE/refs/heads/main/IMAGES/file_0000000063e881f58b5666aa62df44bc.png" 
+            alt="Stash OS Banner" 
+            class="absolute inset-0 w-full h-full object-cover pointer-events-none"
+          />
+          <div class="relative w-full max-w-7xl mx-auto px-5 sm:px-8 md:px-12 h-full flex flex-col justify-center z-10 bg-gradient-to-r from-black/85 via-black/40 to-transparent">
+            <div class="max-w-2xl">
+              <h1 class="text-2xl sm:text-4xl md:text-5xl lg:text-6xl font-extrabold text-white tracking-tight leading-[1.12] text-shadow-strong">
+                Hundreds of apps.<br>
+                <span class="text-gray-100">Unblocked. All yours.</span>
+              </h1>
+              <p class="mt-2 sm:mt-4 md:mt-5 text-xs sm:text-sm md:text-base lg:text-lg text-gray-200 font-medium leading-relaxed max-w-xl text-shadow-strong">
+                Discover self-hosted apps for StashOS — your own private OS, in your PC.
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          
+        <section id="serving-hot-section" class="mb-8 sm:mb-12 md:mb-14">
+          <div class="flex items-center justify-between mb-3 sm:mb-5 md:mb-6">
+            <h2 class="text-lg sm:text-xl md:text-2xl font-extrabold text-white tracking-tight">Serving hot now</h2>
+          </div>
+          <div id="serving-hot-grid" class="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-5 lg:grid-cols-7 gap-2.5 sm:gap-4 md:gap-5"></div>
+        </section>
+
+        <section id="slideshow-section" class="mb-10 sm:mb-14 w-full overflow-hidden">
+          <div id="slideshow-track" class="flex overflow-x-auto no-scrollbar scroll-smooth snap-x snap-mandatory py-2 cursor-grab active:cursor-grabbing w-full gap-3 sm:gap-4">
+            <div class="carousel-card shrink-0 w-full aspect-[2.1/1] sm:aspect-[2.2/1] md:aspect-[2.3/1] rounded-[20px] sm:rounded-[28px] md:rounded-[32px] overflow-hidden bg-white/[0.015] snap-center relative">
+              <img src="https://raw.githubusercontent.com/andrewrodela447/STASH-STORE/refs/heads/main/IMAGES/banner-hermes-agent.png" loading="lazy" class="w-full h-full object-cover" alt="Banner">
+            </div>
+            <div class="carousel-card shrink-0 w-full aspect-[2.1/1] sm:aspect-[2.2/1] md:aspect-[2.3/1] rounded-[20px] sm:rounded-[28px] md:rounded-[32px] overflow-hidden bg-white/[0.015] snap-center relative">
+              <img src="https://raw.githubusercontent.com/andrewrodela447/STASH-STORE/refs/heads/main/IMAGES/banner-immich.png" loading="lazy" class="w-full h-full object-cover" alt="Banner">
+            </div>
+            <div class="carousel-card shrink-0 w-full aspect-[2.1/1] sm:aspect-[2.2/1] md:aspect-[2.3/1] rounded-[20px] sm:rounded-[28px] md:rounded-[32px] overflow-hidden bg-white/[0.015] snap-center relative">
+              <img src="https://github.com/andrewrodela447/STASH-STORE/blob/main/IMAGES/banner-open-webui.webp?raw=true" loading="lazy" class="w-full h-full object-cover" alt="Banner">
+            </div>
+            <div class="carousel-card shrink-0 w-full aspect-[2.1/1] sm:aspect-[2.2/1] md:aspect-[2.3/1] rounded-[20px] sm:rounded-[28px] md:rounded-[32px] overflow-hidden bg-white/[0.015] snap-center relative">
+              <img src="https://raw.githubusercontent.com/andrewrodela447/STASH-STORE/refs/heads/main/IMAGES/banner-openclaw.webp" loading="lazy" class="w-full h-full object-cover" alt="Banner">
+            </div>
+            <div class="carousel-card shrink-0 w-full aspect-[2.1/1] sm:aspect-[2.2/1] md:aspect-[2.3/1] rounded-[20px] sm:rounded-[28px] md:rounded-[32px] overflow-hidden bg-white/[0.015] snap-center relative">
+              <img src="https://raw.githubusercontent.com/andrewrodela447/STASH-STORE/refs/heads/main/IMAGES/banner-opencode.png" loading="lazy" class="w-full h-full object-cover" alt="Banner">
+            </div>
+            <div class="carousel-card shrink-0 w-full aspect-[2.1/1] sm:aspect-[2.2/1] md:aspect-[2.3/1] rounded-[20px] sm:rounded-[28px] md:rounded-[32px] overflow-hidden bg-white/[0.015] snap-center relative">
+              <img src="https://raw.githubusercontent.com/andrewrodela447/STASH-STORE/refs/heads/main/IMAGES/file_000000005e3c81fd826057fcd5408d04.png" loading="lazy" class="w-full h-full object-cover" alt="Banner">
+            </div>
+          </div>
+
+          <div class="flex items-center justify-between mt-3 sm:mt-5 md:mt-7 px-1">
+            <div class="flex items-center gap-2.5 sm:gap-3.5 md:gap-4 px-4 py-2 sm:px-6 sm:py-3 md:px-7 md:py-4 rounded-full bg-white/[0.08] border border-white/15 backdrop-blur-lg" id="dots-container"></div>
+            <div class="flex items-center gap-2 sm:gap-3 md:gap-4">
+              <button onclick="prevSlide()" class="w-9 h-9 sm:w-11 sm:h-11 md:w-12 md:h-12 rounded-full bg-white/[0.09] hover:bg-white/[0.18] border border-white/15 text-white flex items-center justify-center active:scale-90 cursor-pointer backdrop-blur-lg transition-transform">
+                <svg class="w-4 sm:w-5 h-4 sm:h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M15 19l-7-7 7-7"/></svg>
+              </button>
+              <button onclick="nextSlide()" class="w-9 h-9 sm:w-11 sm:h-11 md:w-12 md:h-12 rounded-full bg-white/[0.09] hover:bg-white/[0.18] border border-white/15 text-white flex items-center justify-center active:scale-90 cursor-pointer backdrop-blur-lg transition-transform">
+                <svg class="w-4 sm:w-5 h-4 sm:h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M9 5l7 7-7 7"/></svg>
+              </button>
+            </div>
+          </div>
+        </section>
+
+        <section id="apps-grid-section" class="mb-16">
+          <div class="flex flex-col sm:flex-row sm:items-end justify-between gap-2 sm:gap-4 mb-4 sm:mb-8">
+            <div>
+              <h2 class="text-xl sm:text-2xl md:text-3xl font-extrabold text-white tracking-tight" id="home-grid-title">All apps</h2>
+              <p class="text-xs sm:text-sm text-gray-400 mt-1 font-medium">Browse self-hosted apps for your StashOS home server.</p>
+            </div>
+
+            <div class="flex items-center gap-2 sm:gap-3 shrink-0 mt-2 sm:mt-0">
+              <span class="text-xs font-semibold text-gray-400">Sort by:</span>
+              <select id="sort-select" onchange="handleSortChange(this.value)" class="bg-white/[0.07] hover:bg-white/[0.12] border border-white/10 text-white text-xs font-bold rounded-full px-3 py-1.5 sm:px-3.5 sm:py-2 outline-none cursor-pointer">
+                <option value="alphabetical" class="bg-neutral-900 text-white">Alphabetical (A-Z)</option>
+                <option value="downloads" class="bg-neutral-900 text-white">Most Downloaded</option>
+                <option value="likes" class="bg-neutral-900 text-white">Most Liked</option>
+                <option value="newest" class="bg-neutral-900 text-white">Newest Apps</option>
+              </select>
+            </div>
+          </div>
+
+          <div id="category-loader" class="hidden py-16 flex items-center justify-center w-full">
+            <div class="loader">
+              <div class="circle"></div>
+              <div class="circle"></div>
+              <div class="circle"></div>
+              <div class="circle"></div>
+            </div>
+          </div>
+
+          <div id="all-apps-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2.5 sm:gap-3.5 md:gap-4 transition-all duration-300"></div>
+
+          <div id="lazy-loader-status" class="mt-8 text-center py-4">
+            <p id="end-feed-text" class="text-xs text-gray-500 font-medium hidden">Reached end of apps list</p>
+          </div>
+        </section>
+
+      </main>
+    </div>
+
+    <div id="search-page-view" class="view-section hidden max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 min-h-screen">
+      <div class="flex items-center justify-between mb-6 sm:mb-8 border-b border-white/10 pb-4 sm:pb-5">
+        <div>
+          <h1 class="text-xl sm:text-2xl md:text-3xl font-extrabold text-white tracking-tight">Search Results</h1>
+          <p class="text-xs sm:text-sm text-gray-400 mt-1">Showing matches for "<span id="search-query-display" class="text-white font-semibold"></span>"</p>
+        </div>
+        <button onclick="window.location.hash = 'home'; showView('home-page-view');" class="flex items-center gap-2 px-4 py-2 sm:px-5 sm:py-2.5 rounded-full bg-white/10 hover:bg-white/20 border border-white/10 text-white text-xs font-bold cursor-pointer transition-all active:scale-95">
+          ✕ Close
+        </button>
+      </div>
+
+      <div id="search-loader" class="hidden py-20 flex items-center justify-center w-full">
+        <div class="loader">
+          <div class="circle"></div>
+          <div class="circle"></div>
+          <div class="circle"></div>
+          <div class="circle"></div>
+        </div>
+      </div>
+
+      <div id="search-results-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2.5 sm:gap-4"></div>
+      
+      <div id="search-empty-state" class="hidden p-8 sm:p-14 rounded-[28px] sm:rounded-[32px] bg-white/[0.02] border border-white/10 text-center mt-8">
+        <div class="w-12 h-12 sm:w-16 sm:h-16 rounded-full bg-white/5 flex items-center justify-center mx-auto mb-3">
+          <svg class="w-6 h-6 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.172 16.172a4 4 0 015.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+        </div>
+        <h2 class="text-base sm:text-xl font-bold text-white mb-1">No apps found</h2>
+        <p class="text-gray-400 text-xs sm:text-sm max-w-md mx-auto">Try searching for different keywords or explore our category collections.</p>
+      </div>
+    </div>
+
+    <div id="app-details-view" class="view-section hidden pb-20">
+      <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        
+        <div class="flex flex-col sm:flex-row items-center sm:items-start gap-5 sm:gap-7 md:gap-8 mb-8">
+          <div class="w-24 h-24 sm:w-32 sm:h-32 md:w-36 md:h-36 rounded-[22px] sm:rounded-[28px] md:rounded-[32px] overflow-hidden shrink-0 shadow-2xl bg-white/[0.02] border border-white/10">
+            <img id="detail-app-img" src="" loading="lazy" class="w-full h-full object-cover" alt="App Icon" />
+          </div>
+
+          <div class="flex flex-col items-center sm:items-start text-center sm:text-left justify-center pt-1 w-full">
+            <h1 id="detail-app-title" class="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-extrabold text-white tracking-tight"></h1>
+            
+            <div class="mt-4 sm:mt-6 flex items-center gap-3 sm:gap-4 w-full sm:max-w-md">
+                
+              <div class="tooltip-box shrink-0">
+                <button 
+                  id="detail-btn-download"
+                  onclick="downloadCurrentApp()"
+                  class="w-12 h-12 sm:w-14 sm:h-14 rounded-[18px] sm:rounded-[22px] bg-white/10 hover:bg-white/20 border border-white/15 text-white flex items-center justify-center transition-all active:scale-95 cursor-pointer shadow-[0_4px_24px_rgba(0,0,0,0.3)]"
+                >
+                  <svg class="w-5 h-5 sm:w-6 sm:h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/></svg>
+                </button>
+                <div class="tooltip-bubble">Download</div>
+              </div>
+
+              <div class="tooltip-box flex-1">
+                <button 
+                  id="detail-btn-play"
+                  onclick="launchAppPlayer()"
+                  class="w-full h-12 sm:h-14 rounded-[18px] sm:rounded-[22px] bg-white text-black font-extrabold text-xs sm:text-sm md:text-base hover:bg-gray-200 transition-all active:scale-95 shadow-[0_4px_24px_rgba(255,255,255,0.15)] flex items-center justify-center gap-2 cursor-pointer"
+                >
+                  <svg class="w-4 h-4 sm:w-5 sm:h-5 fill-current" viewBox="0 0 24 24"><path d="M7 5.25A1.25 1.25 0 0 1 8.91 4.22l9.5 6.75a1.25 1.25 0 0 1 0 2.06l-9.5 6.75A1.25 1.25 0 0 1 7 18.75V5.25z"/></svg>
+                  <span>Play</span>
+                </button>
+                <div class="tooltip-bubble">Launch App</div>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <div class="w-full grid grid-cols-2 sm:grid-cols-5 gap-3 sm:gap-4 py-3 sm:py-4 mb-8 text-center bg-transparent border-y border-white/5">
+          <div class="flex flex-col justify-center p-1 sm:p-2"><span class="text-[10px] sm:text-[11px] font-semibold text-gray-400 uppercase tracking-wider">Downloads</span><span id="detail-stat-downloads" class="text-sm sm:text-base md:text-lg font-bold text-white mt-0.5">—</span></div>
+          <div class="flex flex-col justify-center p-1 sm:p-2"><span class="text-[10px] sm:text-[11px] font-semibold text-gray-400 uppercase tracking-wider">Size</span><span id="detail-stat-filesize" class="text-sm sm:text-base md:text-lg font-bold text-white mt-0.5">—</span></div>
+          <div class="flex flex-col justify-center p-1 sm:p-2"><span class="text-[10px] sm:text-[11px] font-semibold text-gray-400 uppercase tracking-wider">Category</span><span id="detail-stat-category" class="text-sm sm:text-base md:text-lg font-bold text-white mt-0.5">—</span></div>
+          <div class="flex flex-col justify-center p-1 sm:p-2"><span class="text-[10px] sm:text-[11px] font-semibold text-gray-400 uppercase tracking-wider">Developer</span><span id="detail-stat-developer" class="text-sm sm:text-base md:text-lg font-bold text-white mt-0.5 truncate max-w-full">—</span></div>
+          <div class="flex flex-col justify-center p-1 sm:p-2 col-span-2 sm:col-span-1"><span class="text-[10px] sm:text-[11px] font-semibold text-gray-400 uppercase tracking-wider">Submitted By</span><span id="detail-stat-submittedby" class="text-sm sm:text-base md:text-lg font-bold text-white mt-0.5 truncate max-w-full">—</span></div>
+        </div>
+
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-10 mb-14">
+          <div class="lg:col-span-7 flex flex-col bg-transparent">
+            <h2 class="text-lg sm:text-xl font-bold text-white mb-3">About this app</h2>
+            <div id="detail-desc-wrapper" class="desc-12-lines transition-all duration-300">
+              <p id="detail-desc-content" class="text-xs sm:text-sm md:text-base text-gray-300 leading-relaxed font-normal space-y-3 whitespace-pre-line"></p>
+            </div>
+            <div class="mt-3">
+              <button id="detail-desc-btn" onclick="toggleDescription()" class="hidden text-xs font-bold text-white hover:text-purple-300 transition-colors cursor-pointer">Read more</button>
+            </div>
+          </div>
+          <div class="lg:col-span-5 bg-transparent">
+            <h2 class="text-lg sm:text-xl font-bold text-white mb-5">Version History</h2>
+            <div class="relative pl-6 space-y-6 sm:space-y-8" id="versions-timeline-container">
+              <div class="absolute left-2.5 top-3 bottom-3 w-[2px] bg-white/10 pointer-events-none"></div>
+            </div>
+          </div>
+        </div>
+
+        <section class="mt-12">
+          <h2 class="text-xl sm:text-2xl font-extrabold text-white tracking-tight mb-5">Related apps</h2>
+          <div id="related-apps-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2.5 sm:gap-4"></div>
+        </section>
+
+      </main>
+    </div>
+
+    <div id="app-player-view" class="fixed inset-0 z-[200] bg-black flex flex-col hidden">
+        
+      <header id="player-topnav" class="h-14 sm:h-16 bg-neutral-900/90 backdrop-blur-xl border-b border-white/10 px-4 sm:px-6 flex items-center justify-between shrink-0 z-50 transition-all duration-300">
+        
+        <div class="flex items-center gap-3 sm:gap-4 min-w-0">
+          <div class="tooltip-box">
+            <button 
+              onclick="closeAppPlayer()" 
+              class="w-9 h-9 sm:w-10 sm:h-10 rounded-xl bg-white/10 hover:bg-white/20 border border-white/15 text-white flex items-center justify-center transition-all active:scale-95 cursor-pointer"
+            >
+              <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M6 18L18 6M6 6l12 12"/></svg>
+            </button>
+            <div class="tooltip-bubble">Exit</div>
+          </div>
+
+          <h2 id="player-app-title" class="text-sm sm:text-base font-bold text-white truncate">App Player</h2>
+        </div>
+
+        <div class="flex items-center gap-2 sm:gap-3 shrink-0">
+          <div class="tooltip-box">
+            <button 
+              onclick="openInNewTab()" 
+              class="w-9 h-9 sm:w-10 sm:h-10 rounded-xl bg-white/10 hover:bg-white/20 border border-white/15 text-white flex items-center justify-center transition-all active:scale-95 cursor-pointer"
+            >
+              <svg class="w-4 h-4 sm:w-5 sm:h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/></svg>
+            </button>
+            <div class="tooltip-bubble">Open in new tab</div>
+          </div>
+
+          <div class="tooltip-box">
+            <button 
+              onclick="downloadCurrentApp()" 
+              class="w-9 h-9 sm:w-10 sm:h-10 rounded-xl bg-white/10 hover:bg-white/20 border border-white/15 text-white flex items-center justify-center transition-all active:scale-95 cursor-pointer"
+            >
+              <svg class="w-4 h-4 sm:w-5 sm:h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/></svg>
+            </button>
+            <div class="tooltip-bubble">Download</div>
+          </div>
+
+          <div class="tooltip-box">
+            <button 
+              onclick="togglePlayerFullscreen()" 
+              class="w-9 h-9 sm:w-10 sm:h-10 rounded-xl bg-white/10 hover:bg-white/20 border border-white/15 text-white flex items-center justify-center transition-all active:scale-95 cursor-pointer"
+            >
+              <svg class="w-4 h-4 sm:w-5 sm:h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M4 8V4m0 0h4M4 4l5 5m11-5h-4m4 0v4m0-4l-5 5M4 16v4m0 0h4m-4 0l5-5m11 5l-5-5m5 5v-4m0 4h-4"/></svg>
+            </button>
+            <div class="tooltip-bubble">Fullscreen</div>
+          </div>
+        </div>
+      </header>
+
+      <div id="player-frame-container" class="flex-1 w-full h-full bg-black relative">
+        <div id="player-loader-overlay" class="absolute inset-0 bg-neutral-950 flex flex-col items-center justify-center z-40 p-6 text-center transition-opacity duration-300">
+          <div class="player-spinner mb-5"></div>
+          <p id="player-loader-tip" class="text-sm sm:text-base font-semibold text-gray-300 max-w-md leading-relaxed animate-pulse"></p>
+        </div>
+
+        <iframe id="player-iframe" src="" class="w-full h-full border-0" allow="fullscreen; autoplay; clipboard-write; encrypted-media"></iframe>
+      </div>
+    </div>
+
+
+    <div id="settings-page-view" class="view-section hidden max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 min-h-screen">
+      <div class="flex items-center justify-between mb-6 pb-4">
+        <div class="flex items-center gap-3">
+          <h1 class="text-xl sm:text-2xl md:text-3xl font-extrabold text-white tracking-tight">Settings</h1>
+        </div>
+      </div>
+
+      <div class="flex gap-6 md:gap-8 items-start relative">
+        
+
+        <aside class="flex flex-col gap-5 py-2 shrink-0">
+          
+          <div class="tooltip-box">
+            <button 
+              onclick="switchSettingsTab('general')" 
+              id="sett-tab-btn-general" 
+              class="w-10 h-10 text-white flex items-center justify-center transition-all active:scale-90 cursor-pointer"
+            >
+              <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+            </button>
+            <div class="sidebar-tooltip">General</div>
+          </div>
+
+          <div class="tooltip-box">
+            <button 
+              onclick="switchSettingsTab('optimization')" 
+              id="sett-tab-btn-optimization" 
+              class="w-10 h-10 text-gray-400 hover:text-white flex items-center justify-center transition-all active:scale-90 cursor-pointer"
+            >
+              <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
+            </button>
+            <div class="sidebar-tooltip">Optimization</div>
+          </div>
+
+          <div class="tooltip-box">
+            <button 
+              onclick="switchSettingsTab('themes')" 
+              id="sett-tab-btn-themes" 
+              class="w-10 h-10 text-gray-400 hover:text-white flex items-center justify-center transition-all active:scale-90 cursor-pointer"
+            >
+              <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 21a4 4 0 01-4-4V5a2 2 0 012-2h4a2 2 0 012 2v12a4 4 0 01-4 4zm0 0h12a2 2 0 002-2v-4a2 2 0 00-2-2h-2.343M11 7.343l1.657-1.657a2 2 0 012.828 0l2.829 2.829a2 2 0 010 2.828l-8.486 8.485M7 17h.01"/></svg>
+            </button>
+            <div class="sidebar-tooltip">Themes</div>
+          </div>
+
+          <div class="tooltip-box">
+            <button 
+              onclick="switchSettingsTab('clock')" 
+              id="sett-tab-btn-clock" 
+              class="w-10 h-10 text-gray-400 hover:text-white flex items-center justify-center transition-all active:scale-90 cursor-pointer"
+            >
+              <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
+            </button>
+            <div class="sidebar-tooltip">Clock & Mask</div>
+          </div>
+
+        </aside>
+
+        <div class="flex-1 min-w-0">
+
+          <div id="settings-panel-general" class="space-y-6">
+            <div class="bg-white/[0.04] setting-btn-single p-6 flex flex-col items-center justify-center text-center">
+              <span class="text-xs font-semibold text-gray-400 uppercase tracking-wider">Total Playtime</span>
+              <h2 id="total-playtime-counter" class="text-3xl sm:text-4xl font-extrabold text-white mt-2">0m 0s</h2>
+              <p class="text-xs text-gray-400 mt-2">How long you have used this site today.</p>
+            </div>
+
+            <div class="pt-16 text-center">
+              <span id="app-version-display" class="text-xs text-gray-400 font-normal">App Version 1.8.2</span>
+            </div>
+          </div>
+
+
+          <div id="settings-panel-optimization" class="space-y-2">
+
+            <div class="bg-white/[0.04] setting-btn-top p-5 flex items-center justify-between">
+              <div>
+                <h3 class="text-base font-bold text-white">RAM Cleaner</h3>
+                <p class="text-xs text-gray-400 mt-0.5 font-normal">Clears app memory when you close a game so your computer stays fast.</p>
+              </div>
+              
+              <label class="relative inline-flex items-center cursor-pointer shrink-0">
+                <input type="checkbox" id="toggle-ram-opt" onchange="toggleSettingOption('ramOpt')" class="sr-only peer" checked>
+                <div class="w-11 h-6 bg-white/10 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-blue-600"></div>
+              </label>
+            </div>
+
+            <div class="bg-white/[0.04] setting-btn-bottom p-5 flex items-center justify-between">
+              <div>
+                <h3 class="text-base font-bold text-white">Super Fast Mode</h3>
+                <p class="text-xs text-gray-400 mt-0.5 font-normal">Turns on max speed boosts for games.</p>
+              </div>
+
+
+              <label class="relative inline-flex items-center cursor-pointer shrink-0">
+                <input type="checkbox" id="toggle-ult-opt" onchange="toggleSettingOption('ultOpt')" class="sr-only peer">
+                <div class="w-11 h-6 bg-white/10 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-blue-600"></div>
+              </label>
+            </div>
+          </div>
+
+          <div id="settings-panel-themes" class="hidden">
+            <div class="bg-white/[0.04] setting-btn-single p-6">
+              <h3 class="text-base font-bold text-white mb-1">Site Color</h3>
+              <p class="text-xs text-gray-400 mb-6 font-normal">Pick a fun color theme for your store.</p>
+              
+              <div class="grid grid-cols-4 sm:grid-cols-7 gap-4 justify-items-center">
+
+                <div onclick="setSiteTheme('default')" class="flex flex-col items-center gap-2 cursor-pointer">
+                  <div id="theme-circle-default" class="w-10 h-10 rounded-full bg-[#0a0a0a] theme-circle active-theme"></div>
+                  <span class="text-[11px] font-semibold text-gray-300">Default</span>
+                </div>
+
+                <div onclick="setSiteTheme('midnight')" class="flex flex-col items-center gap-2 cursor-pointer">
+                  <div id="theme-circle-midnight" class="w-10 h-10 rounded-full bg-[#070b19] theme-circle"></div>
+                  <span class="text-[11px] font-semibold text-gray-300">Midnight</span>
+                </div>
+
+
+                <div onclick="setSiteTheme('emerald')" class="flex flex-col items-center gap-2 cursor-pointer">
+                  <div id="theme-circle-emerald" class="w-10 h-10 rounded-full bg-[#06140e] theme-circle"></div>
+                  <span class="text-[11px] font-semibold text-gray-300">Emerald</span>
+                </div>
+
+                <div onclick="setSiteTheme('violet')" class="flex flex-col items-center gap-2 cursor-pointer">
+                  <div id="theme-circle-violet" class="w-10 h-10 rounded-full bg-[#0e0716] theme-circle"></div>
+                  <span class="text-[11px] font-semibold text-gray-300">Violet</span>
+                </div>
+
+                <div onclick="setSiteTheme('crimson')" class="flex flex-col items-center gap-2 cursor-pointer">
+                  <div id="theme-circle-crimson" class="w-10 h-10 rounded-full bg-[#140608] theme-circle"></div>
+                  <span class="text-[11px] font-semibold text-gray-300">Crimson</span>
+                </div>
+
+
+                <div onclick="setSiteTheme('amoled')" class="flex flex-col items-center gap-2 cursor-pointer">
+                  <div id="theme-circle-amoled" class="w-10 h-10 rounded-full bg-[#000000] theme-circle"></div>
+                  <span class="text-[11px] font-semibold text-gray-300">AMOLED</span>
+                </div>
+
+
+                <div onclick="setSiteTheme('cyber')" class="flex flex-col items-center gap-2 cursor-pointer">
+                  <div id="theme-circle-cyber" class="w-10 h-10 rounded-full bg-[#121214] theme-circle"></div>
+                  <span class="text-[11px] font-semibold text-gray-300">Cyber</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+
+          <div id="settings-panel-clock" class="hidden space-y-2">
+
+            <div class="bg-white/[0.04] setting-btn-top p-5 space-y-3">
+              <div>
+                <h3 class="text-base font-bold text-white">Tab Icon</h3>
+                <p class="text-xs text-gray-400 mt-0.5 font-normal">Change the picture on your browser tab.</p>
+              </div>
+
+              <div class="flex flex-wrap items-center gap-3 pt-2">
+                <button onclick="setTabIcon('https://Stash-Files.b-cdn.net/Images/Stash%20OS%20-%20Falcon/classroom.jpg')" class="px-3 py-1.5 rounded-xl bg-white/5 hover:bg-white/15 text-xs font-semibold flex items-center gap-2">
+                  <img src="https://Stash-Files.b-cdn.net/Images/Stash%20OS%20-%20Falcon/classroom.jpg" class="w-4 h-4 rounded object-cover" />
+                  Classroom
+                </button>
+
+                <button onclick="setTabIcon('https://Stash-Files.b-cdn.net/Images/Stash%20OS%20-%20Falcon/docs.png')" class="px-3 py-1.5 rounded-xl bg-white/5 hover:bg-white/15 text-xs font-semibold flex items-center gap-2">
+                  <img src="https://Stash-Files.b-cdn.net/Images/Stash%20OS%20-%20Falcon/docs.png" class="w-4 h-4 rounded object-cover" />
+                  Google Docs
+                </button>
+
+                <button onclick="setTabIcon('https://Stash-Files.b-cdn.net/Images/Stash%20OS%20-%20Falcon/ixl.png')" class="px-3 py-1.5 rounded-xl bg-white/5 hover:bg-white/15 text-xs font-semibold flex items-center gap-2">
+                  <img src="https://Stash-Files.b-cdn.net/Images/Stash%20OS%20-%20Falcon/ixl.png" class="w-4 h-4 rounded object-cover" />
+                  IXL
+                </button>
+
+                <button onclick="setTabIcon('https://Stash-Files.b-cdn.net/Images/Stash%20OS%20-%20Falcon/powerschool.png')" class="px-3 py-1.5 rounded-xl bg-white/5 hover:bg-white/15 text-xs font-semibold flex items-center gap-2">
+                  <img src="https://Stash-Files.b-cdn.net/Images/Stash%20OS%20-%20Falcon/powerschool.png" class="w-4 h-4 rounded object-cover" />
+                  PowerSchool
+                </button>
+              </div>
+            </div>
+
+
+            <div class="bg-white/[0.04] setting-btn-bottom p-5 space-y-3">
+              <div>
+                <h3 class="text-base font-bold text-white">Tab Name</h3>
+                <p class="text-xs text-gray-400 mt-0.5 font-normal">Change the text name on your browser tab.</p>
+              </div>
+
+              <div class="flex items-center gap-3 pt-1">
+                <input 
+                  type="text" 
+                  id="tab-name-input" 
+                  placeholder="New Tab" 
+                  class="flex-1 bg-white/10 text-white placeholder-gray-500 px-4 py-2 rounded-xl text-xs font-medium outline-none"
+                />
+                <button 
+                  onclick="saveTabName()" 
+                  class="px-5 py-2 rounded-xl bg-blue-600 hover:bg-blue-500 text-white text-xs font-bold transition-all"
+                >
+                  Save
+                </button>
+              </div>
+            </div>
+          </div>
+
+        </div>
+
+      </div>
+    </div>
+
+  </div>
+<script>
+    const SUPABASE_URL = 'https://ajwgubxrevbipsvwabnb.supabase.co';
+    const SUPABASE_KEY = 'sb_publishable_yc6QGTvxDWFULjJgqSv6_g_4E1__TIa';
+    const supabaseClient = window.supabase ? window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY) : null;
+
+    let storeApps = [];
+    let currentSortedApps = [];
+    let displayedCount = 10;
+    let currentDetailedApp = null;
+    let currentSlideIndex = 0;
+    let slideTimer = null;
+    const SLIDE_DURATION = 5000;
+
+    let totalPlaytimeSeconds = parseInt(localStorage.getItem('stash_playtime_seconds') || '0', 10);
+    let playtimeTimer = null;
+
+
+    const settingsState = {
+      ramOpt: localStorage.getItem('stash_ram_opt') !== 'false',
+      ultOpt: localStorage.getItem('stash_ult_opt') === 'true',
+      theme: localStorage.getItem('stash_theme') || 'default',
+      tabName: localStorage.getItem('stash_tab_name') || 'New Tab',
+      tabIcon: localStorage.getItem('stash_tab_icon') || 'https://raw.githubusercontent.com/andrewrodela447/STASH-STORE/5271ece1e8046937274d6c2e14f9588a58065bd9/Stash%20%5BLOGO%5D.png'
+    };
+
+    const loadingTips = [
+      "Getting your proxy ready",
+      "Did you know Stash OS real name is Game Stash",
+      "Why is this taking for ever🙄",
+      "Guys i spend hundreds of dollars on keeping my site up and running ",
+      "I just farted ",
+      "Axel Sucks at games ",
+      "I HATE AI",
+      "Stash is the best",
+      "Getting your proxy ready"
+    ];
+
+
+    const themesMap = {
+      default: { bg: '#0a0a0a', card: '#141414' },
+      midnight: { bg: '#070b19', card: '#0f172a' },
+      emerald: { bg: '#06140e', card: '#09251a' },
+      violet: { bg: '#0e0716', card: '#1b0d2b' },
+      crimson: { bg: '#140608', card: '#280c10' },
+      amoled: { bg: '#000000', card: '#0a0a0a' },
+      cyber: { bg: '#121214', card: '#1c1c20' }
+    };
+
+    function startPlaytimeCounter() {
+      updatePlaytimeUI();
+      playtimeTimer = setInterval(function() {
+        totalPlaytimeSeconds++;
+        localStorage.setItem('stash_playtime_seconds', totalPlaytimeSeconds.toString());
+        updatePlaytimeUI();
+      }, 1000);
+    }
+
+    function updatePlaytimeUI() {
+      const mins = Math.floor(totalPlaytimeSeconds / 60);
+      const secs = totalPlaytimeSeconds % 60;
+      const counterEl = document.getElementById('total-playtime-counter');
+      if (counterEl) {
+        counterEl.textContent = `${mins}m ${secs}s`;
+      }
+    }
+
+    function loadSavedSettings() {
+
+      const ramCheckbox = document.getElementById('toggle-ram-opt');
+      const ultCheckbox = document.getElementById('toggle-ult-opt');
+      if (ramCheckbox) ramCheckbox.checked = settingsState.ramOpt;
+      if (ultCheckbox) ultCheckbox.checked = settingsState.ultOpt;
+
+
+      setSiteTheme(settingsState.theme, false);
+
+      setTabIcon(settingsState.tabIcon, false);
+      if (settingsState.tabName !== 'New Tab') {
+        const tabTitle = document.getElementById('site-tab-title');
+        const inputName = document.getElementById('tab-name-input');
+        if (tabTitle) tabTitle.textContent = settingsState.tabName;
+        if (inputName) inputName.value = settingsState.tabName;
+      }
+    }
+
+    function switchSettingsTab(tabName) {
+      const tabs = ['general', 'optimization', 'themes', 'clock'];
+      tabs.forEach(function(t) {
+        const panel = document.getElementById(`settings-panel-${t}`);
+        const btn = document.getElementById(`sett-tab-btn-${t}`);
+        if (t === tabName) {
+          if (panel) panel.classList.remove('hidden');
+          if (btn) {
+            btn.classList.remove('text-gray-400');
+            btn.classList.add('text-white');
+          }
+        } else {
+          if (panel) panel.classList.add('hidden');
+          if (btn) {
+            btn.classList.remove('text-white');
+            btn.classList.add('text-gray-400');
+          }
+        }
+      });
+    }
+
+    function toggleSettingOption(optKey) {
+      if (optKey === 'ramOpt') {
+        const ramCheckbox = document.getElementById('toggle-ram-opt');
+        settingsState.ramOpt = ramCheckbox ? ramCheckbox.checked : !settingsState.ramOpt;
+        localStorage.setItem('stash_ram_opt', settingsState.ramOpt);
+      } else if (optKey === 'ultOpt') {
+        const ultCheckbox = document.getElementById('toggle-ult-opt');
+        settingsState.ultOpt = ultCheckbox ? ultCheckbox.checked : !settingsState.ultOpt;
+        localStorage.setItem('stash_ult_opt', settingsState.ultOpt);
+      }
+    }
+
+    function setSiteTheme(themeKey, save = true) {
+      if (!themesMap[themeKey]) return;
+      settingsState.theme = themeKey;
+      if (save) localStorage.setItem('stash_theme', themeKey);
+
+      const themeData = themesMap[themeKey];
+      document.documentElement.style.setProperty('--bg-color', themeData.bg);
+      document.body.style.backgroundColor = themeData.bg;
+
+      document.querySelectorAll('.theme-circle').forEach(function(el) {
+        el.classList.remove('active-theme');
+      });
+
+      const activeCircle = document.getElementById(`theme-circle-${themeKey}`);
+      if (activeCircle) activeCircle.classList.add('active-theme');
+    }
+
+    function setTabIcon(url, save = true) {
+      settingsState.tabIcon = url;
+      if (save) localStorage.setItem('stash_tab_icon', url);
+      const favicon = document.getElementById('site-favicon');
+      if (favicon) favicon.href = url;
+    }
+
+    function saveTabName() {
+      const input = document.getElementById('tab-name-input');
+      if (!input || !input.value.trim()) return;
+      const val = input.value.trim();
+      settingsState.tabName = val;
+      localStorage.setItem('stash_tab_name', val);
+      const tabTitle = document.getElementById('site-tab-title');
+      if (tabTitle) tabTitle.textContent = val;
+    }
+
+    function handleHashRouter() {
+      const hash = window.location.hash.replace('#', '') || 'home';
+      
+      if (hash.startsWith('app/')) {
+        const appId = hash.split('/')[1];
+        openAppDetails(appId, false);
+      } else if (hash.startsWith('play/')) {
+        const appId = hash.split('/')[1];
+        const app = storeApps.find(function(a) { return String(a.id) === String(appId); });
+        if (app) {
+          currentDetailedApp = app;
+          launchAppPlayer(false);
+        } else {
+          showView('home-page-view');
+        }
+      } else if (hash.startsWith('category/')) {
+        const categoryName = decodeURIComponent(hash.split('/')[1]);
+        setCategory(categoryName, null, false);
+      } else if (hash.startsWith('search/')) {
+        const query = decodeURIComponent(hash.split('/')[1]);
+        executeSearch(query, false);
+      } else if (hash === 'settings') {
+        showView('settings-page-view');
+      } else {
+        showView('home-page-view');
+      }
+    }
+
+    function showView(viewId) {
+      const views = ['home-page-view', 'search-page-view', 'app-details-view', 'app-player-view', 'settings-page-view'];
+      const storeNavbar = document.getElementById('navbar');
+      const mobileDock = document.querySelector('.sm\\:hidden.fixed.bottom-4');
+
+      views.forEach(function(id) {
+        const el = document.getElementById(id);
+        if (el) {
+          if (id === viewId) el.classList.remove('hidden');
+          else el.classList.add('hidden');
+        }
+      });
+
+      if (viewId === 'app-player-view') {
+        if (storeNavbar) storeNavbar.classList.add('hidden');
+        if (mobileDock) mobileDock.classList.add('hidden');
+      } else {
+        if (storeNavbar) storeNavbar.classList.remove('hidden');
+        if (mobileDock) mobileDock.classList.remove('hidden');
+        window.scrollTo({ top: 0, behavior: 'instant' });
+      }
+    }
+
+    function dismissLoader() {
+      document.body.style.overflow = '';
+      const overlay = document.getElementById('startup-overlay');
+      if (overlay) {
+        overlay.classList.add('opacity-0', 'pointer-events-none');
+        setTimeout(function() { overlay.remove(); }, 300);
+      }
+    }
+
+    async function initApp() {
+      startPlaytimeCounter();
+      loadSavedSettings();
+
+      if (supabaseClient) {
+        try {
+          const res = await supabaseClient.from('apps').select('*');
+          if (!res.error && res.data) storeApps = res.data;
+        } catch (err) {
+          console.error('Data fetch error:', err);
+        }
+      }
+      currentSortedApps = [...storeApps];
+      renderServingHotNow();
+      handleSortChange('alphabetical');
+      initSlideshowDots();
+      handleHashRouter();
+    }
+
+    function generateAppCardHTML(app) {
+      return `
+        <div onclick="openAppDetails('${app.id}')" class="group umbrel-card flex items-center gap-3 sm:gap-4 p-3 sm:p-3.5 rounded-[20px] sm:rounded-[24px] cursor-pointer hover:scale-[1.01] active:scale-[0.98] transition-all duration-200">
+          <div class="w-14 h-14 sm:w-16 sm:h-16 md:w-20 md:h-20 rounded-[18px] sm:rounded-[22px] overflow-hidden shrink-0 transition-transform duration-300 group-hover:scale-105 shadow-lg bg-white/5 relative">
+            <img src="${app.img || ''}" loading="lazy" class="w-full h-full object-cover" alt="${app.name || 'App'}" />
+          </div>
+          <div class="flex flex-col justify-center min-w-0 flex-1">
+            <div class="flex items-center gap-2">
+              <h3 class="font-bold text-xs sm:text-sm md:text-base text-white truncate group-hover:text-purple-300 transition-colors">${app.name || 'Untitled App'}</h3>
+            </div>
+            <p class="text-[10px] sm:text-[11px] md:text-xs text-gray-300 font-normal mt-1 leading-snug line-clamp-2">${app.description || ''}</p>
+          </div>
+        </div>
+      `;
+    }
+
+    function setCategory(cat, element, updateHash = true) {
+      if (updateHash) window.location.hash = `category/${encodeURIComponent(cat)}`;
+
+      document.querySelectorAll('.tab-btn').forEach(function(btn) {
+        if (btn.textContent.toLowerCase().includes(cat.toLowerCase())) {
+          btn.classList.remove('inactive');
+          btn.classList.add('active');
+        } else {
+          btn.classList.add('inactive');
+          btn.classList.remove('active');
+        }
+      });
+
+      const banner = document.getElementById('hero-banner-section');
+      const slideshow = document.getElementById('slideshow-section');
+      const hotNow = document.getElementById('serving-hot-section');
+      const grid = document.getElementById('all-apps-grid');
+      const categoryLoader = document.getElementById('category-loader');
+
+      if (grid) grid.classList.add('hidden');
+      if (categoryLoader) categoryLoader.classList.remove('hidden');
+
+      showView('home-page-view');
+
+      setTimeout(function() {
+        if (cat === 'All') {
+          if (banner) banner.classList.remove('hidden');
+          if (slideshow) slideshow.classList.remove('hidden');
+          if (hotNow) hotNow.classList.remove('hidden');
+        } else {
+          if (banner) banner.classList.add('hidden');
+          if (slideshow) slideshow.classList.add('hidden');
+          if (hotNow) hotNow.classList.add('hidden');
+        }
+
+        currentSortedApps = cat === 'All' ? [...storeApps] : storeApps.filter(function(a) { return a.category && a.category.toLowerCase().includes(cat.toLowerCase()); });
+        const titleEl = document.getElementById('home-grid-title');
+        if (titleEl) titleEl.innerText = cat === 'All' ? 'All apps' : `${cat} Apps`;
+        displayedCount = 10;
+        
+        if (categoryLoader) categoryLoader.classList.add('hidden');
+        if (grid) grid.classList.remove('hidden');
+        renderAllAppsGrid();
+      }, 300);
+    }
+
+    function renderServingHotNow() {
+      const grid = document.getElementById('serving-hot-grid');
+      if (!grid) return;
+      if (storeApps.length === 0) {
+        grid.innerHTML = '<p class="text-xs text-gray-500 col-span-full py-4 text-center">No apps currently available.</p>';
+        return;
+      }
+      const top7 = [...storeApps].sort(function(a, b) { return (b.downloads || 0) - (a.downloads || 0); }).slice(0, 7);
+      grid.innerHTML = top7.map(function(app) {
+        return `
+          <div onclick="openAppDetails('${app.id}')" class="flex flex-col items-center cursor-pointer group">
+            <div class="w-full aspect-square rounded-[18px] sm:rounded-[24px] overflow-hidden shrink-0 shadow-md group-hover:scale-105 transition-transform duration-200 bg-white/5">
+              <img src="${app.img || ''}" loading="lazy" class="w-full h-full object-cover" alt="${app.name || ''}">
+            </div>
+            <div class="mt-2 text-center w-full px-1">
+              <h3 class="font-bold text-[11px] sm:text-xs md:text-sm text-white truncate group-hover:text-purple-300 transition-colors">${app.name || ''}</h3>
+            </div>
+          </div>
+        `;
+      }).join('');
+    }
+
+    function renderAllAppsGrid() {
+      const grid = document.getElementById('all-apps-grid');
+      const endText = document.getElementById('end-feed-text');
+      if (!grid) return;
+      if (currentSortedApps.length === 0) {
+        grid.innerHTML = '<p class="text-xs text-gray-500 col-span-full py-8 text-center">No apps found for this category.</p>';
+        if (endText) endText.classList.add('hidden');
+        return;
+      }
+      grid.innerHTML = currentSortedApps.slice(0, displayedCount).map(generateAppCardHTML).join('');
+      if (endText) {
+        if (displayedCount >= currentSortedApps.length) endText.classList.remove('hidden');
+        else endText.classList.add('hidden');
+      }
+    }
+
+    function handleSortChange(sortType) {
+      currentSortedApps = [...storeApps];
+      if (sortType === 'alphabetical') {
+        currentSortedApps.sort(function(a, b) { return (a.name || '').localeCompare(b.name || ''); });
+      } else if (sortType === 'downloads') {
+        currentSortedApps.sort(function(a, b) { return (b.downloads || 0) - (a.downloads || 0); });
+      } else if (sortType === 'likes') {
+        currentSortedApps.sort(function(a, b) { return (b.likes || 0) - (a.likes || 0); });
+      } else if (sortType === 'newest') {
+        currentSortedApps.sort(function(a, b) { return new Date(b.created_at || 0) - new Date(a.created_at || 0); });
+      }
+      displayedCount = 10;
+      renderAllAppsGrid();
+    }
+
+    window.addEventListener('scroll', function() {
+      const navbar = document.getElementById('navbar');
+      const topNavRow = document.getElementById('top-nav-row');
+      const heroImg = document.getElementById('hero-banner-img');
+
+      if (window.scrollY > 20) {
+        if (topNavRow) {
+          topNavRow.style.maxHeight = '0px';
+          topNavRow.style.opacity = '0';
+          topNavRow.style.pointerEvents = 'none';
+          topNavRow.style.margin = '0';
+        }
+        if (navbar) {
+          navbar.classList.remove('nav-at-top');
+          navbar.classList.add('nav-scrolled');
+        }
+      } else {
+        if (topNavRow) {
+          topNavRow.style.maxHeight = '64px';
+          topNavRow.style.opacity = '1';
+          topNavRow.style.pointerEvents = 'auto';
+          topNavRow.style.margin = '';
+        }
+        if (navbar) {
+          navbar.classList.remove('nav-scrolled');
+          navbar.classList.add('nav-at-top');
+        }
+      }
+
+      if (heroImg && document.getElementById('home-page-view') && !document.getElementById('home-page-view').classList.contains('hidden')) {
+        heroImg.style.transform = `scale(${Math.max(1.0, 1.15 - (window.scrollY / 1200))})`;
+      }
+
+      const homeView = document.getElementById('home-page-view');
+      if (homeView && !homeView.classList.contains('hidden')) {
+        if ((window.innerHeight + window.scrollY) >= document.body.offsetHeight - 220) {
+          if (displayedCount < currentSortedApps.length) {
+            displayedCount += 10;
+            renderAllAppsGrid();
+          }
+        }
+      }
+    });
+
+    function initSlideshowDots() {
+      const track = document.getElementById('slideshow-track');
+      const dotsContainer = document.getElementById('dots-container');
+      if (!track || !dotsContainer) return;
+      const cards = track.querySelectorAll('.carousel-card');
+      if (cards.length > 0) {
+        dotsContainer.innerHTML = Array.from(cards).map(function(_, i) {
+          return `
+            <button onclick="manualSlideSelect(${i})" class="slide-dot-btn relative h-2 sm:h-2.5 rounded-full bg-white/20 overflow-hidden transition-all duration-300 cursor-pointer ${i === 0 ? 'w-8 sm:w-10 active-dot' : 'w-2 sm:w-2.5'}">
+              <div class="progress-fill absolute inset-y-0 left-0 bg-white rounded-full w-0"></div>
+            </button>
+          `;
+        }).join('');
+      }
+      resetSlideTimer();
+    }
+
+    function resetSlideTimer() {
+      clearInterval(slideTimer);
+      const activeFill = document.querySelector('.slide-dot-btn.active-dot .progress-fill');
+      if (activeFill) {
+        activeFill.style.transition = 'none';
+        activeFill.style.width = '0%';
+        setTimeout(function() {
+          activeFill.style.transition = `width ${SLIDE_DURATION}ms linear`;
+          activeFill.style.width = '100%';
+        }, 50);
+      }
+      slideTimer = setInterval(nextSlide, SLIDE_DURATION);
+    }
+
+    function scrollToSlide(index) {
+      const track = document.getElementById('slideshow-track');
+      if (!track) return;
+      const cards = track.querySelectorAll('.carousel-card');
+      if (!cards.length) return;
+      currentSlideIndex = (index + cards.length) % cards.length;
+      track.scrollTo({ left: cards[currentSlideIndex].offsetLeft - track.offsetLeft, behavior: 'smooth' });
+      document.querySelectorAll('.slide-dot-btn').forEach(function(dot, idx) {
+        const fill = dot.querySelector('.progress-fill');
+        if (idx === currentSlideIndex) {
+          dot.className = 'slide-dot-btn active-dot relative h-2 sm:h-2.5 rounded-full bg-white/20 overflow-hidden transition-all duration-300 cursor-pointer w-8 sm:w-10';
+          if (fill) fill.style.width = '0%';
+        } else {
+          dot.className = 'slide-dot-btn relative h-2 sm:h-2.5 rounded-full bg-white/20 overflow-hidden transition-all duration-300 cursor-pointer w-2 sm:w-2.5';
+          if (fill) fill.style.width = '0%';
+        }
+      });
+    }
+
+    function manualSlideSelect(i) { scrollToSlide(i); resetSlideTimer(); }
+    function nextSlide() { scrollToSlide(currentSlideIndex + 1); resetSlideTimer(); }
+    function prevSlide() { scrollToSlide(currentSlideIndex - 1); resetSlideTimer(); }
+
+    function calculateAppSearchScore(app, cleanQuery) {
+      if (!cleanQuery) return 0;
+      let score = 0;
+      const name = (app.name || '').toLowerCase();
+      const cat = (app.category || '').toLowerCase();
+      const desc = (app.description || '').toLowerCase();
+      const dev = (app.developer || '').toLowerCase();
+
+      if (name === cleanQuery) score += 100;
+      else if (name.startsWith(cleanQuery)) score += 60;
+      else if (name.includes(cleanQuery)) score += 40;
+
+      if (cat.includes(cleanQuery)) score += 30;
+
+      const tokens = cleanQuery.split(/\s+/);
+      tokens.forEach(token => {
+        if (token.length > 1) {
+          if (name.includes(token)) score += 15;
+          if (cat.includes(token)) score += 10;
+          if (dev.includes(token)) score += 8;
+          if (desc.includes(token)) score += 5;
+        }
+      });
+
+      return score;
+    }
+
+    function performAdvancedSearch(query) {
+      const clean = query.toLowerCase().trim();
+      if (!clean) return [];
+
+      const scoredApps = storeApps.map(function(app) {
+        return { app: app, score: calculateAppSearchScore(app, clean) };
+      }).filter(function(item) { return item.score > 0; });
+
+      scoredApps.sort(function(a, b) { return b.score - a.score; });
+      return scoredApps.map(function(item) { return item.app; });
+    }
+
+    function onSearchInputChange(value) {
+      const desktopClear = document.getElementById('search-clear-btn');
+      const mobileClear = document.getElementById('mobile-search-clear-btn');
+
+      if (value.trim().length > 0) {
+        if (desktopClear) desktopClear.classList.remove('hidden');
+        if (mobileClear) mobileClear.classList.remove('hidden');
+        handleSearchSuggestions(value);
+      } else {
+        if (desktopClear) desktopClear.classList.add('hidden');
+        if (mobileClear) mobileClear.classList.add('hidden');
+        hideSearchSuggestions();
+      }
+    }
+
+    function clearSearchInput() {
+      const desktopInput = document.getElementById('search-input');
+      const mobileInput = document.getElementById('mobile-search-input');
+      const desktopClear = document.getElementById('search-clear-btn');
+      const mobileClear = document.getElementById('mobile-search-clear-btn');
+
+      if (desktopInput) desktopInput.value = '';
+      if (mobileInput) mobileInput.value = '';
+      if (desktopClear) desktopClear.classList.add('hidden');
+      if (mobileClear) mobileClear.classList.add('hidden');
+      hideSearchSuggestions();
+    }
+
+    function handleSearchSuggestions(query) {
+      const popup = document.getElementById('search-suggestions');
+      if (!popup) return;
+
+      const matches = performAdvancedSearch(query).slice(0, 5);
+
+      if (matches.length === 0) {
+        popup.classList.add('hidden');
+        popup.innerHTML = '';
+        return;
+      }
+      popup.innerHTML = matches.map(function(app) {
+        return `
+          <div onclick="openAppDetails('${app.id}'); hideSearchSuggestions();" class="flex items-center gap-3 p-2 hover:bg-white/10 rounded-xl cursor-pointer transition-colors">
+            <img src="${app.img || ''}" loading="lazy" class="w-8 h-8 rounded-lg object-cover bg-white/5 shrink-0" />
+            <div class="min-w-0 flex-1">
+              <h4 class="text-xs font-bold text-white truncate">${app.name || ''}</h4>
+            </div>
+          </div>
+        `;
+      }).join('');
+      popup.classList.remove('hidden');
+    }
+
+    function hideSearchSuggestions() {
+      const popup = document.getElementById('search-suggestions');
+      if (popup) popup.classList.add('hidden');
+    }
+
+    function handleSearch(e) {
+      if (e) e.preventDefault();
+      const desktopInput = document.getElementById('search-input');
+      const mobileInput = document.getElementById('mobile-search-input');
+      const query = ((desktopInput && desktopInput.value) || (mobileInput && mobileInput.value) || '').toLowerCase().trim();
+      if (!query) return;
+      executeSearch(query, true);
+    }
+
+    function executeSearch(query, updateHash = true) {
+      hideSearchSuggestions();
+      if (updateHash) window.location.hash = `search/${encodeURIComponent(query)}`;
+
+      const queryDisplay = document.getElementById('search-query-display');
+      if (queryDisplay) queryDisplay.innerText = query;
+
+      const grid = document.getElementById('search-results-grid');
+      const emptyState = document.getElementById('search-empty-state');
+      const loader = document.getElementById('search-loader');
+
+      if (grid) grid.classList.add('hidden');
+      if (emptyState) emptyState.classList.add('hidden');
+      if (loader) loader.classList.remove('hidden');
+
+      showView('search-page-view');
+
+      setTimeout(function() {
+        const results = performAdvancedSearch(query);
+        if (loader) loader.classList.add('hidden');
+
+        if (results.length > 0) {
+          if (grid) {
+            grid.innerHTML = results.map(generateAppCardHTML).join('');
+            grid.classList.remove('hidden');
+          }
+          if (emptyState) emptyState.classList.add('hidden');
+        } else {
+          if (grid) {
+            grid.innerHTML = '';
+            grid.classList.add('hidden');
+          }
+          if (emptyState) emptyState.classList.remove('hidden');
+        }
+      }, 300);
+    }
+
+    async function openAppDetails(appId, updateHash = true) {
+      const app = storeApps.find(function(a) { return String(a.id) === String(appId); });
+      if (!app) return;
+      currentDetailedApp = app;
+
+      if (updateHash) window.location.hash = `app/${app.id}`;
+
+      const detailImg = document.getElementById('detail-app-img');
+      if (detailImg) detailImg.src = app.img || '';
+      const detailTitle = document.getElementById('detail-app-title');
+      if (detailTitle) detailTitle.textContent = app.name || '';
+      
+      const statDl = document.getElementById('detail-stat-downloads');
+      if (statDl) statDl.textContent = app.downloads !== undefined ? Number(app.downloads).toLocaleString() : '—';
+      const statSize = document.getElementById('detail-stat-filesize');
+      if (statSize) statSize.textContent = app.file_size || '—';
+      const statCat = document.getElementById('detail-stat-category');
+      if (statCat) statCat.textContent = app.category || '—';
+      const statDev = document.getElementById('detail-stat-developer');
+      if (statDev) statDev.textContent = app.developer || '—';
+      const statSub = document.getElementById('detail-stat-submittedby');
+      if (statSub) statSub.textContent = app.submitted_by || '—';
+
+      const descContent = document.getElementById('detail-desc-content');
+      const descWrapper = document.getElementById('detail-desc-wrapper');
+      const descBtn = document.getElementById('detail-desc-btn');
+      if (descContent && descWrapper && descBtn) {
+        descContent.innerHTML = app.description || '';
+        descWrapper.classList.add('desc-12-lines');
+        descBtn.textContent = 'Read more';
+        setTimeout(function() {
+          if (descContent.scrollHeight > descWrapper.clientHeight) {
+            descBtn.classList.remove('hidden');
+          } else {
+            descBtn.classList.add('hidden');
+            descWrapper.classList.remove('desc-12-lines');
+          }
+        }, 60);
+      }
+
+      const tlContainer = document.getElementById('versions-timeline-container');
+      if (tlContainer) {
+        tlContainer.innerHTML = '<div class="absolute left-2.5 top-3 bottom-3 w-[2px] bg-white/10 pointer-events-none"></div>';
+        let versions = [];
+        if (supabaseClient) {
+          try {
+            const res = await supabaseClient.from('app_versions').select('*').eq('app_id', app.id).order('release_date', { ascending: false });
+            if (res.data && res.data.length > 0) {
+
+              const seenVersions = new Set();
+              versions = res.data.filter(v => {
+                const key = v.version_name || v.id;
+                if (seenVersions.has(key)) return false;
+                seenVersions.add(key);
+                return true;
+              });
+            }
+          } catch (e) {}
+        }
+
+        if (versions.length > 0) {
+          versions.forEach(function(ver, index) {
+            const isLatest = index === 0;
+            const dot = isLatest ? `<div class="absolute -left-[23px] top-1.5 flex items-center justify-center">
+              <span class="animate-ping absolute inline-flex h-3.5 w-3.5 rounded-full bg-white opacity-75"></span>
+              <span class="relative inline-flex rounded-full h-2.5 w-2.5 bg-white shadow-[0_0_12px_#ffffff]"></span>
+            </div>` : `<div class="absolute -left-[20px] top-1.5 h-2 w-2 rounded-full bg-white/30"></div>`;
+
+            tlContainer.innerHTML += `
+              <div class="relative transition-all">
+                ${dot}
+                <div class="flex items-center justify-between">
+                  <button onclick="toggleVersionNotes('ver-${ver.id || index}')" class="font-bold text-base text-white hover:text-purple-300 transition-colors cursor-pointer text-left">
+                    ${ver.version_name || ''}
+                  </button>
+                  <span class="text-xs text-gray-400 font-medium">${ver.release_date ? new Date(ver.release_date).toLocaleDateString(undefined, {month:'short', year:'numeric'}) : ''}</span>
+                </div>
+                <div id="notes-ver-${ver.id || index}" class="mt-2 text-xs text-gray-300 font-normal leading-relaxed hidden">
+                  ${ver.changelog || ''}
+                </div>
+              </div>
+            `;
+          });
+        } else {
+          tlContainer.innerHTML = '';
+        }
+      }
+
+      const relatedGrid = document.getElementById('related-apps-grid');
+      if (relatedGrid) {
+        const relatedApps = storeApps.filter(function(x) { return x.category === app.category && String(x.id) !== String(app.id); }).slice(0, 3);
+        if (relatedApps.length > 0) {
+          relatedGrid.innerHTML = relatedApps.map(generateAppCardHTML).join('');
+        } else {
+          relatedGrid.innerHTML = '<p class="text-xs text-gray-500 w-full col-span-full">No related apps found.</p>';
+        }
+      }
+
+      showView('app-details-view');
+    }
+
+    async function launchAppPlayer(updateHash = true) {
+      if (!currentDetailedApp) return;
+
+      if (updateHash) window.location.hash = `play/${currentDetailedApp.id}`;
+
+      const playerTitle = document.getElementById('player-app-title');
+      const playerIframe = document.getElementById('player-iframe');
+      const loaderOverlay = document.getElementById('player-loader-overlay');
+      const loaderTip = document.getElementById('player-loader-tip');
+
+      if (playerTitle) playerTitle.textContent = currentDetailedApp.name || 'App Player';
+
+      const randomTip = loadingTips[Math.floor(Math.random() * loadingTips.length)];
+      if (loaderTip) loaderTip.textContent = randomTip;
+
+      if (loaderOverlay) {
+        loaderOverlay.classList.remove('hidden');
+        loaderOverlay.classList.remove('opacity-0', 'pointer-events-none');
+      }
+
+      if (playerIframe) {
+        playerIframe.removeAttribute('src');
+        playerIframe.removeAttribute('srcdoc');
+
+        if (currentDetailedApp.html_code) {
+          playerIframe.srcdoc = currentDetailedApp.html_code;
+        } else if (currentDetailedApp.app_url) {
+          try {
+            const response = await fetch(currentDetailedApp.app_url);
+            if (!response.ok) throw new Error('CORS or fetch error');
+            const extractedHtml = await response.text();
+            playerIframe.srcdoc = extractedHtml;
+          } catch (err) {
+            console.warn('HTML Extractor fallback to src URL:', err);
+            playerIframe.src = currentDetailedApp.app_url;
+          }
+        } else {
+          playerIframe.srcdoc = '<html><body style="background:#000;color:#fff;display:flex;align-items:center;justify-content:center;height:100vh;font-family:sans-serif;"><h3>No executable HTML code found for this app.</h3></body></html>';
+        }
+      }
+
+      showView('app-player-view');
+
+      const fakeDelay = Math.floor(Math.random() * 800) + 1200;
+      setTimeout(function() {
+        if (loaderOverlay) {
+          loaderOverlay.classList.add('opacity-0', 'pointer-events-none');
+          setTimeout(function() { loaderOverlay.classList.add('hidden'); }, 300);
+        }
+      }, fakeDelay);
+    }
+
+    function closeAppPlayer() {
+      const playerIframe = document.getElementById('player-iframe');
+
+      if (settingsState.ramOpt && playerIframe) {
+        playerIframe.src = 'about:blank';
+        playerIframe.removeAttribute('srcdoc');
+      }
+
+      if (document.fullscreenElement) {
+        document.exitFullscreen().catch(function() {});
+      }
+      if (currentDetailedApp) {
+        window.location.hash = `app/${currentDetailedApp.id}`;
+        showView('app-details-view');
+      } else {
+        window.location.hash = 'home';
+        showView('home-page-view');
+      }
+    }
+
+    function openInNewTab() {
+      if (!currentDetailedApp || !currentDetailedApp.app_url) return;
+      window.open(currentDetailedApp.app_url, '_blank');
+    }
+
+    function downloadCurrentApp() {
+      if (!currentDetailedApp) return;
+      const downloadTarget = currentDetailedApp.download_url || currentDetailedApp.app_url;
+      if (!downloadTarget) return;
+      const a = document.createElement('a');
+      a.href = downloadTarget;
+      a.download = currentDetailedApp.name || 'download';
+      a.target = '_blank';
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+    }
+
+    function togglePlayerFullscreen() {
+      const frameContainer = document.getElementById('player-frame-container');
+      const targetElement = frameContainer || document.getElementById('app-player-view');
+      if (!targetElement) return;
+
+      if (!document.fullscreenElement) {
+        targetElement.requestFullscreen().catch(function(err) { console.error(err); });
+      } else {
+        document.exitFullscreen().catch(function(err) { console.error(err); });
+      }
+    }
+
+    function toggleDescription() {
+      const descWrapper = document.getElementById('detail-desc-wrapper');
+      const descBtn = document.getElementById('detail-desc-btn');
+      if (descWrapper && descBtn) {
+        if (descWrapper.classList.contains('desc-12-lines')) {
+          descWrapper.classList.remove('desc-12-lines');
+          descBtn.textContent = 'Read less';
+        } else {
+          descWrapper.classList.add('desc-12-lines');
+          descBtn.textContent = 'Read more';
+        }
+      }
+    }
+
+    function toggleVersionNotes(verKey) {
+      const notes = document.getElementById(`notes-${verKey}`);
+      if (notes) notes.classList.toggle('hidden');
+    }
+
+    let isMobileSearchOpen = false;
+    function toggleMobileSearch() {
+      const categoryBar = document.getElementById('mobile-category-bar');
+      const searchWrapper = document.getElementById('mobile-search-wrapper');
+      const searchIcon = document.getElementById('mobile-search-icon');
+      const searchInput = document.getElementById('mobile-search-input');
+
+      isMobileSearchOpen = !isMobileSearchOpen;
+
+      if (isMobileSearchOpen) {
+        categoryBar.classList.add('max-w-0', 'opacity-0', 'pointer-events-none');
+        searchWrapper.classList.remove('mobile-search-closed');
+        searchWrapper.classList.add('mobile-search-open');
+        if (searchIcon) searchIcon.style.transform = 'rotate(90deg)';
+        setTimeout(function() { if (searchInput) searchInput.focus(); }, 150);
+      } else {
+        categoryBar.classList.remove('max-w-0', 'opacity-0', 'pointer-events-none');
+        searchWrapper.classList.remove('mobile-search-open');
+        searchWrapper.classList.add('mobile-search-closed');
+        if (searchIcon) searchIcon.style.transform = 'rotate(0deg)';
+      }
+    }
+
+    window.addEventListener('hashchange', handleHashRouter);
+
+    if (document.readyState === 'complete' || document.readyState === 'interactive') {
+      initApp().finally(function() { setTimeout(dismissLoader, 400); });
+    } else {
+      document.addEventListener('DOMContentLoaded', function() {
+        initApp().finally(function() { setTimeout(dismissLoader, 400); });
+      });
+    }
+    setTimeout(dismissLoader, 3000);
+  </script>
+<script type="module" src="https://static.cloudflareinsights.com/beacon.min.js/vce701823e78c4301a35b7e07294d87301792088814092" integrity="sha512-UKNk8GbxkABxKcXYuLkO16EleLGUkcvJWtpSNmExE0Too3ZaFAxTscNWEc1OdAv5/BikHawapSCaiD2XCmp+Bw==" data-cf-beacon='{"version":"2024.11.0","token":"6639332d24284d4c85ebca0acc4aef67","r":1,"spa":2}' crossorigin="anonymous"></script>
+</body>
+</html>

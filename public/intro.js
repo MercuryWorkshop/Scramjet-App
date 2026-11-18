@@ -219,6 +219,7 @@
 	const hint = intro.querySelector(".intro-skip");
 	let raf = 0;
 	let titleTimer = 0;
+	let watchdog = 0;
 	let finishing = false;
 	let t0 = 0;
 	let last = 0;
@@ -653,6 +654,9 @@
 		window.removeEventListener("pointerdown", onPointerDown);
 		window.removeEventListener("pointerup", onPointerUp);
 		window.removeEventListener("keydown", onGesture);
+		window.removeEventListener("touchend", onGesture);
+		window.removeEventListener("click", onGesture);
+		clearTimeout(watchdog);
 		window.removeEventListener("resize", resize);
 		stopAudio(fast ? 0.35 : TIMING.fade / 1000);
 		if (fast) intro.classList.add("skipped");
@@ -665,12 +669,15 @@
 	function onGesture(e) {
 		if (finishing) return;
 		const escape = e.type === "keydown" && e.key === "Escape";
+		// On phones and tablets a tap always skips straight away (never gets stuck on the sound prompt)
+		const touchLike = e.type !== "keydown" && e.pointerType !== "mouse";
 		const soundAhead = elapsed() < ZOOM_END - 300;
 		if (
 			audio &&
 			!audio.stopped &&
 			!audio.unlockTried &&
 			!escape &&
+			!touchLike &&
 			soundAhead &&
 			audio.ctx.state !== "running"
 		) {
@@ -710,12 +717,23 @@
 
 	function frame(now) {
 		if (finishing) return;
-				if (!last) last = now;
+		try {
+			step(now);
+		} catch (err) {
+			// If drawing ever fails, leave the intro instead of freezing on it
+			finish(true);
+		}
+	}
+
+	function step(now) {
+		if (finishing) return;
+		if (!t0) {
+			t0 = now;
+			last = now;
+		}
+		const t = now - t0;
 		const dt = Math.min(50, now - last);
 		last = now;
-		t0 += dt;
-		const t = t0;
-
 
 		updateAudio(t);
 
@@ -744,6 +762,13 @@
 	window.addEventListener("pointerdown", onPointerDown);
 	window.addEventListener("pointerup", onPointerUp);
 	window.addEventListener("keydown", onGesture);
+	// Fallbacks for browsers that report touches oddly (a scroll gesture cancels the pointer events)
+	window.addEventListener("touchend", onGesture, { passive: true });
+	window.addEventListener("click", onGesture);
+	const skipBtn = intro.querySelector(".intro-skip-btn");
+	if (skipBtn) skipBtn.addEventListener("click", (e) => { e.stopPropagation(); finish(true); });
+	// Safety net: whatever happens, the intro is gone a few seconds after it should have ended
+	watchdog = setTimeout(() => finish(true), TIMING.galaxy + TIMING.zoom + TIMING.hold + TIMING.title + TIMING.fade + 3000);
 
 	audio = createAudio();
 	if (audio) {

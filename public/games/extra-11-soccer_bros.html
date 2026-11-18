@@ -1,0 +1,1241 @@
+<!-- Downloaded from unblockedzone. join discord.gg/v66D3fn4kD for 100+ links -->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+	<meta charset="utf-8">
+
+	<title>SOCCER BROS! | Official Site</title>
+
+	<meta name="description" content="Online multiplayer soccer! Score goals on your bros!" />
+	<meta id="viewport" name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+	<link rel="shortcut icon" type="image/png" href="./favicon.png">
+	<meta name="Keywords" content="Soccer, Play, Free, Online, Multiplayer, Games, IO, Sports, Scrolling, Friends">
+	<meta name="author" content="Blue Wizard Digital">
+
+	<meta property="og:type" content="website" />
+	<meta property="og:url" content="https://soccerbros.gg" />
+	<meta property="og:title" content="Soccer Bros" />
+	<meta property="og:description" content="Online multiplayer Soccer! Score goals on your bros!" />
+	<meta property="og:image" content="https://soccerbros.gg/kick/splash.jpg" />
+	<link rel="manifest" href="manifest.json">
+
+		<script type="text/javascript" src="https://quantil.jsdelivr.net/gh/matheveryday25/math/soccerbros/SoccerBros.js?th=102"></script>
+	<script>
+		window.addEventListener ("touchmove", function (event) { event.preventDefault (); }, { capture: false, passive: false });
+		if (typeof window.devicePixelRatio != 'undefined' && window.devicePixelRatio > 2) {
+			var meta = document.getElementById ("viewport");
+			meta.setAttribute ('content', 'width=device-width, initial-scale=' + (2 / window.devicePixelRatio) + ', user-scalable=no');
+		}
+		window.addEventListener('keydown', function(e) {
+			var tag = e.target.tagName;
+			if (tag !== 'INPUT' && tag !== 'TEXTAREA') {
+				e.preventDefault();
+			}
+		});
+		var aCo = "";
+	</script>
+
+	<style>
+		html,body { margin: 0; padding: 0; height: 100%; background: #000000; color: orange; height: 100%; width: 100%; height: 100vh; width: 100vw; margin:0; padding:0;}
+		.body::-webkit-scrollbar { /* WebKit */
+ 			width: 0px;
+		}
+		#openfl-content { background: #000000; width: 100%; height: 100%; }
+		#spinner {
+			-webkit-transform-origin: 50% 50%;
+			-moz-transform-origin: 50% 50%;
+			-o-transform-origin: 50% 50%;
+			transform-origin: 50% 50%;
+			 width: 82px;
+			 height: 81px;
+			-webkit-animation: spin1 2s infinite linear;
+			-moz-animation: spin1 2s infinite linear;
+			-o-animation: spin1 2s infinite linear;
+			-ms-animation: spin1 2s infinite linear;
+			animation: spin1 2s infinite linear;
+		}
+
+
+
+
+		/* Main content styling */
+		#more {
+			display: flex;
+			justify-content: space-between;
+			background-color: #1a1a1a;
+			padding: 40px;
+			border-top: 0px solid #444;
+			color: #fff;
+			font-family: 'Arial', sans-serif;
+		}
+
+		.info-box {
+			width: 48%;
+			background-color: #222;
+			padding: 20px;
+			border-radius: 8px;
+			box-shadow: 0 4px 8px rgba(0, 0, 0, 0.4);
+		}
+
+		h3 {
+			font-size: 24px;
+			color: #ffa500; /* Football-themed color */
+			margin-bottom: 15px;
+		}
+
+		p, b {
+			line-height: 1.6;
+			font-size: 16px;
+		}
+
+		p {
+			margin-bottom: 10px;
+		}
+
+		b {
+			color: #ffd700; /* Highlighted question color */
+		}
+
+
+		/* unvisited link */
+		a:link {
+		color: #ffd700;
+		}
+
+		/* visited link */
+		a:visited {
+		color: #ffd700;
+		}
+
+		/* mouse over link */
+		a:hover {
+		color: #ffd700;
+		}
+
+		/* selected link */
+		a:active {
+		color: #ffd700;
+		}
+
+		.notch-top-left {
+			width: 20px;
+			height: 20px;
+			background-color: var(--background-color, #1a1a1a);
+			position: absolute;
+			top: -10px;
+			left: -10px;
+			clip-path: polygon(100% 0, 0 100%, 100% 100%);
+		}
+
+		/* Footer styling */
+		footer {
+			background-color: #000;
+			padding: 20px 0;
+			text-align: center;
+			color: #ccc;
+			font-size: 14px;
+			border-top: 2px solid #444;
+			margin-top: 40px;
+			font-family: 'Arial', sans-serif;
+			border: 0;
+		}
+
+		.feedback-form {
+		position: absolute;
+		top: 50%;
+		left: 50%;
+		transform: translate(-50%, -50%);
+		width: 50vw;
+		height: 50vh;
+		background-color: #2A6DB0;
+		padding: 20px;
+		border: 4px solid #FF0000;
+		box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.5);
+		text-align: center;
+		color: #FFFFFF;
+		}
+		.feedback-form h3 {
+		font-size: 24px;
+		margin-bottom: 20px;
+		color: #FFFFFF;
+		text-shadow: 2px 2px #000000;
+		}
+		.feedback-form textarea {
+		width: calc(100% - 20px);
+		height: 50%;
+		margin-bottom: 10px;
+		padding: 10px;
+		font-size: 16px;
+		font-family: 'Courier New', Courier, monospace;
+		border: 3px solid #000000;
+		background-color: #000000; /* Black background */
+		color: #FFFFFF; /* White text */
+		resize: none;
+		box-sizing: border-box;
+		}
+		.feedback-form button {
+		width: 100%;
+		padding: 12px;
+		background-color: #FFD700; /* Yellowish background */
+		color: #000000;
+		border: 3px solid #FF0000;
+		border-radius: 0;
+		font-size: 18px;
+		cursor: pointer;
+		font-family: 'Courier New', Courier, monospace;
+		text-shadow: 1px 1px #000000;
+		}
+		.feedback-form button:hover {
+		background-color: #FFB800; /* Slightly darker yellow on hover */
+		color: #FFFFFF;
+		}
+
+  	</style>
+
+
+	<!-- Google tag (gtag.js) -->
+		<script async src="https://www.googletagmanager.com/gtag/js?id=G-5Q5VK4Y3HZ"></script>
+	<script>
+		window.dataLayer = window.dataLayer || [];
+		function gtag(){dataLayer.push(arguments);}
+		gtag('js', new Date());
+		gtag('config', "G-5Q5VK4Y3HZ", { cookie_flags: 'secure;samesite=none' });
+	</script>
+
+		<script>console.log('[ASC] Loading asc prebid script...');</script>
+		<script type="text/javascript" defer src="https://hb-bluewizard.s3.us-east-2.amazonaws.com/soccerbros.gg/asc_prebid.js"
+			onload="console.log('[ASC] asc_prebid.js LOADED successfully'); console.log('[ASC]   pbjs keys after load:', Object.keys(window.pbjs || {}));"
+			onerror="console.error('[ASC] asc_prebid.js FAILED to load!');">
+		</script>
+		<script type="text/javascript">
+			var pbjs = window.pbjs || {};
+			pbjs.que = pbjs.que || [];
+			window.pbjs = pbjs;
+			window.ascAds = true;
+			console.log('[ASC] pbjs stub created, window.ascAds=true');
+			console.log('[ASC] pbjs object keys:', Object.keys(pbjs));
+			console.log('[ASC] pbjs.que length:', pbjs.que.length);
+		</script>
+		<script>
+			// Check if asc_prebid.js loaded after defer
+			window.addEventListener('DOMContentLoaded', function() {
+				console.log('[ASC] DOMContentLoaded - checking pbjs state:');
+				console.log('[ASC]   pbjs exists:', typeof pbjs !== 'undefined');
+				console.log('[ASC]   pbjs keys:', Object.keys(window.pbjs || {}));
+				console.log('[ASC]   pbjs.refreshSlot:', typeof (window.pbjs || {}).refreshSlot);
+				console.log('[ASC]   pbjs.processAdsOnPage:', typeof (window.pbjs || {}).processAdsOnPage);
+				console.log('[ASC]   pbjs.refreshAllSlots:', typeof (window.pbjs || {}).refreshAllSlots);
+				console.log('[ASC]   pbjs.destroyAdSlot:', typeof (window.pbjs || {}).destroyAdSlot);
+				console.log('[ASC]   pbjs.destroyAllSlots:', typeof (window.pbjs || {}).destroyAllSlots);
+				console.log('[ASC]   pbjs.que length:', (window.pbjs || {}).que ? window.pbjs.que.length : 'N/A');
+			});
+			window.addEventListener('load', function() {
+				console.log('[ASC] window.load - checking pbjs state:');
+				console.log('[ASC]   pbjs keys:', Object.keys(window.pbjs || {}));
+				console.log('[ASC]   pbjs.refreshSlot:', typeof (window.pbjs || {}).refreshSlot);
+				console.log('[ASC]   pbjs.processAdsOnPage:', typeof (window.pbjs || {}).processAdsOnPage);
+				// List all ad divs and their visibility
+				var adPrefix = "soccerbros-gg";
+				var prerollId = "soccerbros_preroll";
+				var adDivIds = [prerollId, "soccerbros.gg_preroll", adPrefix+'_160x600',adPrefix+'_160x600_2',adPrefix+'_300x250',adPrefix+'_300x250_2',adPrefix+'_336x280',adPrefix+'_336x280_2',adPrefix+'_728x90',adPrefix+'_728x90_m',adPrefix+'_970x250'];
+				adDivIds.forEach(function(id) {
+					var el = document.getElementById(id);
+					console.log('[ASC]   div#' + id + ':', el ? 'exists (display:'+el.style.display+', vis:'+el.style.visibility+', size:'+el.offsetWidth+'x'+el.offsetHeight+')' : 'MISSING');
+				});
+			});
+		</script>
+	
+	<script>
+
+			var gAdBlock=false;
+		var lastUnitPlayed="none";
+		console.log('[ASC] Provider init block loaded');
+	
+
+	function SetupMSNotification()
+	{
+		console.log("notifying");
+		if(typeof $msstart !== 'undefined')
+		{
+			console.log("notifying2");
+			var id = btoa("https:\/\/soccerbros.gg\/sbros_364x180.png");
+			$msstart.scheduleNotificationAsync({title: "Unlock new bros now!",
+												description: "You are just about to unlock a new Bro! Who will it be?",
+												type: 1,
+												minDelayInSeconds: 24*60*60
+											}).then(response => {
+					console.log("notification response: "+response);
+				});
+			$msstart.scheduleNotificationAsync({title: "Dunk all over your bros!",
+											description: "New bros just waiting to be dunked on! Unlock them now!",
+											type: 1,
+											minDelayInSeconds: 24*7*60*60
+										}).then(response => {
+				console.log("notification response: "+response);
+			});
+
+  		}
+	}
+
+	var msAdID;
+	function LoadVideo()
+	{
+		if(typeof $msstart !== 'undefined')
+		{
+			$msstart.loadAdsAsync().then(adInstance => {
+    			// Use the adInstance.instanceId to make a call to showAdsAsync
+				msAdID = adInstance.instanceId;
+			});
+
+			SetupMSNotification();
+		}
+	}
+
+	function ShowVideo(theUnitName=null)
+	{
+		//Main.DoneVideoAd(true);
+		//return;//! when aip is live, remove this
+
+		console.log('SHOW_VIDEO:'+theUnitName);
+		var aUnitName = "";
+		if(typeof $msstart !== 'undefined')
+		{
+			$msstart.showAdsAsync(msAdID).then(adInstance => {
+   			 	// Use the adInstance.showAdsCompletedAsync to be notified of the completion of showing the advertisement
+				adInstance.showAdsCompletedAsync.then((val) => {
+					console.log('MS Video Ad Complete');
+					Main.DoneVideoAd();
+					window.focus();
+					window.document.getElementById('openfl-content').focus();
+					LoadVideo();
+				}).catch((err) => {
+					console.log('Ms Video Ad Error');
+					Main.DoneVideoAd();
+					window.focus();
+					window.document.getElementById('openfl-content').focus();
+					LoadVideo();
+				});
+			});
+		}
+		else if(typeof gCrazySDK !== 'undefined') {
+			gCrazySDK.addEventListener("adFinished", Main.DoneVideoAd); // reenable sound, enable ui
+			gCrazySDK.addEventListener("adError", Main.DoneVideoAd); // reenable sound, enable ui
+			gCrazySDK.requestAd();
+			console.log('CG_AD_REQUESTED');
+			SendEvent('event', 'cgvideo');
+			return;
+		}
+		else if (window.ascAds) {
+			console.log('[ASC] ShowVideo: ascAds=true, attempting preroll');
+			// Dynamically create preroll div on demand
+			var prerollDiv = ascGetOrCreateDiv("soccerbros_preroll");
+			prerollDiv.style.display = 'block';
+			prerollDiv.style.visibility = 'visible';
+			prerollDiv.style.position = 'fixed';
+			prerollDiv.style.top = '50%';
+			prerollDiv.style.left = '50%';
+			prerollDiv.style.transform = 'translate(-50%, -50%)';
+			prerollDiv.style.zIndex = '150';
+			if (typeof pbjs !== 'undefined' && typeof pbjs.processAdsOnPage === 'function') {
+				lastUnitPlayed = 'asc_preroll';
+				SendEvent('event', 'startvideo-asc_preroll');
+				console.log('[ASC] ShowVideo: calling processAdsOnPage for preroll');
+				pbjs.que.push(function() { pbjs.processAdsOnPage(); });
+
+				// Create skip button as a SEPARATE fixed element on body
+				// (processAdsOnPage replaces ad div contents, destroying any children)
+				var skipBtn = document.createElement('div');
+				skipBtn.id = 'asc-preroll-skip';
+				skipBtn.style.cssText = 'position:fixed; bottom:calc(50% - 250px); right:calc(50% - 460px); z-index:200; background:rgba(0,0,0,0.7); color:#fff; padding:8px 16px; font-family:sans-serif; font-size:14px; border-radius:4px; cursor:default; user-select:none;';
+				document.body.appendChild(skipBtn);
+
+				var countdown = 5;
+				skipBtn.textContent = 'Skip in ' + countdown + '...';
+				var countdownInterval = setInterval(function() {
+					countdown--;
+					if (countdown > 0) {
+						skipBtn.textContent = 'Skip in ' + countdown + '...';
+					} else {
+						clearInterval(countdownInterval);
+						skipBtn.textContent = 'Skip Ad \u25B6';
+						skipBtn.style.cursor = 'pointer';
+						skipBtn.style.background = 'rgba(0,0,0,0.85)';
+						skipBtn.onmouseover = function() { skipBtn.style.background = 'rgba(50,50,50,0.95)'; };
+						skipBtn.onmouseout = function() { skipBtn.style.background = 'rgba(0,0,0,0.85)'; };
+						skipBtn.onclick = function() {
+							clearInterval(countdownInterval);
+							prerollDiv.style.display = 'none';
+							prerollDiv.style.visibility = 'hidden';
+							if (skipBtn.parentNode) skipBtn.parentNode.removeChild(skipBtn);
+							Main.DoneVideoAd();
+							window.focus();
+							window.document.getElementById('openfl-content').focus();
+							console.log('[ASC] ShowVideo: preroll skipped by user');
+						};
+					}
+				}, 1000);
+			} else {
+				console.warn('[ASC] ShowVideo: pbjs.processAdsOnPage not available, skipping preroll');
+				Main.DoneVideoAd();
+				window.focus();
+				window.document.getElementById('openfl-content').focus();
+			}
+		}
+		else if (typeof adplayer === 'undefined') {
+			Main.DoneVideoAd(true);
+			SendEvent('event', 'video_adblocked');
+			console.log('VIDEO_ADBLOCKED');
+
+		} else {
+			var aStr = 'preroll';
+			//if(theUnitName != null) aStr = theUnitName;
+			lastUnitPlayed = aStr;
+			SendEvent('event', 'startvideo-'+aStr);
+
+			aiptag.cmd.player.push(function() { adplayer.startVideoAd(theUnitName); });
+		}
+	}
+	</script>
+
+	<!-- Firebase App (the core Firebase SDK) -->
+	<script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+	<!-- Firebase Authentication -->
+	<script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
+	<!-- Firebase Firestore (Database) -->
+	<script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"></script>
+
+	<script>
+		// Your web app's Firebase configuration
+  		const firebaseConfig = {
+			apiKey: "AIzaSyA4vm8qzAsl93QB7bf-fR28uJ4m2C68Z1I",
+			authDomain: "soccer-bros-6a027.firebaseapp.com",
+			projectId: "soccer-bros-6a027",
+			storageBucket: "soccer-bros-6a027.appspot.com",
+			messagingSenderId: "348784683755",
+			appId: "1:348784683755:web:a8ceb7a303bdd5c2646cae"  		};
+
+		// Initialize Firebase
+		firebase.initializeApp(firebaseConfig);
+		const auth = firebase.auth();
+		const db = firebase.firestore();
+		var userData = "";
+
+		function triggerSignIn()
+		{
+			var provider = new firebase.auth.GoogleAuthProvider();
+			auth.signInWithPopup(provider);
+		}
+
+				// Save game data function
+		function saveGameData(gameDataValue) {
+			console.log('saving gameData_kickbros:' + gameDataValue);
+			var userId = auth.currentUser.uid;
+			userData = gameDataValue;
+			db.collection('users').doc(userId).set({
+				gameData_kickbros: gameDataValue
+			}).then(function() {
+				console.log('Game data saved');
+			}).catch(function(error) {
+				console.error('Error saving game data:', error);
+			});
+		}
+
+		// Load game data function
+		function loadGameData() { return userData; }
+
+		function loadGameDataAsync() {
+			var userId = auth.currentUser.uid;
+			db.collection('users').doc(userId).get().then(function(doc) {
+				if (doc.exists) {
+					userData = doc.data().gameData_kickbros;
+					//Main.LoadGlobals();
+					console.log('Game data:', doc.data().gameData_kickbros);
+					if (typeof Main != "undefined")
+					{
+						Main.LoadDataComplete();
+					}
+				// Use the game data in your game
+				} else {
+				console.log('No such document!');
+				}
+			}).catch(function(error) {
+				console.error('Error loading game data:', error);
+			});
+		}
+
+   // Firebase auth state observer
+   		auth.onAuthStateChanged(function(user) {
+      		if (user) {
+				loadGameDataAsync();
+				SendEvent('event', 'sign_in');
+				console.log('user signed in');
+			} else {
+				console.log('No user signed in');
+				SendEvent('event', 'sign_out');
+			}
+    	});
+
+		function signOut()
+		{
+			auth.signOut().then(() => {
+				Main.SignOutComplete();
+				console.log('signed out');
+			});
+		}
+
+		function isUserLoggedIn() {
+			return auth.currentUser !== null;
+		}
+	</script>
+
+	
+</head>
+<body style="overflow:hidden;">
+	<noscript>Enable JavaScript bro!</noscript>
+	<script>
+
+		//alert("Globals:"+localStorage.getItem("/:Globals").length);
+		/////////////////////////////////////////////////////////////////////
+		////////////////////////////////////////////////////////////////////
+		var url = window.location.href;
+		if(url.includes("www."))
+		{
+				url = url.replace("www.","");
+
+				var f = document.createElement('form');
+				f.action=url;
+				f.method='POST';
+				var i=document.createElement('input');
+				i.type='hidden';
+				i.name='FGlobals';
+				i.value=localStorage.getItem("/:Globals");
+				f.appendChild(i);
+
+				document.body.appendChild(f);
+				f.submit();
+		}
+		else
+		{
+				var aPost = "";
+								var aStorage = localStorage.getItem("/:Globals");
+				var aLen = 0;
+				if(aStorage != null && aStorage.length > 0)
+				{
+						aLen = aStorage.length;
+				}
+				if(aPost.length > aLen) localStorage.setItem("/:Globals", aPost);
+				if(aPost.length > 0 && aPost.length == aLen) localStorage.setItem("/:Globals", aPost);
+		}
+		/////////////////////////////////////////////////////////////////////
+		////////////////////////////////////////////////////////////////////
+
+	</script>
+
+    <div id="loading" style="position: absolute; z-index: 15; top: 60%; left: 50%; transform: translate(-50%, 0); background: black;">
+			<center><img src="https://quantil.jsdelivr.net/gh/matheveryday25/math/soccerbros/assets/loading4.png"><br/>
+			<img src="https://quantil.jsdelivr.net/gh/matheveryday25/math/soccerbros/assets/fbro.png">
+			<img src="https://quantil.jsdelivr.net/gh/matheveryday25/math/soccerbros/assets/bbbro.png">
+			<img src="https://quantil.jsdelivr.net/gh/matheveryday25/math/soccerbros/assets/sbro.png">
+			<img src="https://quantil.jsdelivr.net/gh/matheveryday25/math/soccerbros/assets/wbro.png">
+			<img src="https://quantil.jsdelivr.net/gh/matheveryday25/math/soccerbros/assets/kbro.png">
+			<img src="https://quantil.jsdelivr.net/gh/matheveryday25/math/soccerbros/assets/bbro.png">
+			</center>
+	</div>
+	<!-- <div id="logo" style="position: fixed; bottom: 10px; right: 10px; z-index: 1000;"><img src="assets/bw_logo.gif"></div> -->
+
+
+	<div id="game2" style="width: 100%; height: 100%; ">
+		<div id="openfl-content"  onblur="window.focus();"
+												style="width: 100%; float:left;"
+									>
+			<script type="text/javascript">
+				lime.embed ("SoccerBros", "openfl-content", 0, 0, { parameters: {} });
+			</script>
+		</div>
+		<div id="preroll" style="width: 960px; height: 540px; display: none; position: absolute; top: 50%; left: 50%; z-index: 100; transform: translate(-50%, -50%);">
+		</div>
+
+		
+
+		<div class="feedback-form" id="feedbackForm" style="display:none;">
+			<h3>Report a Bug/Glitch</h3>
+			<textarea id="feedback" placeholder="Describe the bug or glitch with a lot of details, like how to make the glitch happen and anything else whether it seems useful or not..."></textarea>
+			<textarea id="email" placeholder="Email address (optional)" style="height: 50px;"></textarea>
+			<textarea id="discord" placeholder="Discord ID (optional)" style="height: 50px;"></textarea>
+			<button onclick="sendFeedback()" id="submitBtn">Submit Feedback</button>
+			<br/>
+			<br/>
+			<button onclick="document.getElementById('feedbackForm').style.display='none'" id="submitBtn">Cancel</button>
+			<p id="responseMsg"></p>
+		</div>
+		<script>
+			//                                                                                                                          var doFeedback = true;
+			function getOSFromUserAgent() {
+				const userAgent = navigator.userAgent;
+				const platform = navigator.platform;
+
+				// Check for common platforms and OS
+				if (/Windows NT/i.test(userAgent)) return 'Windows';
+				if (/Mac OS X/i.test(userAgent)) return 'macOS';
+				if (/Linux/i.test(userAgent)) return 'Linux';
+				if (/Android/i.test(userAgent)) return 'Android';
+				if (/iPhone|iPad|iPod/i.test(userAgent)) return 'iOS';
+				if (/CrOS/i.test(userAgent)) return 'Chrome OS';
+
+				// Default to the platform if no match
+				return platform || 'Unknown';
+			}
+			async function sendFeedback() {
+				var feedback = '*'+document.getElementById("feedback").value.trim()+'*';
+				var email = document.getElementById("email").value.trim();
+				var discord = document.getElementById("discord").value.trim();
+				const screenResolution = `${window.screen.width}x${window.screen.height}`;
+				const windowResolution = `${window.innerWidth}x${window.innerHeight}`;
+				var aOS = getOSFromUserAgent();
+				var aCity = "Unknown";
+                const hostname = window.location.hostname;
+				const gpu = (() => {
+					const canvas = document.createElement('canvas');
+					const gl = canvas.getContext('webgl') || canvas.getContext('experimental-webgl');
+					const debugInfo = gl?.getExtension('WEBGL_debug_renderer_info');
+					const gpuInfo = debugInfo ? gl.getParameter(debugInfo.UNMASKED_RENDERER_WEBGL) : 'Unknown';
+
+					// Cleanup
+					canvas.remove(); // Remove the canvas from the DOM (if it was added)
+					return gpuInfo;
+				})();
+
+				feedback = feedback + '\nDomain: ' + hostname;
+				feedback = feedback + ', OS: ' + aOS;
+				feedback = feedback + ', Screen res: ' + screenResolution;
+				feedback = feedback + ', Window res: ' + windowResolution;
+				feedback = feedback + ', GPU: ' + gpu;
+				feedback = feedback + ', City: ' + aCity;
+				feedback = feedback + ', Email: ' + email;
+				feedback = feedback + ', Discord: ' + discord;
+
+				const responseMsg = document.getElementById("responseMsg");
+				const submitBtn = document.getElementById("submitBtn");
+
+				if (!feedback) {
+				alert("Please enter feedback.");
+				return;
+				}
+
+				submitBtn.disabled = true;
+				responseMsg.textContent = "Submitting...";
+
+				try {
+				const response = await fetch("sendFeedback.php", {
+					method: "POST",
+					headers: {
+					"Content-Type": "application/x-www-form-urlencoded"
+					},
+					body: new URLSearchParams({
+					feedback: feedback
+					})
+				});
+
+				const result = await response.json();
+
+				if (result.status === "success") {
+					document.getElementById("feedbackForm").style.display = "none"; // Close the feedback form
+					alert(result.message); // Show success message
+				} else {
+					document.getElementById("feedbackForm").style.display = "none"; // Close the feedback form
+					alert(result.message); // Show error message
+				}
+				} catch (error) {
+					document.getElementById("feedbackForm").style.display = "none"; // Close the feedback form
+					alert("Error submitting feedback. Please try again.");
+				}
+
+				submitBtn.disabled = false;
+			}
+		</script>
+
+
+
+	</div>
+	<br/>
+	<div tabindex="-1" id="more">
+				<div class="info-box">
+			<h3>About Soccer Bros</h3>
+			<p>Soccer Bros 2 is the sequel to the original Soccer Bros game! It&#039;s a simple, fast-paced soccer game with all kinds of crazy action! With online multiplayer gameplay and tons of futbol mayhem!</p>
+			<p>Use either the arrow keys or WASD to control your bro. Space bar will shoot, pass, and tackle!</p>
+			<br/>
+						<h3>Changelog (2/24/2026)</h3>
+						<p>Changed how player switching works.</p>
+						<p>Improved bot tackling.</p>
+						<p>Improved shots at goal.</p>
+								</div>
+		<div class="info-box">
+			<h3>FAQ</h3>
+						<b>Why isn&#039;t the game loading?</b>
+			<p>You should check your internet connection and make sure our site isn't blocked. Also, disable all ad blockers.</p>
+						<b>How do I play?</b>
+			<p>Use your arrow keys and put the ball into the net!</p>
+						<b>Which browser should I use?</b>
+			<p>You should use Chrome. It is the only browser guaranteed to work. Soccer Bros has also been tested to work on Firefox and Safari, but not guaranteed.</p>
+						<b>I&#039;m blocked, where else can I play?</b>
+			<p>Check here: <a tabindex="-1" href="https://sites.google.com/bluewizard.com/basket-bros-unblocked">Soccer Bros Unblocked</a></p>
+									<b>Are there more Bros games?</b>
+			<p>Yes! Check out <a tabindex="-1" href="https://footballbros.io">Football Bros</a>, <a tabindex="-1" href="https://baseballbros.io">Baseball Bros</a>, <a tabindex="-1" href="https://basketbros.io">Basket Bros</a>, <a tabindex="-1" href="https://karatebros.io">Karate Bros</a></p>
+					</div>
+			</div>
+	<footer tabindex="-1">
+		<div class="footer-links">
+			<a tabindex="-1" href="https://bluewizard.com">Copyright 2026 Blue Wizard Digital</a> |
+			<a tabindex="-1" href="https://bluewizard.com/terms/">Terms of Service</a> |
+			<a tabindex="-1" href="https://bluewizard.com/privacypolicy/">Privacy Policy</a>
+		</div>
+	</footer>
+	<script>
+		// New global state for ad refresh timing and one-time checks
+		var adRefreshStates = {};
+		var adPrefix = "soccerbros-gg";
+		var prerollId = "soccerbros_preroll";
+
+		function refreshTag(theTag) {
+			try {
+				aiptag.cmd.display.push(function() { aipDisplayTag.refresh(theTag); });
+				console.log('Tag refreshed successfully');
+			} catch (error) {
+				console.error('Error refreshing the tag:', error);
+			}
+		}
+
+		// ASC: slot name -> default size mapping (built from config prefix)
+		var ascSlotSizes = {};
+		ascSlotSizes[adPrefix+'_160x600'] = {w: 160, h: 600};
+		ascSlotSizes[adPrefix+'_160x600_2'] = {w: 160, h: 600};
+		ascSlotSizes[adPrefix+'_300x250'] = {w: 336, h: 280};
+		ascSlotSizes[adPrefix+'_300x250_2'] = {w: 336, h: 280};
+		ascSlotSizes[adPrefix+'_336x280'] = {w: 336, h: 600};
+		ascSlotSizes[adPrefix+'_336x280_2'] = {w: 336, h: 600};
+		ascSlotSizes[adPrefix+'_728x90'] = {w: 728, h: 90};
+		ascSlotSizes[adPrefix+'_728x90_m'] = {w: 728, h: 90};
+		ascSlotSizes[adPrefix+'_970x250'] = {w: 970, h: 250};
+		ascSlotSizes[prerollId] = {w: 960, h: 540};
+
+		// Cache of dynamically created ASC divs (keyed by slot name)
+		var ascDivCache = {};
+
+		// ASC helper: get or create a div with ot-name for a given slot
+		function ascGetOrCreateDiv(slotName) {
+			// Return cached div if it still exists in DOM
+			if (ascDivCache[slotName] && ascDivCache[slotName].parentNode) {
+				return ascDivCache[slotName];
+			}
+			var size = ascSlotSizes[slotName] || {w: 300, h: 250};
+			var div = document.createElement('div');
+			div.setAttribute('ot-name', slotName);
+			div.style.width = size.w + 'px';
+			div.style.height = size.h + 'px';
+			div.style.display = 'none';
+			div.style.visibility = 'hidden';
+			div.style.position = 'absolute';
+			div.style.zIndex = '100';
+			div.style.overflow = 'hidden';
+			div.style.top = '30px';
+			div.style.left = '30px';
+			document.getElementById('game2').appendChild(div);
+			ascDivCache[slotName] = div;
+			console.log('[ASC] Created dynamic div for slot: ' + slotName + ' (' + size.w + 'x' + size.h + ')');
+			return div;
+		}
+
+		// ASC helper: find existing div by ot-name (for ShowUnitBannerAd compatibility)
+		function ascGetDiv(divName) {
+			return ascDivCache[divName] || document.querySelector('[ot-name="' + divName + '"]');
+		}
+
+		// ASC: timer for batching processAdsOnPage calls
+		var ascProcessTimer = null;
+
+		// ASC: called from Haxe Main.ShowAd() when ascAds is true
+		function ShowAscAd(divName, theX, theY, xAlign, yAlign, doRefresh) {
+			if (/Android|webOS|iPhone|iPad|iPod|Opera Mini/i.test(navigator.userAgent)) return;
+
+			// Dynamically create the ot-name div if it doesn't exist yet
+			var aDiv = ascGetOrCreateDiv(divName);
+
+			aDiv.style.display = 'block';
+			aDiv.style.visibility = 'visible';
+
+			// Position the div (mirrors Haxe ShowAd positioning logic)
+			var contentEl = document.getElementById('openfl-content');
+			var w2 = contentEl ? contentEl.offsetWidth : window.innerWidth;
+			var h2 = window.innerHeight;
+			var aScaleX = 1500 / w2; // Main.SCREENWIDTH
+			var aScaleY = 768 / h2;  // Main.SCREENHEIGHT
+			var adPosX = w2 / 2 + theX / aScaleX;
+			var adPosY = h2 / 2 + theY / aScaleY;
+
+			var aDivHeight = aDiv.offsetHeight || 280;
+			var aDivWidth = aDiv.offsetWidth || 336;
+
+			if (yAlign === 'center') adPosY -= aDivHeight / 2;
+			else if (yAlign === 'bottom') adPosY -= aDivHeight;
+			if (xAlign === 'center') adPosX -= aDivWidth / 2;
+			else if (xAlign === 'right') adPosX -= aDivWidth;
+
+			if (contentEl) adPosX += contentEl.offsetLeft;
+
+			aDiv.style.left = adPosX + 'px';
+			aDiv.style.top = adPosY + 'px';
+
+			// Batch processAdsOnPage with setTimeout so all ShowAscAd calls in
+			// the same frame create their divs first, then ONE processAdsOnPage
+			// call discovers and processes them all at once.
+			if (doRefresh && typeof pbjs !== 'undefined' && typeof pbjs.processAdsOnPage === 'function') {
+				if (ascProcessTimer) clearTimeout(ascProcessTimer);
+				ascProcessTimer = setTimeout(function() {
+					ascProcessTimer = null;
+					pbjs.que.push(function() {
+						pbjs.processAdsOnPage();
+						console.log('[ASC] processAdsOnPage executed (batched)');
+					});
+				}, 50);
+				SendEvent('event', 'asc_banner_requested');
+			}
+			console.log('[ASC] ShowAscAd: ' + divName + ' at ' + adPosX + ',' + adPosY);
+		}
+
+		// ASC: called from Haxe Main.HideAd() when ascAds is true
+		function HideAscAd(divName, justClear) {
+			var aDiv = ascGetDiv(divName);
+			if (!aDiv) {
+				// Not an asc ad div — fall back to getElementById (for loading, logo, etc.)
+				aDiv = document.getElementById(divName);
+			}
+			if (aDiv) {
+				if (!justClear) {
+					aDiv.style.display = 'none';
+					aDiv.style.visibility = 'hidden';
+				}
+			}
+		}
+
+		// ASC: called from Haxe ManageAdSizes() when ascAds is true
+		function AscManageAdSizes(shouldHide) {
+			var div1 = ascGetDiv(adPrefix+'_160x600');
+			var div2 = ascGetDiv(adPrefix+'_160x600_2');
+			if (shouldHide) {
+				if (div1) { div1.style.width = '0px'; div1.style.display = 'none'; div1.style.visibility = 'hidden'; }
+				if (div2) { div2.style.width = '0px'; div2.style.display = 'none'; div2.style.visibility = 'hidden'; }
+			} else {
+				if (div1) { div1.style.width = '170px'; div1.style.display = 'block'; div1.style.visibility = 'visible'; }
+				if (div2) { div2.style.width = '170px'; div2.style.display = 'block'; div2.style.visibility = 'visible'; }
+			}
+		}
+
+		// Base function to show a single banner ad unit
+		function ShowUnitBannerAd(config) {
+			if (!config.allowMobile && /Android|webOS|iPhone|iPad|iPod|Opera Mini/i.test(navigator.userAgent)) {
+				return;
+			}
+
+			if (config.minWindowWidth && window.innerWidth < config.minWindowWidth) {
+				return;
+			}
+
+			const now = new Date().getTime();
+			if (!adRefreshStates[config.timerId]) {
+				adRefreshStates[config.timerId] = 0; // Initialize if not set
+			}
+
+			if (config.refreshTimeout > 0 && (now - adRefreshStates[config.timerId] < config.refreshTimeout)) {
+				return;
+			}
+
+			var adElement;
+			if (window.ascAds) {
+				adElement = ascGetDiv(config.elementId);
+			} else {
+				adElement = window.document.getElementById(config.elementId);
+			}
+			if (!adElement) {
+				console.warn('ShowUnitBannerAd: element NOT found:', config.elementId);
+				return;
+			}
+			adElement.style.display = '';
+			adElement.style.visibility = 'visible';
+
+			if (window.ascAds) {
+				console.log('[ASC] ShowUnitBannerAd: entering provider check for "' + config.elementId + '"');
+				console.log('[ASC]   gCrazySDK:', typeof gCrazySDK);
+				console.log('[ASC]   window.ascAds:', window.ascAds);
+				console.log('[ASC]   pbjs:', typeof pbjs);
+				console.log('[ASC]   pbjs.refreshSlot:', typeof (pbjs || {}).refreshSlot);
+				console.log('[ASC]   config.aipRefreshId:', config.aipRefreshId);
+				console.log('[ASC]   aipDisplayTag:', typeof aipDisplayTag);
+			}
+
+			if (typeof gCrazySDK !== 'undefined') {
+				if (config.crazySdkBannerIds && config.crazySdkBannerIds.length > 0) {
+					gCrazySDK.requestResponsiveBanner(config.crazySdkBannerIds);
+					adRefreshStates[config.timerId] = now;
+				}
+			} else if (window.ascAds && typeof pbjs !== 'undefined' && typeof pbjs.refreshSlot === 'function' && config.aipRefreshId) {
+				console.log('[ASC] ShowUnitBannerAd: refreshing slot "' + config.aipRefreshId + '" for element "' + config.elementId + '"');
+				pbjs.refreshSlot(config.aipRefreshId);
+				SendEvent('event', 'asc_banner_requested');
+				adRefreshStates[config.timerId] = now;
+			} else if (typeof aipDisplayTag !== 'undefined' && config.aipRefreshId) {
+				refreshTag(config.aipRefreshId);
+				SendEvent('event', 'aip_banner_requested');
+				adRefreshStates[config.timerId] = now;
+			} else {
+				// Ads are likely blocked
+				if (config.adBlockedFallbackImage) {
+					adElement.style.backgroundImage = `url(${config.adBlockedFallbackImage})`;
+					SendEvent('event', 'banner_adblocked_message_shown');
+				} else {
+					SendEvent('event', 'banner_adblocked');
+				}
+			}
+		}
+
+		function ShowAd1() { // doRefresh parameter was unused
+			if (/Android|webOS|iPhone|iPad|iPod|Opera Mini/i.test(navigator.userAgent)) { // Outer mobile check
+ 				return;
+			}
+
+			const commonConfig = {
+				allowMobile: false, // ShowUnitBannerAd will re-check, this is for consistency
+				minWindowWidth: 0,
+				performProsperLegacyCheck: false,
+				adBlockedFallbackImage: null, // Original ShowAd1 had no specific fallback image
+			};
+
+			if (typeof gCrazySDK !== 'undefined') {
+				// gCrazySDK is active
+				ShowUnitBannerAd({
+					...commonConfig,
+					timerId: "showAd1_gCrazySdkTimer",
+					elementId: adPrefix+'_160x600',
+					crazySdkBannerIds: [adPrefix+'_160x600'],
+					aipRefreshId: null,
+					refreshTimeout: 10000
+				});
+
+				ShowUnitBannerAd({
+					...commonConfig,
+					timerId: "showAd1_el2_gCrazySdkPath_visTimer",
+					elementId: adPrefix+'_160x600_2',
+					crazySdkBannerIds: null,
+					aipRefreshId: null,
+					refreshTimeout: 0
+				});
+			} else if (window.ascAds || typeof aipDisplayTag !== 'undefined') {
+				ShowUnitBannerAd({
+					...commonConfig,
+					timerId: "showAd1_el1_aipTimer",
+					elementId: adPrefix+'_160x600',
+					crazySdkBannerIds: null,
+					aipRefreshId: adPrefix+'_160x600',
+					refreshTimeout: 0
+				});
+				ShowUnitBannerAd({
+					...commonConfig,
+					timerId: "showAd1_el2_aipTimer",
+					elementId: adPrefix+'_160x600_2',
+					crazySdkBannerIds: null,
+					aipRefreshId: adPrefix+'_160x600_2',
+					refreshTimeout: 0
+				});
+			} else {
+				ShowUnitBannerAd({ ...commonConfig, timerId: "showAd1_el1_fallbackTimer", elementId: adPrefix+'_160x600', crazySdkBannerIds: null, aipRefreshId: null, refreshTimeout: 0 });
+				ShowUnitBannerAd({ ...commonConfig, timerId: "showAd1_el2_fallbackTimer", elementId: adPrefix+'_160x600_2', crazySdkBannerIds: null, aipRefreshId: null, refreshTimeout: 0 });
+			}
+		}
+
+		function ShowAd6()
+		{
+			ShowUnitBannerAd({
+				timerId: "showAd6Timer",
+				elementId: adPrefix+'_300x250',
+				allowMobile: true,
+				minWindowWidth: 0,
+				crazySdkBannerIds: null,
+				aipRefreshId: adPrefix+'_300x250',
+				performProsperLegacyCheck: true,
+				adBlockedFallbackImage: null,
+				refreshTimeout: 10000
+			});
+		}
+
+		function ShowAd2()
+		{
+			ShowUnitBannerAd({
+				timerId: "showAd2Timer",
+				elementId: adPrefix+'_300x250_2',
+				allowMobile: false,
+				minWindowWidth: 0,
+				crazySdkBannerIds: [adPrefix+'_300x250', adPrefix+'_300x250_2'],
+				aipRefreshId: adPrefix+'_300x250_2',
+				performProsperLegacyCheck: true,
+				adBlockedFallbackImage: null,
+				refreshTimeout: 10000
+			});
+		}
+
+		function ShowAd3()
+		{
+			ShowUnitBannerAd({
+				timerId: "showAd3Timer",
+				elementId: adPrefix+'_728x90',
+				allowMobile: false,
+				minWindowWidth: 0,
+				crazySdkBannerIds: [adPrefix+'_728x90'],
+				aipRefreshId: adPrefix+'_728x90',
+				performProsperLegacyCheck: false,
+				adBlockedFallbackImage: null,
+				refreshTimeout: 0
+			});
+		}
+
+		function ShowAd4()
+		{
+			ShowUnitBannerAd({
+				timerId: "showAd4Timer",
+				elementId: adPrefix+'_336x280',
+				allowMobile: false,
+				minWindowWidth: 1200,
+				crazySdkBannerIds: [adPrefix+'_336x280'],
+				aipRefreshId: adPrefix+'_336x280',
+				performProsperLegacyCheck: true,
+				adBlockedFallbackImage: null,
+				refreshTimeout: 0
+			});
+		}
+
+		function ShowAd7()
+		{
+			ShowUnitBannerAd({
+				timerId: "showAd7Timer",
+				elementId: adPrefix+'_336x280_2',
+				allowMobile: false,
+				minWindowWidth: 1200,
+				crazySdkBannerIds: [adPrefix+'_336x280_2'],
+				aipRefreshId: adPrefix+'_336x280_2',
+				performProsperLegacyCheck: true,
+				adBlockedFallbackImage: null,
+				refreshTimeout: 0
+			});
+		}
+
+		function ShowAd8()
+		{
+			ShowUnitBannerAd({
+				timerId: "showAd8Timer",
+				elementId: adPrefix+'_728x90_m',
+				allowMobile: false,
+				minWindowWidth: 0,
+				crazySdkBannerIds: [adPrefix+'_728x90'],
+				aipRefreshId: adPrefix+'_728x90_m',
+				performProsperLegacyCheck: false,
+				adBlockedFallbackImage: null,
+				refreshTimeout: 0
+			});
+		}
+
+		function ShowAd9()
+		{
+			ShowUnitBannerAd({
+				timerId: "showAd9Timer",
+				elementId: adPrefix+'_970x250',
+				allowMobile: false,
+				minWindowWidth: 0,
+				crazySdkBannerIds: [adPrefix+'_970x250'],
+				aipRefreshId: adPrefix+'_970x250',
+				performProsperLegacyCheck: true,
+								adBlockedFallbackImage: "assets/turnoff.jpg",
+								refreshTimeout: 0
+			});
+		}
+
+
+
+		function right(str, chr)
+		{
+ 			 return str.slice(str.length-chr,str.length);
+		}
+		function SetCGInviteLink()
+		{
+			if(typeof gCrazySDK !== 'undefined')
+			{
+				var meta = document.getElementById ("cglink");
+				var aStr = meta.value;
+				aStr = right(aStr, 8);
+				var aCGLink = gCrazySDK.inviteLink({ roomId: aStr });
+				meta.value = aCGLink;
+				meta.select
+				document.execCommand('Copy')
+				console.log("COPIED CG URL");
+			}
+		}
+
+		function ShowAdBreak() {
+			//check if the adslib is loaded correctly or blocked by adblockers etc.
+			if(typeof gCrazySDK !== 'undefined')
+			{
+				Main.DoneInterstitialAd(false);
+				return;
+			}
+
+			if(window.ascAds) {
+				console.log('[ASC] ShowAdBreak: skipping interstitial (not supported by asc)');
+				Main.DoneInterstitialAd(false);
+				return;
+			}
+
+			Main.DoneInterstitialAd(false); return;			if(typeof adplayer === 'undefined' ) {
+				Main.DoneInterstitialAd(true);
+				return;
+			}
+			aiptag.cmd.player.push(function() { adplayer.startAdBreak(); });
+		}
+
+
+		document.getElementById("openfl-content").addEventListener("wheel", doScroll);
+		document.getElementById("more").addEventListener("wheel", doScroll);
+		function doScroll(event) {
+  			window.scroll(0, window.scrollY + event.deltaY);
+		};
+
+		setInterval(function () {
+			//console.log("active element:" + document.activeElement);
+			if (document.activeElement.tagName == "IFRAME") {
+        		document.activeElement.blur();
+				document.getElementById('openfl-content').focus();
+				//console.log('refocusing');
+    		}
+		}, 30);
+
+
+		var sid = "30ce25d62e8d55a4a2f2608a5992afff";
+		function updateStatus(fromEvent = false)
+		{
+			const req = new XMLHttpRequest();
+			var aStr = "recordsession.php?s="+sid;
+			if(fromEvent == true)  aStr = aStr + "&e=1"
+			req.open("GET", aStr);
+			req.send();
+		}
+		function SendEvent(theEvent, theAction, theParms = '') {
+			if(theParms == '') {
+				gtag(theEvent, theAction);
+			} else {
+				gtag(theEvent, theAction, theParms);
+			}
+			updateStatus(true);
+			console.log("Sending event: " + theEvent + "/" + theAction + "/" + theParms);
+		}
+		//setInterval(function() { updateStatus, 4*60*1000);
+		//setInterval( function() {
+		//	window.scrollTo(0, 0);
+		//}, 2000 );
+		updateStatus(true);
+
+		//setInterval(ClearAds, 2000);
+
+		function EmailSignup() {
+			if(document.getElementById("signup") || document.getElementById("deleteme")) return;
+			const iframe = document.createElement("iframe");
+			iframe.src = "https://bluewizard.com/subscribe-to-bbros/";
+
+//			iframe.style.display = "block";
+			iframe.style.width = "550px";
+			iframe.style.height = ""+window.innerHeight-100+"px";
+			iframe.style.position = "absolute";
+			iframe.style.top = "50px";
+			iframe.style.left = "50%";
+			iframe.style["margin-left"] = "-225px";
+			//iframe.style["margin-right"] = "-275px";
+			iframe.style["max-width"] = "100%";
+			iframe.setAttribute("id", "signup");
+
+			document.body.appendChild(iframe);
+		}
+
+		function HideAllAds()
+		{
+			console.log("HideAllAds");
+			if(typeof $msstart !== 'undefined')
+			{
+				$msstart.hideDisplayAdsAsync().then(response => {
+					// Returns string indicating success if ad was hidden successfully
+				});
+				console.log("MS ads destroyed");
+			}
+			if(typeof gCrazySDK !== 'undefined') {
+				gCrazySDK.clearAllBanners();
+				console.log("CG ads destroyed");
+			}
+			if(typeof aipDisplayTag !== 'undefined') {
+				aipDisplayTag.destroy();
+				console.log("AIP ads destroyed");
+			}
+			if(window.ascAds) {
+				console.log('[ASC] HideAllAds: destroying all slots and removing dynamic divs');
+				if (typeof pbjs !== 'undefined' && typeof pbjs.destroyAllSlots === 'function') {
+					pbjs.destroyAllSlots();
+					console.log('[ASC] HideAllAds: destroyAllSlots() called');
+				}
+				// Remove all dynamically created asc divs from DOM and clear cache
+				// so they get recreated fresh on next ShowAscAd
+				for (var slotName in ascDivCache) {
+					if (ascDivCache[slotName] && ascDivCache[slotName].parentNode) {
+						ascDivCache[slotName].parentNode.removeChild(ascDivCache[slotName]);
+					}
+				}
+				ascDivCache = {};
+			}
+
+		}
+
+
+		function GamePlayStart() {
+			if(typeof gCrazySDK !== 'undefined')
+			{
+				console.log("GamePlayStart");
+				gCrazySDK.gameplayStart();
+			}
+		}
+
+		function GamePlayStop() {
+			if(typeof gCrazySDK !== 'undefined')
+			{
+				console.log("GamePlayStop");
+				gCrazySDK.gameplayStop();
+			}
+		}
+
+		function HappyTime() {
+			if(typeof gCrazySDK !== 'undefined')
+			{
+				console.log("happytime");
+				gCrazySDK.happytime();
+			}
+		}
+
+		var scrollerMessage = "   WELCOME TO SOCCER BROS 2!";
+
+		const element = document.getElementById('openfl-content');
+		// Ensure 'element' is not null before adding event listeners if there's any chance it might not exist yet.
+		// Function to keep the element focused
+		function keepFocus() {
+			element.focus();
+		}
+		// Event listeners to restore focus when lost
+		element.addEventListener('blur', keepFocus);
+		element.addEventListener('focusout', keepFocus);
+	</script>
+
+<script>try{var _n=document.createElement("div");_n.style.cssText="position:fixed;bottom:8px;right:8px;z-index:2147483647;background:rgba(0,0,0,.65);color:#fff;font:11px/1.4 Arial,sans-serif;padding:5px 9px;border-radius:5px;pointer-events:none;max-width:80vw;";_n.textContent="Downloaded from unblockedzone. join discord.gg/v66D3fn4kD for 100+ links";(document.body||document.documentElement).appendChild(_n);}catch(e){}</script>
+</body>
+</html>
