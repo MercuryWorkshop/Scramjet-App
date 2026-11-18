@@ -667,30 +667,10 @@
 	// While sound is blocked and there is still sound to come, the first click
 	// or key press only turns sound on. Every other gesture skips the intro.
 	function onGesture(e) {
-		if (finishing) return;
-		const escape = e.type === "keydown" && e.key === "Escape";
-		// On phones and tablets a tap always skips straight away (never gets stuck on the sound prompt)
-		const touchLike = e.type !== "keydown" && e.pointerType !== "mouse";
-		const soundAhead = elapsed() < ZOOM_END - 300;
-		if (
-			audio &&
-			!audio.stopped &&
-			!audio.unlockTried &&
-			!escape &&
-			!touchLike &&
-			soundAhead &&
-			audio.ctx.state !== "running"
-		) {
-			audio.unlockTried = true;
-			setHint(false);
-			audio.ctx
-				.resume()
-				.then(() => updateAudio(elapsed()))
-				.catch(() => {});
-			return;
-		}
+		if (e && e.type === "keydown" && (e.metaKey || e.ctrlKey || e.altKey)) return;
 		finish(true);
 	}
+
 
 	// Mouse presses count as user activation on pointerdown, touch and pen on pointerup
 	function onPointerDown(e) {
@@ -780,11 +760,12 @@
 		});
 		// Works straight away where autoplay is allowed; otherwise stays suspended
 		audio.ctx.resume().catch(() => {});
-		setTimeout(() => {
+			setTimeout(() => {
 			if (audio && !audio.stopped && !audio.unlockTried && audio.ctx.state !== "running") {
 				setHint(true);
 			}
 		}, 300);
+
 	}
 
 	raf = requestAnimationFrame(frame);
