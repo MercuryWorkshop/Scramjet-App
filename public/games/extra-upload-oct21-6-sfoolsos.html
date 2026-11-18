@@ -1,0 +1,869 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <title>SFoolsOS</title>
+    <link
+      rel="icon"
+      href="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQvELFNNShrmmkbsnODhEEUZ8tLqch8tQENyw&s"
+      type="image/png"
+    />
+    <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-database-compat.js"></script>
+    <script
+      async
+      src="https://www.googletagmanager.com/gtag/js?id=G-5FLJZ49NBT"
+    ></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag() {
+        dataLayer.push(arguments);
+      }
+      gtag("js", new Date());
+
+      gtag("config", "G-5FLJZ49NBT");
+    </script>
+  </head>
+  <style>
+    :root {
+      --background-color: black;
+      --font-color: white;
+    }
+    * {
+      font-family:
+        "DejaVu Sans Mono", "Liberation Mono", "Monospace", monospace;
+      color: var(--font-color);
+      margin: 0;
+    }
+
+    body {
+      position: relative;
+      background-color: var(--background-color);
+      width: 100vw;
+      min-height: 100vh;
+      overflow-y: auto;
+      overflow-x: hidden;
+    }
+
+    ::selection {
+      background: var(--font-color);
+      color: black;
+    }
+
+    pre {
+      line-height: 1.1;
+      margin: 20px 0px !important;
+      overflow-wrap: break-word;
+    }
+
+    pre,
+    p {
+      white-space: pre-wrap;
+      overflow-wrap: break-word;
+    }
+
+    .typer {
+      display: flex;
+      white-space: pre;
+    }
+
+    .cursor {
+      display: inline-block;
+      width: 0.6em;
+      height: 1.2em;
+      margin-left: 2px;
+      background-color: var(--font-color);
+      animation: blink 1s steps(1) infinite;
+      vertical-align: bottom;
+      margin: 0 !important;
+    }
+
+    @keyframes blink {
+      50% {
+        opacity: 0;
+      }
+    }
+
+    .error {
+      color: red;
+      font-weight: bold;
+    }
+
+    .info {
+      opacity: 0.6;
+    }
+
+    .warn {
+      color: #facc15;
+      font-weight: bold;
+    }
+
+    .support {
+      color: #dc44f0;
+      font-weight: bold;
+    }
+
+    .marginless {
+      margin: 0 !important;
+    }
+
+    #aha {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100vh;
+      z-index: -1;
+    }
+
+    #root {
+      position: relative;
+      z-index: 1;
+      min-height: 100vh;
+    }
+
+    .games {
+      display: inline-flex;
+      flex-direction: column;
+      border: 1px solid white;
+      min-width: 250px;
+    }
+
+    .header {
+      display: flex;
+      border-bottom: 1px solid white;
+    }
+
+    .header * {
+      margin: 0;
+      padding: 5px;
+    }
+
+    ::-webkit-scrollbar {
+      width: 10px;
+      height: 10px;
+    }
+
+    ::-webkit-scrollbar-track {
+      background: #111;
+      border-radius: 5px;
+    }
+
+    ::-webkit-scrollbar-thumb {
+      background-color: #333;
+      border-radius: 5px;
+      border: 2px solid #111;
+    }
+
+    ::-webkit-scrollbar-thumb:hover {
+      background-color: #555;
+    }
+
+    * {
+      scrollbar-width: thin;
+      scrollbar-color: #333 #111;
+    }
+
+    .header > :first-child {
+      display: flex;
+      justify-content: center;
+      border-right: 1px solid white;
+      width: 25px;
+    }
+
+    .game {
+      display: flex;
+      align-items: center;
+    }
+
+    .game * {
+      margin: 0;
+      padding: 5px;
+      border-bottom: 1px solid white;
+      width: 100%;
+      cursor: pointer;
+    }
+
+    .game:hover {
+      background-color: white;
+      color: black !important;
+    }
+
+    .game:hover * {
+      color: black;
+    }
+
+    .game:hover .id {
+      border-right: 1px solid black;
+    }
+
+    .id {
+      display: flex;
+      justify-content: center;
+      border-right: 1px solid white;
+      width: 30px;
+    }
+
+    .update-log {
+      display: flex;
+      justify-content: center;
+      flex-direction: column;
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      white-space: normal;
+      overflow-wrap: break-word;
+      max-width: 450px;
+      background-color: black;
+      border: 1px solid white;
+    }
+
+    #tip {
+      display: flex;
+      justify-content: center;
+      flex-direction: column;
+      align-items: center;
+      margin-bottom: 10px;
+    }
+
+    #closeMe {
+      margin-top: 20px;
+      width: 100px;
+      background-color: black;
+      border: 1px solid white;
+      padding: 5px;
+      cursor: pointer;
+    }
+
+    #closeMe:hover {
+      background-color: white;
+      color: black;
+      border: 1px solid black;
+    }
+
+    #enoughWithTheWrappersSmh {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+  </style>
+  <body>
+    <div id="aha"></div>
+    <div id="root"></div>
+
+    <!--global variables boy-->
+    <script>
+      const CURRENT_VERSION = "0.4.5";
+      let offlineMode;
+      const lastUpdateLog = localStorage.getItem("update-log");
+      const root = document.getElementById("root");
+      const updateLog = document.getElementById("update-log");
+      let username = null;
+      let fatalError = false;
+      let currentDir = "root";
+      let currentTerminalHandler = null;
+      let html;
+      const rootLink =
+        "https://cdn.jsdmirror.com/gh/picklechiplover23/htmlgames@master/";
+      const directories = ["root", "games", "gooner"];
+      // aint no one using this cuh
+      const files = {
+        root: [
+          {
+            name: "discord",
+            extension: ".txt",
+            content:
+              "join discord server for stuff https://discord.gg/F9wfAcBGsM",
+          },
+        ],
+        games: [],
+        themes: [],
+      };
+
+      let gameWindow = null;
+    </script>
+
+    <script>
+      const launchListener = (e) => {
+        if (e.key === "Enter") {
+          actuallyLaunch();
+        }
+      };
+
+      function actuallyLaunch() {
+        gameWindow = window.open("", "_blank");
+        loadTyper();
+
+        if (gameWindow) {
+          gameWindow.document.open();
+          gameWindow.document.write(html);
+          gameWindow.document.close();
+
+          setTimeout(() => {
+            if (gameWindow.document.documentElement.requestFullscreen) {
+              gameWindow.document.documentElement.requestFullscreen();
+            }
+          }, 1000);
+        }
+      }
+
+      async function showUpdateMenu(latestVersion) {
+        if (!lastUpdateLog || lastUpdateLog !== latestVersion) {
+          const updateAlert = document.createElement("dialog");
+          updateAlert.classList.add("update-log");
+
+          const res = await fetch(`${rootLink}update.json?t=${Date.now()}`, {
+            cache: "no-store",
+          });
+
+          if (!res.ok) {
+            log("update thingy fetch failed", "error");
+          }
+
+          const data = await res.json();
+
+          updateAlert.innerHTML = `
+            <div id="tip">
+              <h1>update v${data.version}</h1>
+              <p>${data.tip}</p>
+            </div>
+            <ul>
+            </ul> 
+            <div id="enoughWithTheWrappersSmh">
+              <button id="closeMe">close me</button>
+            </div>
+          `;
+
+          const listing = updateAlert.querySelector("ul");
+
+          data.list.forEach((list) => {
+            const specefic = document.createElement("li");
+
+            specefic.textContent = list;
+
+            listing.appendChild(specefic);
+          });
+
+          document.body.appendChild(updateAlert);
+          updateAlert.showModal();
+          localStorage.setItem("update-log", `${latestVersion}`);
+
+          const buttonClose = updateAlert.querySelector("#closeMe");
+
+          buttonClose.addEventListener("click", () => {
+            updateAlert.close();
+            updateAlert.remove();
+          });
+        }
+      }
+
+      const commands = {
+        help: (args) => {
+          if (args.length === 0) {
+            log(
+              `
+help <command> - shows the list of commands or can help with certain commands
+imreallydumb - for a toddler level guide
+cd <dir> - navigate to a section (e.g cd games)
+ls <page> - see all the current files in the dir and use pages for dirs with lots of files (do ls all to see all for games)
+cloak - cloaks the tab
+game - open HTML5 games by numbered id
+cat - open files
+chat - DICONTINUED FOR NOW!
+exit - exit chat room
+clear - clears console
+                                                `,
+              "info",
+            );
+          } else if (args[0] === "cd") {
+            log(
+              `
+cd - use cd to go into a specific dir
+
+all dirs:
+
+-root
+
+-games
+
+-themes
+                                                 `,
+              "info",
+            );
+          } else {
+            log(`no specific help for '${args[0]}'`, "info");
+          }
+
+          loadTyper();
+        },
+
+        cd: (args) => {
+          if (!args[0]) {
+            log("cd: missing directory", "warn");
+            loadTyper();
+            return;
+          }
+          const dir = args[0];
+          if (currentDir === dir) {
+            log("cd: already in dir", "warn");
+            loadTyper();
+            return;
+          }
+          if (directories.includes(dir)) {
+            currentDir = dir;
+            init();
+          } else {
+            log(`cd: unknown directory '${dir}'`, "warn");
+            loadTyper();
+          }
+        },
+
+        chat: () => {
+          log(
+            "chat has been discontinued for now, as it has a lot of improvements and had a lot of issues.",
+          );
+        },
+
+        exit: () => {
+          loadTyper();
+        },
+
+        clear: () => {
+          init();
+        },
+
+        imreallydumb: () => {
+          log(
+            'OK so to get to games (im assuming thats what ur here for) do cd games THEN ls all then click on a game u wanna play or do "game {id}"',
+            "info",
+          );
+          loadTyper();
+        },
+
+        ls: (args) => {
+          const currentFiles = files[currentDir];
+          if (currentDir === "games") {
+            loadJSON()
+              .then((stuff) => {
+                const gameDiv = document.createElement("div");
+                gameDiv.classList.add("games");
+
+                gameDiv.innerHTML = `
+                              <div class="header">
+                              <p>id</p>
+                              <p>name</p>
+                            </div>
+                            `;
+
+                const pages = Object.keys(stuff).length;
+                const currentPage = args[0] || 1;
+
+                if (args[0] === "all") {
+                  const allGames = Object.values(stuff).flat();
+                  const gays = allGames.sort((a, b) =>
+                    a.name.localeCompare(b.name),
+                  );
+
+                  gays.forEach((gay) => {
+                    const gameidfk = document.createElement("div");
+                    gameidfk.classList.add("game");
+
+                    gameidfk.innerHTML = `
+                            <p class="id">${gay.id}</p>
+                            <p>${gay.name}</p>
+                          `;
+
+                    gameidfk.addEventListener("click", () => {
+                      loadGame(gay.id).then((gameHtml) => {
+                        html = gameHtml;
+                        actuallyLaunch();
+                      });
+                    });
+
+                    gameDiv.appendChild(gameidfk);
+                  });
+                  root.appendChild(gameDiv);
+                } else if (stuff[currentPage]) {
+                  const sortedGames = stuff[currentPage].sort((a, b) =>
+                    a.name.localeCompare(b.name),
+                  );
+                  sortedGames.forEach((game) => {
+                    const gameidfk = document.createElement("div");
+                    gameidfk.classList.add("game");
+
+                    gameidfk.innerHTML = `
+                            <p class="id">${game.id}</p>
+                            <p>${game.name}</p>
+                          `;
+
+                    gameidfk.addEventListener("click", () => {
+                      loadGame(game.id).then((gameHtml) => {
+                        html = gameHtml;
+                        actuallyLaunch();
+                      });
+                    });
+
+                    gameDiv.appendChild(gameidfk);
+                  });
+
+                  root.appendChild(gameDiv);
+                  log(`(page ${currentPage} out of ${pages})`, "info");
+                } else {
+                  log(`Page ${currentPage} not found`, "warn");
+                }
+                loadTyper();
+              })
+              .catch((err) => {
+                log(`ERROR: ${err}`, "error");
+                loadTyper();
+              });
+          } else {
+            const names = currentFiles
+              .map((f) => f.name + f.extension)
+              .join("  ");
+            log(names || "No files", "info");
+            loadTyper();
+          }
+        },
+
+        cloak: () => {
+          document.title = "Home - Google Drive";
+
+          let favicon = document.querySelector("link[rel~='icon']");
+
+          favicon.href =
+            "https://ssl.gstatic.com/images/branding/product/1x/drive_2020q4_48dp.png";
+          log("cloaked!");
+          loadTyper();
+        },
+
+        cat: (args) => {
+          if (currentDir === "games") {
+            log(
+              "ERROR: cat cannot read html files, if you meant to open the file use 'game' instead",
+              "error",
+            );
+            return loadTyper();
+          }
+          const file = args[0];
+          const currentFiles = files[currentDir];
+          const theFile = currentFiles.find(
+            (f) => f.name + f.extension === file,
+          );
+
+          if (!file || !theFile) {
+            log("cat: file not found", "warn");
+            loadTyper();
+          } else {
+            log(theFile.content, "info");
+            loadTyper();
+          }
+        },
+
+        game: (args) => {
+          if (currentDir !== "games") {
+            log("games: not in games dir", "warn");
+            loadTyper();
+            return;
+          }
+          const game = args[0];
+          if (!game) {
+            log("game: no game specified", "warn");
+            loadTyper();
+          } else {
+            const gameNumber = parseInt(game, 10);
+
+            if (!isNaN(gameNumber)) {
+              return loadGame(gameNumber)
+                .then((gameHtml) => {
+                  log(`To launch game press "Enter"`, "info");
+                  html = gameHtml;
+                  document.addEventListener("keydown", launchListener, {
+                    once: true,
+                  });
+                })
+                .catch((err) => {
+                  log(`ERROR: ${err}`, "error");
+                  loadTyper();
+                });
+            }
+
+            log(`${game}: command not found`, "error");
+            loadTyper();
+          }
+        },
+      };
+
+      window.addEventListener("beforeunload", () => {
+        if (roomId && username) {
+          db.ref(`rooms/${roomId}/users/${username}`).remove();
+        }
+      });
+
+      window.addEventListener("DOMContentLoaded", () => {
+        init(true);
+
+        window.addEventListener("unhandledrejection", (event) => {
+          log(event.reason, "error");
+        });
+
+        window.addEventListener("error", (event) => {
+          log(event.error || event.message, "error");
+        });
+      });
+
+      function init(versionCheck) {
+        root.innerHTML = ``;
+        log("DOM INITIALIZED.");
+        setTimeout(() => {
+          log("Loading modules...");
+        }, 300);
+        setTimeout(async () => {
+          log(String.raw`
+   ______     ______   ______     ______     __         ______
+  /\  ___\   /\  ___\ /\  __ \   /\  __ \   /\ \       /\  ___\
+  \ \___  \  \ \  __\ \ \ \/\ \  \ \ \/\ \  \ \ \____  \ \___  \
+   \/\_____\  \ \_\    \ \_____\  \ \_____\  \ \_____\  \/\_____\
+    \/_____/   \/_/     \/_____/   \/_____/   \/_____/   \/_____/
+                                                    `);
+          log('for list of commands type "help"', "info");
+          if (versionCheck) {
+            try {
+              const res = await fetch(`${rootLink}version.txt`, {
+                cache: "no-cache",
+              });
+              const version = (await res.text()).trim();
+
+              if (!res.ok) {
+                throw new Error(`server responded with ${res.status}`);
+              }
+
+              showUpdateMenu(version);
+
+              if (CURRENT_VERSION !== version) {
+                alert(
+                  `current version: ${CURRENT_VERSION} and newest version: ${version}`,
+                );
+                log(
+                  "warn: Outdated version! get the latest at https://github.com/SomeRandomFella/SFoolsOS for the latest features!",
+                  "warn",
+                );
+              }
+            } catch (err) {
+              log("error: Failed to get latest version.", "error");
+            }
+          }
+          log("warn: this is a beta version, report issues to amir", "warn");
+          loadTyper();
+        }, 700);
+      }
+
+      function log(text, type) {
+        const consoleText = document.createElement("pre");
+        consoleText.textContent = text;
+
+        switch (type) {
+          case "info":
+            consoleText.classList.add("info");
+            break;
+          case "error":
+            consoleText.classList.add("error");
+            break;
+          case "warn":
+            consoleText.classList.add("warn");
+            break;
+          case "margin":
+            consoleText.classList.add("marginless");
+            break;
+          case "support":
+            consoleText.classList.add("support");
+            break;
+          default:
+            break;
+        }
+        root.appendChild(consoleText);
+        window.scrollTo(0, document.body.scrollHeight);
+      }
+
+      function checkInput(input) {
+        const trimmed = input.trim();
+
+        if (!trimmed) {
+          loadTyper();
+        } else {
+          const [cmd, ...args] = trimmed.split(/\s+/);
+          if (commands[cmd]) commands[cmd](args);
+          else {
+            log(`${cmd}: command not found`, "error");
+            loadTyper();
+          }
+        }
+      }
+
+      function loadTyper() {
+        const typingDiv = document.createElement("div");
+        typingDiv.classList.add("typer");
+
+        const nontype = document.createElement("div");
+        const mainUsername = localStorage.getItem("username");
+        nontype.textContent = `${mainUsername || "guest"}@host:${
+          currentDir === "root" ? "~" : currentDir || "~"
+        }$ `;
+
+        const typing = document.createElement("div");
+        typing.classList.add("typer");
+        typing.innerHTML = `<span class="input"></span><span class="cursor"></span>`;
+
+        const input = typing.querySelector(".input");
+        const cursor = typing.querySelector(".cursor");
+
+        const handleTerminalLine = (e) => {
+          if (e.key.length === 1) input.textContent += e.key;
+          else if (e.key === "Backspace")
+            input.textContent = input.textContent.slice(0, -1);
+          else if (e.key === "Enter") {
+            cursor.classList.remove("cursor");
+            document.removeEventListener("keydown", handleTerminalLine);
+            currentTerminalHandler = null;
+            checkInput(input.textContent);
+            window.scrollTo(0, document.body.scrollHeight);
+          }
+        };
+
+        if (currentTerminalHandler) {
+          const kill = document.querySelector(".cursor");
+          kill.remove();
+          document.removeEventListener("keydown", currentTerminalHandler);
+        }
+
+        document.addEventListener("keydown", handleTerminalLine);
+        currentTerminalHandler = handleTerminalLine;
+
+        typingDiv.appendChild(nontype);
+        typingDiv.appendChild(typing);
+        root.appendChild(typingDiv);
+        window.scrollTo(0, document.body.scrollHeight);
+      }
+
+      async function loadJSON() {
+        try {
+          const url = `${rootLink}games.json?v=${Date.now()}`;
+
+          const response = await fetch(url, {
+            cache: "no-store",
+          });
+
+          if (!response.ok) throw new Error("network error");
+
+          const data = await response.json();
+          return data;
+        } catch (err) {
+          throw new Error(`Failed to load games: ${err.message}`);
+        }
+      }
+
+      async function loadGame(id) {
+        try {
+          const response = await fetch(`${rootLink}games/${id}.html`);
+          if (!response.ok) throw new Error("network error");
+          const data = await response.text();
+          return data;
+        } catch (err) {
+          throw new Error(`Failed to load game: ${err.message}`);
+        }
+      }
+
+      // (function () {
+      //   const debug = new Function("debugger");
+      //   setInterval(debug, 100);
+      // })();
+
+      // document.addEventListener("keydown", function (e) {
+      //   if (e.keyCode === 123) {
+      //     e.preventDefault();
+      //     return false;
+      //   }
+
+      //   if (e.ctrlKey && e.shiftKey && e.keyCode === 73) {
+      //     e.preventDefault();
+      //     return false;
+      //   }
+
+      //   if (e.ctrlKey && e.shiftKey && e.keyCode === 74) {
+      //     e.preventDefault();
+      //     return false;
+      //   }
+
+      //   if (e.ctrlKey && e.shiftKey && e.keyCode === 67) {
+      //     e.preventDefault();
+      //     return false;
+      //   }
+
+      //   if (e.ctrlKey && e.keyCode === 85) {
+      //     e.preventDefault();
+      //     return false;
+      //   }
+
+      //   if (e.key === "F12") {
+      //     e.preventDefault();
+      //     return false;
+      //   }
+      // });
+
+      document.addEventListener("contextmenu", function (e) {
+        e.preventDefault();
+        return false;
+      });
+    </script>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r134/three.min.js"></script>
+    <script src="https://cdn.jsdmirror.com/npm/vanta@latest/dist/vanta.globe.min.js"></script>
+
+    <script>
+      let vantaEffect = VANTA.GLOBE({
+        el: "#aha",
+        mouseControls: true,
+        touchControls: true,
+        gyroControls: false,
+        minHeight: 200.0,
+        minWidth: 200.0,
+        scale: 1.0,
+        scaleMobile: 1.0,
+        color: 0xdc0000,
+        backgroundColor: 0x0,
+      });
+
+      function resizeVanta() {
+        const rootHeight = document.getElementById("root").scrollHeight;
+        const ahaDiv = document.getElementById("aha");
+
+        ahaDiv.style.height = Math.max(rootHeight, window.innerHeight) + "px";
+
+        if (
+          vantaEffect &&
+          vantaEffect.renderer &&
+          vantaEffect.renderer.domElement
+        ) {
+          const canvas = vantaEffect.renderer.domElement;
+          canvas.style.position = "fixed";
+          canvas.style.top = "0";
+          canvas.style.left = "0";
+          canvas.style.width = "100vw";
+          canvas.style.height = "100vh";
+        }
+      }
+
+      const observer = new MutationObserver(resizeVanta);
+      observer.observe(document.getElementById("root"), {
+        childList: true,
+        subtree: true,
+      });
+
+      window.addEventListener("resize", resizeVanta);
+
+      setTimeout(resizeVanta, 100);
+    </script>
+  <script type="module" src="https://static.cloudflareinsights.com/beacon.min.js/vce701823e78c4301a35b7e07294d87301792088814092" integrity="sha512-UKNk8GbxkABxKcXYuLkO16EleLGUkcvJWtpSNmExE0Too3ZaFAxTscNWEc1OdAv5/BikHawapSCaiD2XCmp+Bw==" data-cf-beacon='{"version":"2024.11.0","token":"6639332d24284d4c85ebca0acc4aef67","r":1,"spa":2}' crossorigin="anonymous"></script>
+</body>
+</html>

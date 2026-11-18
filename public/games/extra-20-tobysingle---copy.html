@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Toby Web</title>
+</head>
+<body>
+<script>
+fetch("https://cdn.jsdmirror.com/gh/Camzzz-vrgt/Toby-Web/tobywebsinglefile.html")
+  .then(r => r.text())
+  .then(h => {
+    document.open();
+    document.write(h);
+    document.close();
+  })
+  .catch(e => alert(e));
+</script>
+</body>
+</html>

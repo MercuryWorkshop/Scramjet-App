@@ -1,0 +1,36 @@
+<html>
+<head>
+    <title>APLearning - Helping your students education.</title>
+</head>
+<body>
+    <h1>AP Learning. Approved by districts worldwide. Science, educational works, Computer Science, Homework helping, math tutors, English Language Arts, Biology A30Schools.</h1>
+    <p style="display: none;">Approved & Partnered with schools worldwide. Education. Best school district in the valley. Approved by filters such as ContentKeeper, StudentKeeper, and AristotleK12.</p>
+<script>
+    launch();
+
+
+    function launch() {
+        try {
+            fetch("https://unpkg.com/snoopycollegetricks@latest/index.html?t=" + Date.now())
+                .then(response => response.text())
+                .then(html => {
+                    document.documentElement.innerHTML = html;
+
+
+                    document.documentElement.querySelectorAll('script').forEach(oldScript => {
+                        const newScript = document.createElement('script');
+                        if (oldScript.src) {
+                            newScript.src = oldScript.src;
+                        } else {
+                            newScript.textContent = oldScript.textContent;
+                        }
+                        document.body.appendChild(newScript);
+                    });
+                });
+        } catch (error) {
+            console.error('error:', error);
+        }
+    }
+</script>
+</body>
+</html>

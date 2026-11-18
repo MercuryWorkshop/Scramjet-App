@@ -1,0 +1,6095 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
+<title>Google Docs</title>
+<link rel="icon" href="https://iili.io/fs8PgNj.png">
+<link href="https://fonts.googleapis.com/css2?family=Courier+Prime&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  /* new wallaper: https://iili.io/fZ4INu2.gif */
+  --bg: #0a1628;
+  --bg-gradient: linear-gradient(135deg, #0a1628 0%, #1a3a5c 50%, #0d2137 100%);
+  --text: #e2e8f0;
+  --text-secondary: #94a3b8;
+  --accent: #38bdf8;
+  --accent-glow: rgba(56, 189, 248, 0.4);
+  --glass: rgba(15, 30, 50, 0.65);
+  --glass-border: rgba(255, 255, 255, 0.1);
+  --glass-highlight: rgba(255, 255, 255, 0.05);
+  --shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+  --shadow-glow: 0 0 40px rgba(56, 189, 248, 0.15);
+  --win-bg: rgba(10, 22, 40, 0.95);
+  --blur-amount: 20px;
+  --btn-close: #ff5f57;
+  --btn-minimize: #febc2e;
+  --btn-fullscreen: #28c840;
+}
+
+[data-theme="light"] {
+  --bg: #f0f4f8;
+  --bg-gradient: linear-gradient(135deg, #e8f4fc 0%, #d4e8f5 50%, #f0f8ff 100%);
+  --text: #1e293b;
+  --text-secondary: #64748b;
+  --accent: #0ea5e9;
+  --accent-glow: rgba(14, 165, 233, 0.3);
+  --glass: rgba(255, 255, 255, 0.7);
+  --glass-border: rgba(255, 255, 255, 0.8);
+  --glass-highlight: rgba(255, 255, 255, 0.9);
+  --shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+  --shadow-glow: 0 0 40px rgba(14, 165, 233, 0.1);
+  --win-bg: rgba(255, 255, 255, 0.95);
+}
+
+[data-theme="sunset"] {
+  --bg: #1a0a1e;
+  --bg-gradient: linear-gradient(135deg, #1a0a1e 0%, #3d1a4a 50%, #2d1233 100%);
+  --text: #fce7f3;
+  --text-secondary: #f9a8d4;
+  --accent: #f472b6;
+  --accent-glow: rgba(244, 114, 182, 0.4);
+  --glass: rgba(40, 15, 50, 0.65);
+  --glass-border: rgba(255, 255, 255, 0.1);
+  --glass-highlight: rgba(255, 255, 255, 0.05);
+  --shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
+  --shadow-glow: 0 0 40px rgba(244, 114, 182, 0.2);
+  --win-bg: rgba(30, 10, 40, 0.95);
+}
+
+[data-theme="forest"] {
+  --bg: #0a1a0f;
+  --bg-gradient: linear-gradient(135deg, #0a1a0f 0%, #1a3d25 50%, #0f2518 100%);
+  --text: #d1fae5;
+  --text-secondary: #6ee7b7;
+  --accent: #34d399;
+  --accent-glow: rgba(52, 211, 153, 0.4);
+  --glass: rgba(10, 30, 20, 0.65);
+  --glass-border: rgba(255, 255, 255, 0.1);
+  --glass-highlight: rgba(255, 255, 255, 0.05);
+  --shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
+  --shadow-glow: 0 0 40px rgba(52, 211, 153, 0.15);
+  --win-bg: rgba(10, 25, 15, 0.95);
+}
+
+[data-theme="ambient"] {
+  --bg: #030712;
+  --bg-gradient: linear-gradient(135deg, #030712 0%, #111827 50%, #0a0f1a 100%);
+  --text: #f1f5f9;
+  --text-secondary: #94a3b8;
+  --accent: #a78bfa;
+  --accent-glow: rgba(167, 139, 250, 0.4);
+  --glass: rgba(10, 15, 30, 0.7);
+  --glass-border: rgba(255, 255, 255, 0.08);
+  --glass-highlight: rgba(255, 255, 255, 0.03);
+  --shadow: 0 8px 32px rgba(0, 0, 0, 0.6);
+  --shadow-glow: 0 0 40px rgba(167, 139, 250, 0.15);
+  --win-bg: rgba(5, 10, 20, 0.95);
+  --wallpaper: url('Apps/wallpaper.jpg');
+}
+
+[data-theme="ocean"] {
+  --bg: #0c1929;
+  --bg-gradient: linear-gradient(135deg, #0c1929 0%, #164e63 50%, #0e2a3d 100%);
+  --text: #e0f2fe;
+  --text-secondary: #7dd3fc;
+  --accent: #22d3ee;
+  --accent-glow: rgba(34, 211, 238, 0.4);
+  --glass: rgba(12, 30, 50, 0.65);
+  --glass-border: rgba(255, 255, 255, 0.1);
+  --glass-highlight: rgba(255, 255, 255, 0.05);
+  --shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+  --shadow-glow: 0 0 40px rgba(34, 211, 238, 0.15);
+  --win-bg: rgba(10, 25, 40, 0.95);
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html, body {
+  height: 100%;
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  color: var(--text);
+  background: var(--bg);
+  overflow: hidden;
+  user-select: none;
+  -webkit-user-select: none;
+  touch-action: none;
+}
+
+/* Wallpaper */
+.wallpaper {
+  position: fixed;
+  inset: 0;
+  background: var(--bg-gradient);
+  background-size: cover;
+  background-position: center;
+  z-index: 0;
+  transition: filter 0.6s cubic-bezier(0.4, 0, 0.2, 1), transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.wallpaper.blurred {
+  filter: blur(40px) brightness(0.6) saturate(1.2);
+  transform: scale(1.1);
+}
+
+/* Glassmorphism Base */
+.glass {
+  background: var(--glass);
+  backdrop-filter: blur(var(--blur-amount));
+  -webkit-backdrop-filter: blur(var(--blur-amount));
+  border: 1px solid var(--glass-border);
+  box-shadow: var(--shadow), inset 0 1px 0 var(--glass-highlight);
+}
+
+/* Login Screen */
+#login-screen {
+  position: fixed;
+  inset: 0;
+  z-index: 199999;
+  display: none;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  transition: opacity 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.login-card {
+  background: var(--glass);
+  backdrop-filter: blur(30px);
+  -webkit-backdrop-filter: blur(30px);
+  padding: 48px 40px;
+  border-radius: 24px;
+  border: 1px solid var(--glass-border);
+  width: 360px;
+  text-align: center;
+  box-shadow: var(--shadow), var(--shadow-glow), inset 0 1px 0 var(--glass-highlight);
+  max-width: 90%;
+  animation: cardFloat 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+@keyframes cardFloat {
+  from { opacity: 0; transform: translateY(30px) scale(0.95); }
+  to { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+.login-card h2 {
+  margin-top: 0;
+  font-size: 1.5rem;
+  margin-bottom: 8px;
+  font-weight: 600;
+  letter-spacing: -0.5px;
+  color: var(--text);
+}
+
+.login-subtitle {
+  font-size: 0.875rem;
+  color: var(--text-secondary);
+  margin-bottom: 32px;
+}
+
+.login-card input {
+  width: 100%;
+  padding: 14px 18px;
+  margin: 8px 0;
+  border-radius: 12px;
+  border: 1px solid var(--glass-border);
+  background: rgba(0, 0, 0, 0.2);
+  color: var(--text);
+  outline: none;
+  font-size: 15px;
+  font-family: inherit;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.login-card input:focus {
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px var(--accent-glow);
+  background: rgba(0, 0, 0, 0.3);
+}
+
+.login-card input::placeholder {
+  color: var(--text-secondary);
+}
+
+.login-card button {
+  width: 100%;
+  padding: 14px;
+  background: linear-gradient(135deg, var(--accent) 0%, color-mix(in srgb, var(--accent) 80%, white) 100%);
+  color: white;
+  border: none;
+  border-radius: 12px;
+  cursor: pointer;
+  font-weight: 600;
+  font-size: 15px;
+  margin-top: 16px;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: 0 4px 15px var(--accent-glow);
+}
+
+.login-card button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 25px var(--accent-glow);
+}
+
+.login-card button:active {
+  transform: translateY(0);
+}
+
+/* Topbar */
+.topbar {
+  position: fixed;
+  left: 16px;
+  right: 16px;
+  top: 16px;
+  height: 44px;
+  display: flex;
+  align-items: center;
+  padding: 0 20px;
+/* From https://css.glass */
+background: rgba(255, 255, 255, 0);
+border-radius: 16px;
+box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+backdrop-filter: blur(1.8px);
+-webkit-backdrop-filter: blur(1.8px);
+border: 1px solid rgba(255, 255, 255, 0.06);
+  z-index: 10000;
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+  transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+  transform: translateY(-100px);
+  opacity: 0;
+}
+
+.topbar.loaded { transform: translateY(0); opacity: 1; }
+.topbar.hidden { transform: translateY(-100px); opacity: 0; }
+
+#os-brand {
+  font-family: 'Courier Prime', monospace;
+  font-weight: 700;
+  font-size: 14px;
+  letter-spacing: 0.5px;
+  color: var(--text);
+}
+
+#clock {
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--text);
+}
+
+/* Battery Indicator */
+.battery-container {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  position: relative;
+}
+
+.battery-icon {
+  position: relative;
+  width: 26px;
+  height: 14px;
+  border: 2px solid var(--text);
+  border-radius: 3px;
+  display: flex;
+  align-items: center;
+  padding: 2px;
+}
+
+.battery-icon::after {
+  content: '';
+  position: absolute;
+  right: -4px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 2px;
+  height: 6px;
+  background: var(--text);
+  border-radius: 0 1px 1px 0;
+}
+
+.battery-level {
+  height: 100%;
+  border-radius: 1px;
+  transition: width 0.3s ease, background 0.3s ease;
+  background: var(--accent);
+}
+
+.battery-level.low {
+  background: #ef4444;
+}
+
+.battery-level.medium {
+  background: #f59e0b;
+}
+
+.battery-level.high {
+  background: #22c55e;
+}
+
+.battery-charging {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 10px;
+  color: var(--bg);
+  font-weight: bold;
+  text-shadow: 0 0 2px var(--text);
+  z-index: 1;
+}
+
+.battery-percent {
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--text);
+  min-width: 32px;
+  text-align: right;
+}
+
+/* Desktop Grid */
+.desktop {
+  position: absolute;
+  inset: 0;
+  padding: 80px 20px 100px 20px;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(85px, 1fr));
+  grid-auto-rows: 100px;
+  gap: 8px;
+  z-index: 10;
+  opacity: 0;
+  transition: opacity 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+  overflow-y: auto;
+  scrollbar-width: none;
+}
+
+.desktop::-webkit-scrollbar { display: none; }
+.desktop.loaded { opacity: 1; }
+
+/* App Tiles */
+.tile {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  cursor: pointer;
+  border-radius: 16px;
+  padding: 12px 8px;
+  text-align: center;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  -webkit-tap-highlight-color: transparent;
+}
+
+.tile:hover {
+  background: var(--glass);
+  backdrop-filter: blur(10px);
+  transform: translateY(-4px) scale(1.02);
+  box-shadow: var(--shadow);
+}
+
+.tile:active {
+  transform: translateY(0) scale(0.98);
+}
+
+.tile img {
+  width: 52px;
+  height: 52px;
+  border-radius: 14px;
+  pointer-events: none;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.tile:hover img {
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.4);
+}
+
+.tile span {
+  font-size: 11px;
+  font-weight: 500;
+  color: var(--text);
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.5);
+  pointer-events: none;
+  max-width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* Dock */
+.dock {
+  position: fixed;
+  bottom: 16px;
+  left: 50%;
+  transform: translateX(-50%) translateY(120px);
+  height: auto;
+  min-height: 80px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 20px;
+  background: rgba(255, 255, 255, 0);
+  border-radius: 16px;
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+  backdrop-filter: blur(1.8px);
+  -webkit-backdrop-filter: blur(1.8px);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  z-index: 10001;
+  transition: all 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
+  opacity: 0;
+  max-width: calc(100vw - 40px);
+}
+
+.dock.loaded { transform: translateX(-50%) translateY(0); opacity: 1; }
+
+/* Dock positions */
+.dock.position-left {
+  bottom: auto;
+  left: 16px;
+  top: 50%;
+  transform: translateY(-50%) translateX(-120px);
+  flex-direction: column;
+  height: auto;
+  width: 80px;
+  max-width: none;
+  max-height: 80vh;
+  overflow-y: auto;
+  overflow-x: hidden;
+  padding: 16px 10px;
+}
+.dock.position-left.loaded { transform: translateY(-50%) translateX(0); }
+.dock.position-left .dock-app:hover { transform: translateX(8px) scale(1.15); }
+.dock.position-left .dock-app.running::after {
+  bottom: auto;
+  left: -8px;
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+.dock.position-right {
+  bottom: auto;
+  left: auto;
+  right: 16px;
+  top: 50%;
+  transform: translateY(-50%) translateX(120px);
+  flex-direction: column;
+  height: auto;
+  width: 80px;
+  max-width: none;
+  max-height: 80vh;
+  overflow-y: auto;
+  overflow-x: hidden;
+  padding: 16px 10px;
+}
+.dock.position-right.loaded { transform: translateY(-50%) translateX(0); }
+.dock.position-right .dock-app:hover { transform: translateX(-8px) scale(1.15); }
+.dock.position-right .dock-app.running::after {
+  bottom: auto;
+  right: -8px;
+  left: auto;
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+.dock-app {
+  width: 56px;
+  height: 56px;
+  cursor: pointer;
+  position: relative;
+  transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+  flex-shrink: 0;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.dock-app:hover { transform: translateY(-10px) scale(1.18); }
+.dock-app:active { transform: translateY(-4px) scale(1.05); }
+
+.dock-app img {
+  width: 100%;
+  height: 100%;
+  border-radius: 14px;
+  pointer-events: none;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.4);
+}
+
+/* Dynamic dock sizing when crowded */
+.dock.dock-crowded .dock-app { width: 46px; height: 46px; }
+.dock.dock-crowded { gap: 7px; padding: 8px 14px; }
+.dock.dock-very-crowded .dock-app { width: 36px; height: 36px; }
+.dock.dock-very-crowded { gap: 5px; padding: 6px 10px; }
+
+/* Launcher button in dock */
+.dock-launcher-btn {
+  width: 56px;
+  height: 56px;
+  cursor: pointer;
+  position: relative;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 14px;
+  background: rgba(255,255,255,0.12);
+  border: 1px solid rgba(255,255,255,0.2);
+  transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+  -webkit-tap-highlight-color: transparent;
+}
+.dock-launcher-btn:hover { transform: translateY(-10px) scale(1.18); background: rgba(255,255,255,0.2); }
+.dock-launcher-btn:active { transform: translateY(-4px) scale(1.05); }
+.dock-launcher-btn svg { pointer-events: none; }
+
+.dock-separator {
+  width: 1px;
+  height: 40px;
+  background: rgba(255,255,255,0.2);
+  flex-shrink: 0;
+  border-radius: 1px;
+}
+
+.dock-app.running::after {
+  content: '';
+  position: absolute;
+  bottom: -8px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 5px;
+  height: 5px;
+  background: var(--accent);
+  border-radius: 50%;
+  box-shadow: 0 0 8px var(--accent);
+}
+
+/* Windows */
+.window {
+  position: absolute;
+  background: var(--win-bg);
+  border-radius: 16px;
+  box-shadow: var(--shadow), 0 0 0 1px var(--glass-border);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  min-width: 280px;
+  min-height: 200px;
+  z-index: 10010; /* above topbar/dock; focus bumps this higher */
+  opacity: 0;
+  transform: scale(0.9) translateY(20px);
+  transition: opacity 0.3s cubic-bezier(0.4, 0, 0.2, 1), transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.window.visible {
+  opacity: 1;
+  transform: scale(1) translateY(0);
+}
+
+.window.closing {
+  opacity: 0;
+  transform: scale(0.9) translateY(20px);
+  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.window.minimizing {
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.6, 1);
+  transform-origin: bottom center;
+}
+
+.window.fullscreen {
+  top: 0 !important;
+  left: 0 !important;
+  width: 100vw !important;
+  height: 100vh !important;
+  border-radius: 0;
+}
+
+.window.fullscreen.hide-topbar .win-head {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  transform: translateY(-100%);
+  transition: transform 0.3s ease;
+  z-index: 100;
+}
+
+.window.fullscreen.hide-topbar .win-head:hover,
+.window.fullscreen.hide-topbar .win-head.visible {
+  transform: translateY(0);
+}
+
+.window.fullscreen.hide-topbar .win-body {
+  height: 100%;
+}
+
+/* Hover trigger zone at top of fullscreen window */
+.fullscreen-hover-zone {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 10px;
+  z-index: 99;
+}
+
+.win-head {
+  height: 44px;
+  background: var(--glass);
+  backdrop-filter: blur(10px);
+  display: flex;
+  align-items: center;
+  padding: 0 16px;
+  cursor: move;
+  flex-shrink: 0;
+  touch-action: none;
+  border-bottom: 1px solid var(--glass-border);
+}
+
+.win-title {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text);
+  flex: 1;
+  text-align: center;
+  pointer-events: none;
+}
+
+.win-body {
+  flex: 1;
+  position: relative;
+  background: var(--win-bg);
+  -webkit-overflow-scrolling: touch;
+  overflow: auto;
+}
+
+.win-body iframe { width: 100%; height: 100%; border: none; background: white; }
+
+.win-controls {
+  display: flex;
+  gap: 8px;
+}
+
+.win-btn {
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  border: none;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  position: relative;
+}
+
+.win-btn:hover {
+  transform: scale(1.15);
+}
+
+.win-btn.close { background: var(--btn-close); }
+.win-btn.minimize { background: var(--btn-minimize); }
+.win-btn.fullscreen { background: var(--btn-fullscreen); }
+
+/* Resizers */
+.resizer { position: absolute; z-index: 10; touch-action: none; }
+.resizer-r { top: 0; right: 0; width: 8px; height: 100%; cursor: e-resize; }
+.resizer-b { bottom: 0; left: 0; height: 8px; width: 100%; cursor: s-resize; }
+.resizer-rb { right: 0; bottom: 0; width: 16px; height: 16px; cursor: se-resize; }
+.resizer-l { top: 0; left: 0; width: 8px; height: 100%; cursor: w-resize; }
+.resizer-t { top: 0; left: 0; height: 8px; width: 100%; cursor: n-resize; }
+.resizer-lt { left: 0; top: 0; width: 16px; height: 16px; cursor: nw-resize; }
+.resizer-rt { right: 0; top: 0; width: 16px; height: 16px; cursor: ne-resize; }
+.resizer-lb { left: 0; bottom: 0; width: 16px; height: 16px; cursor: sw-resize; }
+
+/* ── Window Snap Manager ─────────────────────────────────── */
+#snap-preview {
+  position: fixed;
+  pointer-events: none;
+  z-index: 10005; /* above topbar/dock, below the dragged window (10010+) */
+  border-radius: 14px;
+  background: rgba(120, 180, 255, 0.20);
+  border: 2px solid rgba(140, 190, 255, 0.85);
+  box-shadow: 0 0 0 100vmax rgba(0,0,0,0.03) inset, 0 10px 40px rgba(0,0,0,0.25);
+  opacity: 0;
+  transition: opacity 0.12s ease, left 0.12s ease, top 0.12s ease, width 0.12s ease, height 0.12s ease;
+  display: none;
+}
+#snap-preview.visible { opacity: 1; }
+.window.snapped { transition: left 0.15s ease, top 0.15s ease, width 0.15s ease, height 0.15s ease; }
+
+/* Snap layout flyout (hover the green button) */
+.snap-flyout {
+  position: fixed;
+  z-index: 200002;
+  background: var(--glass);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid var(--glass-border);
+  border-radius: 14px;
+  box-shadow: var(--shadow);
+  padding: 12px;
+  display: none;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 10px;
+  width: 220px;
+}
+.snap-flyout.visible { display: grid; }
+.snap-flyout .snap-group {
+  display: grid;
+  gap: 6px;
+  background: rgba(255,255,255,0.05);
+  border-radius: 10px;
+  padding: 8px;
+}
+.snap-flyout .snap-group-title {
+  grid-column: 1 / -1;
+  font-size: 10px;
+  letter-spacing: 0.4px;
+  text-transform: uppercase;
+  color: var(--text-secondary);
+  margin-bottom: 2px;
+}
+.snap-cell {
+  height: 34px;
+  border-radius: 7px;
+  background: linear-gradient(180deg, rgba(150,190,255,0.35), rgba(150,190,255,0.18));
+  border: 1px solid rgba(160,200,255,0.5);
+  cursor: pointer;
+  transition: transform 0.12s ease, background 0.12s ease;
+}
+.snap-cell:hover { transform: translateY(-1px); background: linear-gradient(180deg, rgba(160,200,255,0.6), rgba(160,200,255,0.35)); }
+.snap-row { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; }
+.snap-quad { display: grid; grid-template-columns: 1fr 1fr; grid-template-rows: 1fr 1fr; gap: 4px; }
+.snap-quad .snap-cell { height: 30px; }
+
+/* Context Menu */
+#ctx-menu {
+  position: fixed;
+  background: var(--glass);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid var(--glass-border);
+  border-radius: 12px;
+  box-shadow: var(--shadow);
+  padding: 6px;
+  z-index: 200001;
+  display: none;
+  min-width: 200px;
+  opacity: 0;
+  transform: scale(0.95) translateY(-10px);
+  transition: all 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+#ctx-menu.visible {
+  opacity: 1;
+  transform: scale(1) translateY(0);
+}
+
+.ctx-item {
+  padding: 10px 14px;
+  font-size: 13px;
+  font-weight: 500;
+  cursor: pointer;
+  color: var(--text);
+  border-radius: 8px;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.ctx-item:hover {
+  background: var(--accent);
+  color: white;
+}
+
+.ctx-separator {
+  height: 1px;
+  background: var(--glass-border);
+  margin: 6px 0;
+}
+
+/* Notes App */
+.notes-area {
+  width: 100%;
+  height: 100%;
+  border: none;
+  padding: 20px;
+  background: var(--win-bg);
+  color: var(--text);
+  outline: none;
+  font-size: 15px;
+  font-family: inherit;
+  resize: none;
+  line-height: 1.6;
+}
+
+/* App Store */
+.app-store {
+  background: rgba(255, 255, 255, 0);
+  color: var(--text);
+  height: 100%;
+  overflow-y: auto;
+  padding: 0;
+}
+
+.app-store-header {
+  padding: 24px;
+  background: rgba(255, 255, 255, 0);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  backdrop-filter: blur(1.8px);
+  -webkit-backdrop-filter: blur(1.8px);
+}
+
+.app-store-header h1 {
+  font-size: 28px;
+  font-weight: 700;
+  margin-bottom: 4px;
+  color: var(--text);
+}
+
+.app-store-header p {
+  color: var(--text-secondary);
+  font-size: 14px;
+  margin-bottom: 16px;
+}
+
+.store-search {
+  width: 100%;
+  padding: 10px 16px;
+  background: rgba(255, 255, 255, 0);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  border-radius: 10px;
+  color: var(--text);
+  font-size: 14px;
+  font-family: inherit;
+  outline: none;
+  box-sizing: border-box;
+  backdrop-filter: blur(1.8px);
+  -webkit-backdrop-filter: blur(1.8px);
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+  transition: border-color 0.2s;
+}
+.store-search::placeholder { color: rgba(255,255,255,0.35); }
+.store-search:focus { border-color: var(--accent); box-shadow: 0 0 0 3px var(--accent-glow); }
+
+.app-store-section {
+  padding: 24px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.app-store-section h2 {
+  font-size: 20px;
+  font-weight: 600;
+  margin-bottom: 16px;
+  color: var(--text);
+}
+
+.app-store-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 16px;
+  padding: 24px;
+}
+
+.store-app-card {
+  background: rgba(255, 255, 255, 0);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  border-radius: 16px;
+  padding: 20px;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  backdrop-filter: blur(1.8px);
+  -webkit-backdrop-filter: blur(1.8px);
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+}
+
+.store-app-card:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--shadow);
+  border-color: var(--accent);
+}
+
+.store-app-icon {
+  width: 64px;
+  height: 64px;
+  border-radius: 16px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+  flex-shrink: 0;
+}
+
+.store-app-info {
+  flex: 1;
+  min-width: 0;
+}
+
+.store-app-info h3 {
+  font-size: 16px;
+  font-weight: 600;
+  margin-bottom: 4px;
+  color: var(--text);
+}
+
+.store-app-info p {
+  font-size: 12px;
+  color: var(--text-secondary);
+  margin-bottom: 12px;
+  line-height: 1.4;
+}
+
+.store-btn {
+  padding: 8px 20px;
+  border-radius: 20px;
+  border: none;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  font-family: inherit;
+}
+
+.store-btn.download {
+  background: var(--accent);
+  color: white;
+  box-shadow: 0 4px 15px var(--accent-glow);
+}
+
+.store-btn.download:hover {
+  transform: scale(1.05);
+  box-shadow: 0 6px 20px var(--accent-glow);
+}
+
+.store-btn.open {
+  background: rgba(255, 255, 255, 0);
+  color: var(--text);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  backdrop-filter: blur(1.8px);
+  -webkit-backdrop-filter: blur(1.8px);
+}
+
+.store-btn.open:hover {
+  background: var(--accent);
+  color: white;
+  border-color: var(--accent);
+}
+
+.store-btn.downloading {
+  background: var(--glass);
+  color: var(--text-secondary);
+  pointer-events: none;
+}
+
+/* App Creator Modal */
+.app-creator-modal {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.8);
+  display: none;
+  align-items: center;
+  justify-content: center;
+  z-index: 300000;
+  padding: 20px;
+}
+
+.app-creator-modal.visible {
+  display: flex;
+}
+
+.app-creator-container {
+  background: var(--win-bg);
+  border-radius: 20px;
+  width: 100%;
+  max-width: 700px;
+  max-height: 90vh;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  box-shadow: var(--shadow), var(--shadow-glow);
+  border: 1px solid var(--glass-border);
+}
+
+.app-creator-header {
+  padding: 20px 24px;
+  background: var(--glass);
+  border-bottom: 1px solid var(--glass-border);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.app-creator-header h2 {
+  font-size: 20px;
+  font-weight: 600;
+  color: var(--text);
+}
+
+.app-creator-close {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  border: none;
+  background: transparent;
+  color: var(--text-secondary);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s;
+}
+
+.app-creator-close:hover {
+  background: var(--glass);
+  color: var(--text);
+}
+
+.app-creator-body {
+  padding: 24px;
+  overflow-y: auto;
+  flex: 1;
+}
+
+.form-group {
+  margin-bottom: 20px;
+}
+
+.form-group label {
+  display: block;
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--text);
+  margin-bottom: 8px;
+}
+
+.form-group input {
+  width: 100%;
+  padding: 12px 16px;
+  border-radius: 10px;
+  border: 1px solid var(--glass-border);
+  background: var(--glass);
+  color: var(--text);
+  font-size: 14px;
+  font-family: inherit;
+  outline: none;
+  transition: all 0.3s;
+}
+
+.form-group input:focus {
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px var(--accent-glow);
+}
+
+.creator-tabs {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 16px;
+  border-bottom: 1px solid var(--glass-border);
+}
+
+.creator-tab {
+  padding: 10px 20px;
+  background: transparent;
+  border: none;
+  color: var(--text-secondary);
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  border-bottom: 2px solid transparent;
+  transition: all 0.2s;
+}
+
+.creator-tab.active {
+  color: var(--accent);
+  border-bottom-color: var(--accent);
+}
+
+.creator-tab:hover {
+  color: var(--text);
+}
+
+.tab-content {
+  display: none;
+}
+
+.tab-content.active {
+  display: block;
+}
+
+.code-editor {
+  width: 100%;
+  min-height: 300px;
+  padding: 16px;
+  border-radius: 10px;
+  border: 1px solid var(--glass-border);
+  background: rgba(0, 0, 0, 0.3);
+  color: var(--text);
+  font-family: 'Courier Prime', monospace;
+  font-size: 13px;
+  line-height: 1.6;
+  resize: vertical;
+  outline: none;
+  transition: all 0.3s;
+}
+
+.code-editor:focus {
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px var(--accent-glow);
+}
+
+.upload-area {
+  border: 2px dashed var(--glass-border);
+  border-radius: 12px;
+  padding: 40px;
+  text-align: center;
+  cursor: pointer;
+  transition: all 0.3s;
+}
+
+.upload-area:hover {
+  border-color: var(--accent);
+  background: var(--glass);
+}
+
+.upload-area input {
+  display: none;
+}
+
+.app-creator-footer {
+  padding: 16px 24px;
+  background: var(--glass);
+  border-top: 1px solid var(--glass-border);
+  display: flex;
+  gap: 12px;
+  justify-content: flex-end;
+}
+
+/* Settings Panel */
+.settings-panel {
+  background: var(--bg);
+  color: var(--text);
+  height: 100%;
+  overflow-y: auto;
+  padding: 0;
+}
+
+.settings-header {
+  padding: 24px;
+  background: var(--glass);
+  border-bottom: 1px solid var(--glass-border);
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  backdrop-filter: blur(20px);
+}
+
+.settings-header h1 {
+  font-size: 28px;
+  font-weight: 700;
+  color: var(--text);
+}
+
+.settings-section {
+  padding: 24px;
+  border-bottom: 1px solid var(--glass-border);
+}
+
+.settings-section h2 {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--text-secondary);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin-bottom: 16px;
+}
+
+.theme-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+  gap: 12px;
+}
+
+.theme-option {
+  padding: 16px;
+  border-radius: 12px;
+  border: 2px solid var(--glass-border);
+  cursor: pointer;
+  transition: all 0.3s ease;
+  text-align: center;
+
+}
+
+.theme-option:hover {
+  border-color: var(--accent);
+}
+
+.theme-option.active {
+  border-color: var(--accent);
+  background: var(--accent-glow);
+}
+
+.theme-preview {
+  width: 100%;
+  height: 40px;
+  border-radius: 8px;
+  margin-bottom: 8px;
+}
+
+.theme-option span {
+  font-size: 13px;
+  font-weight: 500;
+}
+
+/* Settings Toggle Switch */
+.settings-toggle {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 0;
+}
+
+.settings-toggle-label {
+  font-size: 14px;
+  color: var(--text);
+}
+
+.toggle-switch {
+  position: relative;
+  width: 50px;
+  height: 26px;
+  background: var(--glass-border);
+  border-radius: 13px;
+  cursor: pointer;
+  transition: background 0.3s ease;
+}
+
+.toggle-switch.active {
+  background: var(--accent);
+}
+
+.toggle-switch::after {
+  content: '';
+  position: absolute;
+  top: 3px;
+  left: 3px;
+  width: 20px;
+  height: 20px;
+  background: white;
+  border-radius: 50%;
+  transition: transform 0.3s ease;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+}
+
+.toggle-switch.active::after {
+  transform: translateX(24px);
+}
+
+/* Mobile Responsive */
+@media (max-width: 600px) {
+  .desktop {
+    grid-template-columns: repeat(4, 1fr);
+    padding: 70px 12px 90px 12px;
+    gap: 4px;
+  }
+
+  .tile {
+    padding: 8px 4px;
+  }
+
+  .tile img {
+    width: 44px;
+    height: 44px;
+  }
+
+  .tile span {
+    font-size: 10px;
+  }
+
+  .window {
+    width: 94% !important;
+    height: 70% !important;
+    left: 3% !important;
+    top: 8% !important;
+  }
+
+  .window.fullscreen {
+    width: 100vw !important;
+    height: 100vh !important;
+    top: 0 !important;
+    left: 0 !important;
+  }
+
+  .dock {
+    height: 60px;
+    padding: 0 12px;
+    bottom: 12px;
+    border-radius: 18px;
+  }
+
+  .dock-app { width: 44px; height: 44px; }
+
+  .topbar { left: 12px; right: 12px; top: 12px; }
+
+  .resizer { display: none; }
+
+  .app-store-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .theme-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .battery-percent {
+    display: none;
+  }
+
+  .battery-container.show-percent .battery-percent {
+    display: block;
+  }
+}
+
+/* Animations */
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes slideUp {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes pulse {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.05); }
+}
+
+@keyframes shimmer {
+  0% { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}
+
+.downloading-shimmer {
+  background: linear-gradient(90deg, var(--glass) 0%, var(--accent-glow) 50%, var(--glass) 100%);
+  background-size: 200% 100%;
+  animation: shimmer 1.5s infinite;
+}
+
+/* Dock splash animation */
+@keyframes dockBounce {
+  0%, 100% { transform: translateX(-50%) translateY(0); }
+  50% { transform: translateX(-50%) translateY(10px); }
+}
+
+.dock.splashing {
+  animation: dockBounce 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+@keyframes iconPulse {
+  0% { transform: scale(1); box-shadow: 0 0 0 0 var(--accent); }
+  50% { transform: scale(1.1); box-shadow: 0 0 20px var(--accent); }
+  100% { transform: scale(1); box-shadow: 0 0 0 0 var(--accent); }
+}
+
+.dock-app.splash img {
+  animation: iconPulse 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+/* Photos App */
+.photos-app {
+  background: var(--bg);
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.photos-header {
+  padding: 20px 24px;
+  background: var(--glass);
+  border-bottom: 1px solid var(--glass-border);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.photos-header h1 {
+  font-size: 24px;
+  font-weight: 700;
+  color: var(--text);
+  margin: 0;
+}
+
+.photos-upload-btn {
+  padding: 10px 20px;
+  background: var(--accent);
+  color: white;
+  border: none;
+  border-radius: 20px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+  box-shadow: 0 2px 10px var(--accent-glow);
+}
+
+.photos-upload-btn:hover {
+  transform: scale(1.05);
+  box-shadow: 0 4px 15px var(--accent-glow);
+}
+
+.photos-grid {
+  flex: 1;
+  overflow-y: auto;
+  padding: 20px;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+  gap: 16px;
+  align-content: start;
+}
+
+.photos-empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  color: var(--text-secondary);
+  text-align: center;
+  padding: 40px;
+}
+
+.photos-empty svg {
+  margin-bottom: 20px;
+  opacity: 0.5;
+}
+
+.photo-item {
+  position: relative;
+  aspect-ratio: 1;
+  border-radius: 12px;
+  overflow: hidden;
+  cursor: pointer;
+  transition: all 0.2s;
+  background: var(--glass);
+  border: 2px solid transparent;
+}
+
+.photo-item:hover {
+  transform: scale(1.02);
+  border-color: var(--accent);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+}
+
+.photo-item img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.photo-item-name {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 8px;
+  background: linear-gradient(transparent, rgba(0, 0, 0, 0.8));
+  font-size: 11px;
+  color: white;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.photo-viewer {
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.95);
+  display: flex;
+  flex-direction: column;
+  z-index: 10;
+}
+
+.photo-viewer-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 16px 20px;
+  background: var(--glass);
+  border-bottom: 1px solid var(--glass-border);
+}
+
+.photo-viewer-title {
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--text);
+}
+
+.photo-viewer-close {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  border: none;
+  background: var(--glass);
+  color: var(--text);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s;
+}
+
+.photo-viewer-close:hover {
+  background: var(--accent);
+  color: white;
+}
+
+.photo-viewer-content {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  overflow: auto;
+}
+
+.photo-viewer-content img {
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: contain;
+  border-radius: 8px;
+  box-shadow: 0 8px 40px rgba(0, 0, 0, 0.5);
+}
+
+/* Weather App */
+.weather-app {
+  background: var(--bg);
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 40px;
+  text-align: center;
+}
+
+.weather-loading {
+  color: var(--text-secondary);
+}
+
+.weather-loading .spinner {
+  width: 40px;
+  height: 40px;
+  border: 3px solid var(--glass-border);
+  border-top-color: var(--accent);
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+  margin: 0 auto 16px;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+.weather-error {
+  color: #ef4444;
+}
+
+.weather-error button {
+  margin-top: 16px;
+  padding: 10px 24px;
+  background: var(--accent);
+  color: white;
+  border: none;
+  border-radius: 20px;
+  cursor: pointer;
+  font-size: 14px;
+  transition: all 0.2s;
+}
+
+.weather-error button:hover {
+  transform: scale(1.05);
+}
+
+.weather-content {
+  width: 100%;
+  max-width: 400px;
+}
+
+.weather-icon {
+  font-size: 80px;
+  margin-bottom: 16px;
+}
+
+.weather-temp {
+  font-size: 64px;
+  font-weight: 700;
+  color: var(--text);
+  margin-bottom: 8px;
+}
+
+.weather-desc {
+  font-size: 20px;
+  color: var(--text-secondary);
+  margin-bottom: 8px;
+  text-transform: capitalize;
+}
+
+.weather-location {
+  font-size: 16px;
+  color: var(--text-secondary);
+  margin-bottom: 32px;
+}
+
+.weather-details {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+  padding: 20px;
+  background: var(--glass);
+  border-radius: 16px;
+  border: 1px solid var(--glass-border);
+}
+
+.weather-detail {
+  text-align: center;
+}
+
+.weather-detail-label {
+  font-size: 12px;
+  color: var(--text-secondary);
+  margin-bottom: 4px;
+}
+
+.weather-detail-value {
+  font-size: 18px;
+  font-weight: 600;
+  color: var(--text);
+}
+
+.weather-refresh {
+  margin-top: 24px;
+  padding: 10px 24px;
+  background: var(--glass);
+  color: var(--text);
+  border: 1px solid var(--glass-border);
+  border-radius: 20px;
+  cursor: pointer;
+  font-size: 14px;
+  transition: all 0.2s;
+}
+
+.weather-refresh:hover {
+  background: var(--accent);
+  color: white;
+  border-color: var(--accent);
+}
+
+/* Calculator App */
+.calculator-app {
+  background: var(--bg);
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  padding: 20px;
+}
+
+.calc-display {
+  background: rgba(0, 0, 0, 0.3);
+  border-radius: 16px;
+  padding: 20px;
+  margin-bottom: 16px;
+  text-align: right;
+  border: 1px solid var(--glass-border);
+}
+
+.calc-expression {
+  font-size: 16px;
+  color: var(--text-secondary);
+  min-height: 24px;
+  word-break: break-all;
+}
+
+.calc-result {
+  font-size: 48px;
+  font-weight: 600;
+  color: var(--text);
+  word-break: break-all;
+  font-family: 'SF Mono', 'Consolas', monospace;
+}
+
+.calc-buttons {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 10px;
+  flex: 1;
+}
+
+.calc-btn {
+  border: none;
+  border-radius: 12px;
+  font-size: 22px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.15s;
+  font-family: inherit;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.calc-btn:hover {
+  transform: scale(1.05);
+}
+
+.calc-btn:active {
+  transform: scale(0.95);
+}
+
+.calc-btn.number {
+  background: var(--glass);
+  color: var(--text);
+  border: 1px solid var(--glass-border);
+}
+
+.calc-btn.number:hover {
+  background: rgba(255, 255, 255, 0.15);
+}
+
+.calc-btn.operator {
+  background: rgba(56, 189, 248, 0.2);
+  color: var(--accent);
+  border: 1px solid var(--accent);
+}
+
+.calc-btn.operator:hover {
+  background: var(--accent);
+  color: white;
+}
+
+.calc-btn.function {
+  background: rgba(255, 255, 255, 0.1);
+  color: var(--text-secondary);
+  border: 1px solid var(--glass-border);
+}
+
+.calc-btn.function:hover {
+  background: rgba(255, 255, 255, 0.2);
+  color: var(--text);
+}
+
+.calc-btn.equals {
+  background: var(--accent);
+  color: white;
+  border: none;
+}
+
+.calc-btn.equals:hover {
+  box-shadow: 0 4px 15px var(--accent-glow);
+}
+
+.calc-btn.wide {
+  grid-column: span 2;
+}
+
+/* Custom cursor for desktop */
+@media (pointer: fine) {
+  body {
+    cursor: url("https://iili.io/fO1N8CX.png") 4 4, auto;
+  }
+
+  button, .win-btn, .tile, .dock-app, .ctx-item, .store-btn, .theme-option, .toggle-switch {
+    cursor: pointer;
+  }
+
+  button:hover, .tile:hover, .dock-app:hover {
+    cursor: url("https://iili.io/fO1NkQt.png") 0 0, pointer;
+  }
+}
+
+/* ── App Launcher (Launchpad) ─────────────────────────────── */
+#launcher-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 90000;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  background: rgba(255, 255, 255, 0);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  animation: launcherFadeIn 0.25s cubic-bezier(0.4,0,0.2,1);
+}
+#launcher-overlay.visible { display: flex; }
+
+@keyframes launcherFadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+#launcher-panel {
+  width: min(92vw, 960px);
+  max-height: 82vh;
+  background: rgba(255, 255, 255, 0);
+  backdrop-filter: blur(1.8px);
+  -webkit-backdrop-filter: blur(1.8px);
+  border-radius: 16px;
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  animation: panelPop 0.3s cubic-bezier(0.34,1.56,0.64,1);
+}
+
+@keyframes panelPop {
+  from { opacity: 0; transform: scale(0.93) translateY(20px); }
+  to { opacity: 1; transform: scale(1) translateY(0); }
+}
+
+.launcher-header {
+  padding: 22px 28px 16px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-bottom: 1px solid rgba(255,255,255,0.08);
+  flex-shrink: 0;
+}
+
+.launcher-title {
+  font-size: 20px;
+  font-weight: 600;
+  color: var(--text);
+  letter-spacing: -0.3px;
+}
+
+.launcher-search {
+  flex: 1;
+  max-width: 260px;
+  margin-left: 20px;
+  padding: 9px 16px;
+  background: rgba(255,255,255,0.1);
+  border: 1px solid rgba(255,255,255,0.15);
+  border-radius: 10px;
+  color: var(--text);
+  font-size: 14px;
+  font-family: inherit;
+  outline: none;
+  transition: all 0.2s;
+}
+.launcher-search::placeholder { color: rgba(255,255,255,0.4); }
+.launcher-search:focus { background: rgba(255,255,255,0.15); border-color: var(--accent); box-shadow: 0 0 0 3px var(--accent-glow); }
+
+.launcher-close {
+  width: 30px; height: 30px;
+  border-radius: 50%;
+  border: none;
+  background: rgba(255,255,255,0.12);
+  color: var(--text);
+  cursor: pointer;
+  display: flex; align-items: center; justify-content: center;
+  transition: all 0.2s;
+  margin-left: 12px;
+}
+.launcher-close:hover { background: rgba(255,255,255,0.25); }
+
+.launcher-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(110px, 1fr));
+  gap: 6px;
+  padding: 20px 24px;
+  overflow-y: auto;
+  flex: 1;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(255,255,255,0.2) transparent;
+}
+.launcher-grid::-webkit-scrollbar { width: 6px; }
+.launcher-grid::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.2); border-radius: 3px; }
+
+.launcher-app {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  padding: 16px 8px;
+  border-radius: 16px;
+  cursor: pointer;
+  transition: all 0.2s cubic-bezier(0.4,0,0.2,1);
+  border: 2px solid transparent;
+  text-align: center;
+}
+.launcher-app:hover {
+  background: rgba(255,255,255,0.12);
+  border-color: rgba(255,255,255,0.15);
+  transform: scale(1.04);
+}
+.launcher-app:active { transform: scale(0.97); }
+.launcher-app img {
+  width: 64px; height: 64px;
+  border-radius: 16px;
+  pointer-events: none;
+  box-shadow: 0 4px 16px rgba(0,0,0,0.35);
+}
+.launcher-app span {
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--text);
+  text-shadow: 0 1px 4px rgba(0,0,0,0.5);
+  pointer-events: none;
+  max-width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  line-height: 1.3;
+}
+.launcher-empty {
+  grid-column: 1/-1;
+  text-align: center;
+  color: var(--text-secondary);
+  padding: 40px;
+  font-size: 15px;
+}
+
+/* ── Login Clock ─────────────────────────────────────────── */
+#login-clock-wrap {
+  display: none;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 32px;
+  animation: cardFloat 0.5s cubic-bezier(0.34,1.56,0.64,1);
+}
+
+#login-clock-time {
+  font-size: 88px;
+  font-weight: 200;
+  letter-spacing: -4px;
+  color: rgba(255,255,255,0.95);
+  text-shadow: 0 0 60px rgba(255,255,255,0.25), 0 2px 20px rgba(0,0,0,0.4);
+  font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Inter', sans-serif;
+  background: rgba(255,255,255,0.08);
+  backdrop-filter: blur(30px) saturate(1.5);
+  -webkit-backdrop-filter: blur(30px) saturate(1.5);
+  padding: 18px 44px;
+  border-radius: 24px;
+  border: 1px solid rgba(255,255,255,0.18);
+  box-shadow: 0 8px 40px rgba(0,0,0,0.3), inset 0 1px 0 rgba(255,255,255,0.2);
+  line-height: 1;
+}
+
+#login-clock-date {
+  margin-top: 12px;
+  font-size: 18px;
+  font-weight: 300;
+  color: rgba(255,255,255,0.8);
+  letter-spacing: 0.5px;
+  text-shadow: 0 1px 8px rgba(0,0,0,0.4);
+}
+
+/* ── Camera App ──────────────────────────────────────────── */
+.camera-app {
+  background: #000;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  color: white;
+}
+
+.camera-viewfinder {
+  flex: 1;
+  position: relative;
+  background: #111;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+
+.camera-viewfinder video {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.camera-viewfinder canvas {
+  display: none;
+}
+
+.camera-error {
+  text-align: center;
+  color: rgba(255,255,255,0.7);
+  padding: 40px;
+}
+.camera-error svg { margin-bottom: 16px; opacity: 0.5; }
+
+.camera-controls {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 24px;
+  padding: 20px;
+  background: rgba(0,0,0,0.8);
+  backdrop-filter: blur(20px);
+  flex-shrink: 0;
+}
+
+.camera-shutter {
+  width: 72px;
+  height: 72px;
+  border-radius: 50%;
+  border: 4px solid white;
+  background: transparent;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.15s;
+  position: relative;
+}
+.camera-shutter::after {
+  content: '';
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  background: white;
+  transition: all 0.15s;
+}
+.camera-shutter:hover::after { background: rgba(255,255,255,0.85); transform: scale(0.95); }
+.camera-shutter:active::after { background: rgba(255,255,255,0.6); transform: scale(0.88); }
+
+.camera-record-btn {
+  width: 72px;
+  height: 72px;
+  border-radius: 50%;
+  border: 4px solid #ef4444;
+  background: transparent;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.15s;
+  position: relative;
+}
+.camera-record-btn::after {
+  content: '';
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  background: #ef4444;
+  transition: all 0.3s cubic-bezier(0.4,0,0.2,1);
+}
+.camera-record-btn.recording::after {
+  width: 28px;
+  height: 28px;
+  border-radius: 6px;
+  background: #ef4444;
+}
+.camera-record-btn:hover::after { opacity: 0.85; transform: scale(0.95); }
+
+.camera-mode-btn {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  border: 2px solid rgba(255,255,255,0.4);
+  background: rgba(255,255,255,0.1);
+  color: white;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s;
+  font-size: 12px;
+  font-weight: 600;
+}
+.camera-mode-btn.active { background: white; color: black; border-color: white; }
+.camera-mode-btn:hover { background: rgba(255,255,255,0.2); }
+
+.camera-recording-indicator {
+  position: absolute;
+  top: 16px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: #ef4444;
+  color: white;
+  padding: 6px 16px;
+  border-radius: 20px;
+  font-size: 13px;
+  font-weight: 600;
+  display: none;
+  align-items: center;
+  gap: 6px;
+  animation: recordPulse 1s infinite;
+}
+.camera-recording-indicator.visible { display: flex; }
+@keyframes recordPulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.6; }
+}
+
+/* ── Photos: video item ──────────────────────────────────── */
+.photo-item video {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.photo-item .video-badge {
+  position: absolute;
+  top: 6px;
+  right: 6px;
+  background: rgba(0,0,0,0.6);
+  border-radius: 6px;
+  padding: 2px 6px;
+  font-size: 10px;
+  color: white;
+  font-weight: 600;
+}
+.photo-viewer-content video {
+  max-width: 100%;
+  max-height: 100%;
+  border-radius: 8px;
+  box-shadow: 0 8px 40px rgba(0,0,0,0.5);
+}
+.download-btn {
+  padding: 10px 24px;
+  background: var(--accent);
+  color: white;
+  border: none;
+  border-radius: 20px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+.download-btn:hover { transform: scale(1.05); box-shadow: 0 4px 15px var(--accent-glow); }
+</style>
+</head>
+<body data-theme="forest">
+<div class="wallpaper" id="wall"></div>
+
+<div id="login-screen">
+  <div id="login-clock-wrap">
+    <div id="login-clock-time">12:00</div>
+    <div id="login-clock-date">Wednesday, April 29</div>
+  </div>
+  <div class="login-card">
+    <h2 id="login-title">Welcome to arcticOS</h2>
+    <p class="login-subtitle" id="login-subtitle">Create your account to get started</p>
+    <input type="text" id="username" placeholder="Username" autocomplete="off" oninput="syncPasswordFieldToUsername()" onkeydown="if(event.key==='Enter') handleAuth()">
+    <input type="password" id="password" placeholder="Password" onkeydown="if(event.key==='Enter') handleAuth()" autocomplete="off">
+    <button onclick="handleAuth()" id="login-btn">Create Account</button>
+    <p id="login-switch" onclick="showUserSwitch()" style="display:none; margin-top:14px; font-size:12px; color:var(--text-secondary); cursor:pointer; text-decoration:underline;">Log in as a different user</p>
+  </div>
+</div>
+
+<div id="ctx-menu"></div>
+<div id="snap-preview"></div>
+<div class="snap-flyout" id="snap-flyout"></div>
+<input type="file" id="wall-upload" style="display:none" accept="image/*" onchange="handleFileWall(this)">
+
+<!-- App Creator Modal -->
+<div class="app-creator-modal" id="app-creator-modal">
+  <div class="app-creator-container">
+    <div class="app-creator-header">
+      <h2>Create Custom App</h2>
+      <button class="app-creator-close" onclick="closeAppCreator()">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M18 6L6 18M6 6l12 12"/>
+        </svg>
+      </button>
+    </div>
+    <div class="app-creator-body">
+      <div class="form-group">
+        <label>App Name</label>
+        <input type="text" id="custom-app-name" placeholder="My Custom App">
+      </div>
+      <div class="form-group">
+        <label>App Icon URL</label>
+        <input type="text" id="custom-app-icon" placeholder="https://example.com/icon.png">
+      </div>
+      
+      <div class="creator-tabs">
+        <button class="creator-tab active" onclick="switchCreatorTab('code')">Code Editor</button>
+        <button class="creator-tab" onclick="switchCreatorTab('upload')">Upload File</button>
+      </div>
+      
+      <div id="code-tab" class="tab-content active">
+        <div class="form-group">
+          <label>HTML Code</label>
+          <textarea class="code-editor" id="custom-app-code" placeholder="<!DOCTYPE html>
+<html>
+<head>
+  <title>My App</title>
+  <style>
+    body { font-family: Arial; padding: 20px; }
+  </style>
+</head>
+<body>
+  <h1>Hello World!</h1>
+</body>
+</html>"></textarea>
+        </div>
+      </div>
+      
+      <div id="upload-tab" class="tab-content">
+        <label class="upload-area">
+          <input type="file" id="custom-app-file" accept=".html,.htm" onchange="handleAppFileUpload(this)">
+          <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="2" style="margin-bottom: 12px;">
+            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+            <polyline points="17 8 12 3 7 8"/>
+            <line x1="12" y1="3" x2="12" y2="15"/>
+          </svg>
+          <div style="color: var(--text); font-weight: 500; margin-bottom: 4px;">Upload HTML File</div>
+          <div style="color: var(--text-secondary); font-size: 13px;">Click to browse or drag and drop</div>
+        </label>
+      </div>
+    </div>
+    <div class="app-creator-footer">
+      <button class="store-btn open" onclick="closeAppCreator()">Cancel</button>
+      <button class="store-btn download" onclick="createCustomApp()">Create App</button>
+    </div>
+  </div>
+</div>
+
+<!-- App Launcher Overlay -->
+<div id="launcher-overlay" onclick="handleLauncherOverlayClick(event)">
+  <div id="launcher-panel">
+    <div class="launcher-header">
+      <span class="launcher-title">Applications</span>
+      <input class="launcher-search" id="launcher-search" type="text" placeholder="Search apps…" oninput="filterLauncher(this.value)" autocomplete="off" autocorrect="off" spellcheck="false">
+      <button class="launcher-close" onclick="closeLauncher()">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M18 6L6 18M6 6l12 12"/></svg>
+      </button>
+    </div>
+    <div class="launcher-grid" id="launcher-grid"></div>
+  </div>
+</div>
+
+<header class="topbar" id="mainTopbar">
+  <div style="display:flex; align-items:center; gap:8px;">
+    <div id="os-brand">ARCTIC OS</div>
+  </div>
+  <div style="margin-left:auto; display:flex; align-items:center; gap:16px;">
+    <div class="battery-container" id="battery-container">
+      <div class="battery-icon" id="battery-icon">
+        <div class="battery-level" id="battery-level"></div>
+        <span class="battery-charging" id="battery-charging" style="display:none;">&#9889;</span>
+      </div>
+      <span class="battery-percent" id="battery-percent">--</span>
+    </div>
+    <div id="clock" style="font-size:13px; font-weight:500;">00:00</div>
+  </div>
+</header>
+
+<main class="desktop" id="desktop"></main>
+<div class="dock" id="dock"></div>
+
+<script>
+// Default apps that are always installed
+const DEFAULT_APPS = {
+  browser: {
+    title: "Browser",
+    icon: "Apps/browser.png",
+    src: "Apps/browser.html",
+    description: "Browse the web through a fast, cutting-edge proxy"
+  },
+  terminal: {
+    title: "Terminal",
+    icon: "Apps/terminal.png",
+    type: 'term',
+    description: "Command line interface"
+  },
+  photos: {
+    title: "Photos",
+    icon: "Apps/photos.png",
+    type: 'photos',
+    description: "Upload and view your images"
+  },
+  notes: {
+    title: "Notes",
+    icon: "Apps/notes.png",
+    type: 'notes',
+    description: "Write and save notes"
+  },
+  appstore: {
+    title: "App Store",
+    icon: "Apps/apps.png",
+    type: 'appstore',
+    description: "Download new apps"
+  },
+  settings: {
+    title: "Settings",
+    icon: "Apps/settings.png",
+    type: 'settings',
+    description: "Customize your experience"
+  },
+  camera: {
+    title: "Camera",
+    icon: "Apps/camera.png",
+    type: 'camera',
+    description: "Take photos and record videos"
+  },
+};
+
+// Apps available for download in the store
+const STORE_APPS = {
+  untestify: {
+    title: "unTestify",
+    icon: "Apps/chrome.webp",
+    src: "Apps/Browser Crash.html",
+    description: "Get out of any online school assesment for the day."
+  },
+  Hang3D: {
+    title: "Hang3D",
+    icon: "Apps/new.png",
+    src: "http://maximumroulette.com/apps/shooter/hang3d-nightmare.html",
+    description: "Realistic Nightmare Game."
+  },
+ Hang3Do: {
+    title: "Hang3D Old",
+    icon: "Apps/old.png",
+    src: "http://maximumroulette.com/apps/hang3d/",
+    description: "Old Realistic Nightmare Game."
+  },
+ rr: {
+    title: "RealisticRendering",
+    icon: "Apps/rr.png",
+    src: "https://maximumroulette.com/apps/realistic-rendering/",
+    description: "The most realistic rendering a chromebook can handle."
+  },
+ stz: {
+    title: "Shoot the Zombie",
+    icon: "Apps/zombies.png",
+    src: "https://maximumroulette.com/apps/shoot-the-zombie/",
+    description: "Shoot zombies."
+  },
+  fr24: {
+    title: "FlightRadar24",
+    icon: "Apps/fr.jpeg",
+    src: "https://www.flightradar24.com/",
+    description: "Track live air traffic"
+  },
+  ali: {
+    title: "AliExpress",
+    icon: "Apps/ali.webp",
+    src: "https://aliexpress.us",
+    description: "Online shopping - but cheap!"
+  },
+ fn: {
+    title: "FoxNews",
+    icon: "Apps/fox.png",
+    src: "https://www.foxnews.com/",
+    description: "Follow along with all the top headlines!"
+  },
+ wp: {
+    title: "WikiPedia",
+    icon: "Apps/wikipedia-tile.svg",
+    src: "https://en.wikipedia.org/wiki/Main_Page",
+    description: "The online dictionary."
+  },
+ mj: {
+    title: "MicropolisJS",
+    icon: "Apps/micro.png",
+    src: "https://www.graememcc.co.uk/micropolisJS",
+    description: "Build your own mini city."
+  },
+  messages: {
+    title: "Messages",
+    icon: "Apps/messages.png",
+    src: "https://padlet.com/55616966/messages-940y3791bseh089s",
+    description: "Message others using arcticOS"
+  },
+  ai: {
+    title: "fernAI",
+    icon: "Apps/ai.png",
+    src: "Apps/ai.html",
+    description: "Use AI models like Google Gemini, Grok, ChatGPT, and Claude - All for free!"
+  },
+  Google: {
+    title: "Google",
+    icon: "Apps/google.png",
+    src: "https://www.google.com?igu=1",
+    description: "Secure search engine developed by Google"
+  },
+  brawlstars: {
+    title: "Brawl Stars",
+    icon: "Apps/brawl.png",
+    src: "Apps/brawl.html",
+    description: "Brawl against people with unique skins and characters!"
+  },
+    weather: {
+    title: "Weather",
+    icon: "Apps/weather.png",
+    type: 'weather',
+    description: "Check current weather conditions"
+  },
+  calculator: {
+    title: "Calculator",
+    icon: "Apps/calc.png",
+    type: 'calculator',
+    description: "Calculator with keyboard support"
+  },
+  browser2: {
+    title: "Voidgate",
+    icon: "Apps/voidgate.png",
+    src: "Apps/Voidgate.html",
+    description: "Proxy/VPN browser made by Ghxst"
+  },
+  soundboard: {
+    title: "Soundboard",
+    icon: "Apps/sound.png",
+    src: "Apps/soundboard/index.html",
+    description: "Play sound effects and audio clips"
+  },
+  bitplanes: {
+    title: "Bit Planes",
+    icon: "Apps/bitplanes.png",
+    src: "Apps/BitPlanes/index.html",
+    description: "Retro-style airplane flying game"
+  },
+  citydriver: {
+    title: "City Driver",
+    icon: "Apps/citydriver.png",
+    src: "Apps/citydriver.html",
+    description: "Realistic driving game"
+  },
+  sketchbook: {
+    title: "Sketchbook 0.4",
+    icon: "Apps/sketch.png",
+    src: "Apps/sketch.html",
+    description: "Physics sandbox"
+  },
+  hyppersandbox: {
+    title: "Hypper Sandbox",
+    icon: "Apps/hypper.png",
+    src: "Apps/Hypper Sandbox.html",
+    description: "Online Sandbox - Play with friends!"
+  },
+  bsr: {
+    title: "Buckshot Roulette",
+    icon: "Apps/buck.webp",
+    src: "Apps/buckshot.html",
+    description: "Russian roulette with a shotgun"
+  },
+  cr: {
+    title: "Crossy Road",
+    icon: "Apps/crossy.webp",
+    src: "Apps/crossy.html",
+    description: "Run across the road in the form of a chicken."
+  },
+  Doom: {
+    title: "Doom64",
+    icon: "Apps/doom64.webp",
+    src: "Apps/doom64.html",
+    description: "Emulation of Doom N64"
+  },
+  bj: {
+    title: "BlackJack",
+    icon: "Apps/blackjack.webp",
+    src: "Apps/BlackJack.html",
+    description: "Jack a Black"
+  },
+ Bb: {
+    title: "Block Blast",
+    icon: "Apps/unnamed.webp",
+    src: "Apps/block-blast.html",
+    description: "Blast a Block"
+  },
+ g: {
+    title: "Granny",
+    icon: "Apps/granny.webp",
+    src: "Apps/Granny.html",
+    description: "Run away from a scary Granny"
+  },
+ g2: {
+    title: "Granny 2",
+    icon: "Apps/gran2.webp",
+    src: "Apps/Granny%202.html",
+    description: "Run from scary Granny"
+  },
+ g3: {
+    title: "Granny 3",
+    icon: "Apps/gran3.webp",
+    src: "Apps/Granny%203.html",
+    description: "Run from Granny"
+  },
+ hoh: {
+    title: "House of Hazards",
+    icon: "Apps/house.webp",
+    src: "Apps/houseofhazards.html",
+    description: "Run through a house of hazards"
+  },
+ ib: {
+    title: "Idle Breakout",
+    icon: "Apps/idle.webp",
+    src: "Apps/idle-breakout.html",
+    description: "Breakout while idle"
+  },
+ JD: {
+    title: "Jelly Drift",
+    icon: "Apps/jelly.webp",
+    src: "Apps/Jelly.html",
+    description: "Drift a Jelly Car"
+  },
+ MM: {
+    title: "Monkey Mart",
+    icon: "Apps/monkey.webp",
+    src: "Apps/MonkeyMart.html",
+    description: "Run a monkey shop"
+  },
+ MX3M: {
+    title: "MotoX3M",
+    icon: "Apps/moto.webp",
+    src: "Apps/motox3m.html",
+    description: "Motorcross 2D obstacle avoidance."
+  },
+ SS: {
+    title: "Solar Smash",
+    icon: "Apps/solar.webp",
+    src: "Apps/solar.html",
+    description: "Smash planets"
+  },
+ sw: {
+    title: "Space Waves",
+    icon: "Apps/space.webp",
+    src: "Apps/spacewaves.html",
+    description: "Wave through space"
+  },
+ subsurf: {
+    title: "Subway Surfers",
+    icon: "Apps/sub.webp",
+    src: "Apps/subway-surfers.html",
+    description: "Surf through subways"
+  },
+ shiiit: {
+    title: "Superhot",
+    icon: "Apps/superhot.webp",
+    src: "Apps/superhot.html",
+    description: "Unique first-person shooter"
+  },
+  gta2: {
+    title: "GTA 2",
+    icon: "Apps/gta2.webp",
+    src: "Apps/gta2.html",
+    description: "Web port of GTA 2"
+  },
+  bartbash: {
+    title: "Bart Bash",
+    icon: "Apps/bartbash.webp",
+    src: "Apps/bartbash.html",
+    description: "Bash Bart"
+  },
+  adgac: {
+    title: "A Dangerous Game About Climbing",
+    icon: "Apps/adgac.webp",
+    src: "Apps/adgac.html",
+    description: "Climb Dangerously"
+  },
+  tim3: {
+    title: "Time Shooter 3: SWAT",
+    icon: "https://iili.io/B7hjUwx.webp",
+    src: "Apps/timeshoot3.html",
+    description: "Low-Poly Shooting Game"
+  },
+  cs: {
+    title: "C.S. 1.6",
+    icon: "https://iili.io/B7hjw67.webp",
+    src: "Apps/cs.html",
+    description: "Shoot people up"
+  },
+  goi: {
+    title: "Getting Over It",
+    icon: "https://iili.io/B7hjSuj.webp",
+    src: "Apps/goi.html",
+    description: "Get Over It"
+  },
+  gtag: {
+    title: "Gorilla Tag",
+    icon: "https://iili.io/B7hjvyb.webp",
+    src: "Apps/gtag.html",
+    description: "Webport of Gorilla Tag"
+  },
+  au: {
+    title: "Among Us",
+    icon: "Apps/au.png",
+    src: "Apps/Among Us.html",
+    description: "The imposter is among you..."
+  },
+  acecombat3: {
+    title: "Ace Combat 3",
+    icon: "Apps/acecombat3.jpg",
+    src: "Apps/clacecombat3.html",
+    description: "Retro dogfights."
+  },
+  acecombat2: {
+    title: "Ace Combat 2",
+    icon: "Apps/acecombat2.jpg",
+    src: "Apps/clacecombat3.html",
+    description: "Retro dogfights."
+  },
+  asrp: {
+    title: "A.S.R.P",
+    icon: "Apps/asrp.png",
+    src: "Apps/asrp.html",
+    description: "Swing around the city causing chaos."
+  },
+    retrobowl: {
+    title: "Retro Bowl",
+    icon: "https://iili.io/ftxakfp.png",
+    src: "Apps/retrobowl.html",
+    description: "Retro-style football game"
+  },
+  petezah: {
+    title: "Games",
+    icon: "https://iili.io/fL18ydP.png",
+    src: "Apps/petezah.html",
+    description: "Collection of unblocked games by Ghxst"
+  },
+  GGV2: {
+    title: "GGV2",
+    icon: "https://iili.io/fL18ydP.png",
+    src: "Apps/GGV2.html",
+    description: "Unblocked games launcher by Ghxst."
+  },
+  bitlife: {
+    title: "BitLife",
+    icon: "https://iili.io/f4Y4UzB.webp",
+    src: "Apps/bitlife.html",
+    description: "Life simulator game"
+  },
+  scrapmetal3: {
+    title: "Scrap Metal 3",
+    icon: "https://iili.io/fiZ8Bx2.jpg",
+    src: "Apps/scrapmetal3.html",
+    description: "Realsitic offroading game"
+  },
+  bulletforce: {
+    title: "Bullet Force",
+    icon: "https://iili.io/fiZQmxe.png",
+    src: "Apps/bulletforce.html",
+    description: "Realsitic shooting game"
+  },
+  buildnowgg: {
+    title: "BuildNow.GG",
+    icon: "https://iili.io/fit2tea.png",
+    src: "Apps/buildnow.html",
+    description: "Online multiplayer shooting game"
+  },
+  officefight: {
+    title: "Office Fight",
+    icon: "Apps/officefight.png",
+    src: "Apps/officefight.html",
+    description: "Whap your boss and employees..."
+  },
+  drifthunters: {
+    title: "Drift Hunters",
+    icon: "Apps/dh.png",
+    src: "Apps/drifthunters.html",
+    description: "Arcade drifting game"
+  },
+  kour: {
+    title: "Kour.io",
+    icon: "Apps/Kour.io.png",
+    src: "Apps/Kour.io.html",
+    description: "Go against friends w/ straps"
+  },
+  escaperoad: {
+    title: "Escape Road",
+    icon: "https://iili.io/fiDGK4R.png",
+    src: "Apps/escaperoad2.html",
+    description: "Pixellated pursuit game"
+  },
+  escaperoad2: {
+    title: "Escape Road 2",
+    icon: "https://iili.io/fsr5CP9.webp",
+    src: "Apps/escaperoadv2.html",
+    description: "Improved pixellated pursuit game"
+  },
+  escaperoad3: {
+    title: "Escape Road 3",
+    icon: "Apps/escaperoad3.png",
+    src: "Apps/escaperoad3.html",
+    description: "Remastered pixellated pursuit game"
+  },
+  PUBGMini: {
+    title: "PUBG Mini",
+    icon: "Apps/pm.webp",
+    src: "Apps/pm.html",
+    description: "Mini PUBG"
+  },
+  DCR: {
+    title: "Derby Crash Racing",
+    icon: "Apps/dcr.png",
+    src: "Apps/dcr.html",
+    description: "Demolition derby race."
+  },
+  sandboxcity: {
+    title: "Sandbox City",
+    icon: "https://iili.io/fitNuFs.png",
+    src: "Apps/sandboxcity.html",
+    description: "Zombie ragdoll game"
+  },
+  infinitecraft: {
+    title: "Infinite Craft",
+    icon: "https://iili.io/fs9K1X1.webp",
+    src: "Apps/infinitecraft.html",
+    description: "Infinite crafting game"
+  },
+  snowballio: {
+    title: "Snowball.io",
+    icon: "Apps/snowball.png",
+    src: "Apps/snowballio.html",
+    description: "Snowmobile arena showdown"
+  },
+  stickmanhook: {
+    title: "Stickman Hook",
+    icon: "https://games.ibisfab.com/upload/logo-1729168328206.jpg",
+    src: "Apps/Stickmanhook.html",
+    description: "Stickman grappling game"
+  },
+  survivalrace: {
+    title: "Survival Race",
+    icon: "https://iili.io/fs2algs.png",
+    src: "Apps/survivalrace.html",
+    description: "Last one standing"
+  },
+  edyscarsim: {
+    title: "Car Sim",
+    icon: "https://iili.io/fkRDubn.png",
+    src: "Apps/edyscarsim.html",
+    description: "Realistic driving simulator"
+  },
+  driftboss: {
+    title: "Drift Boss",
+    icon: "https://iili.io/fLOsqKv.webp",
+    src: "Apps/driftboss.html",
+    description: "Arcade-style drift game"
+  },
+  slowroads: {
+    title: "Slow Roads",
+    icon: "https://slowroads.io/favicon.svg",
+    src: "https://slowroads.io/",
+    description: "Relaxing endless driving game"
+  },
+  drivemad: {
+    title: "Drive Mad",
+    icon: "https://iili.io/qAZZwhu.png",
+    src: "Apps/drivemad.html",
+    description: "Truck obstacle course"
+  },
+  minecraft: {
+    title: "Minecraft",
+    icon: "https://iili.io/fcCe25X.png",
+    src: "Apps/EaglercraftX 1.8.8(u29).html",
+    description: "Classic block building game"
+  },
+};
+
+// Combine all apps for easy access
+let ALL_APPS = { ...DEFAULT_APPS, ...STORE_APPS };
+
+// Theme definitions
+const THEMES = {
+  dark: { name: 'Arctic', preview: 'linear-gradient(135deg, #0a1628, #1a3a5c)' },
+  light: { name: 'Light', preview: 'linear-gradient(135deg, #f0f4f8, #d4e8f5)' },
+  sunset: { name: 'Sunset', preview: 'linear-gradient(135deg, #1a0a1e, #3d1a4a)' },
+  forest: { name: 'Forest', preview: 'linear-gradient(135deg, #0a1a0f, #1a3d25)' },
+  ambient: { name: 'Ambient', preview: 'linear-gradient(135deg, #030712, #111827)' },
+  ocean: { name: 'Ocean', preview: 'linear-gradient(135deg, #0c1929, #164e63)' }
+};
+
+let zIndexCounter = 10010; // windows sit ABOVE the topbar (10000) and dock (10001)
+let activeWindows = {};
+let batteryInfo = { level: 100, charging: false, supported: false };
+
+// Terminal state
+const terminalState = {
+  history: [],
+  historyIndex: -1,
+  currentDir: '~',
+  fileSystem: {
+    '~': {
+      type: 'dir',
+      children: {
+        'documents': {
+          type: 'dir',
+          children: {
+            'readme.txt': { type: 'file', content: 'Welcome to arcticOS!\nThis is your personal operating system.' },
+            'notes.txt': { type: 'file', content: 'Remember to explore all terminal commands!\nType "help" to see available commands.' }
+          }
+        },
+        'downloads': { type: 'dir', children: {} },
+        'pictures': { type: 'dir', children: {} },
+        'projects': {
+          type: 'dir',
+          children: {
+            'hello.js': { type: 'file', content: 'console.log("Hello, arcticOS!");' }
+          }
+        }
+      }
+    }
+  }
+};
+
+// Terminal aliases store
+const terminalAliases = {};
+// Terminal env vars
+const terminalEnv = { USER: () => state.user?.username || 'guest', HOME: '/home/user', SHELL: '/bin/arctic', OS: 'arcticOS', VERSION: '2.0' };
+
+const terminalCommands = {
+  help: {
+    desc: 'Show available commands',
+    usage: 'help [command]',
+    fn: (args) => {
+      if (args[0] && terminalCommands[args[0]]) {
+        const c = terminalCommands[args[0]];
+        return `<span style="color:#38bdf8;">${args[0]}</span> — ${c.desc}\n<span style="color:#94a3b8;">Usage:</span> ${c.usage}`;
+      }
+      let o = '<span style="color:#34d399;font-weight:bold;">arcticOS Terminal — Available Commands</span>\n\n';
+      o += '<span style="color:#fbbf24;">── Navigation ──────────────────</span>\n';
+      o += '  <span style="color:#38bdf8;">ls</span> <span style="color:#94a3b8;">cd</span> <span style="color:#38bdf8;">pwd</span> <span style="color:#94a3b8;">find</span>\n\n';
+      o += '<span style="color:#fbbf24;">── Files ───────────────────────</span>\n';
+      o += '  <span style="color:#38bdf8;">cat</span> <span style="color:#94a3b8;">head</span> <span style="color:#38bdf8;">tail</span> <span style="color:#94a3b8;">touch</span> <span style="color:#38bdf8;">mkdir</span> <span style="color:#94a3b8;">rm</span> <span style="color:#38bdf8;">cp</span> <span style="color:#94a3b8;">mv</span> <span style="color:#38bdf8;">write</span> <span style="color:#94a3b8;">wc</span> <span style="color:#38bdf8;">grep</span> <span style="color:#94a3b8;">diff</span>\n\n';
+      o += '<span style="color:#fbbf24;">── System ──────────────────────</span>\n';
+      o += '  <span style="color:#38bdf8;">whoami</span> <span style="color:#94a3b8;">id</span> <span style="color:#38bdf8;">hostname</span> <span style="color:#94a3b8;">uname</span> <span style="color:#38bdf8;">uptime</span> <span style="color:#94a3b8;">date</span> <span style="color:#38bdf8;">time</span> <span style="color:#94a3b8;">ps</span> <span style="color:#38bdf8;">top</span> <span style="color:#94a3b8;">kill</span> <span style="color:#38bdf8;">df</span> <span style="color:#94a3b8;">free</span> <span style="color:#38bdf8;">battery</span>\n\n';
+      o += '<span style="color:#fbbf24;">── Network ─────────────────────</span>\n';
+      o += '  <span style="color:#38bdf8;">ping</span> <span style="color:#94a3b8;">ifconfig</span> <span style="color:#38bdf8;">curl</span> <span style="color:#94a3b8;">wget</span>\n\n';
+      o += '<span style="color:#fbbf24;">── Apps ────────────────────────</span>\n';
+      o += '  <span style="color:#38bdf8;">open</span> <span style="color:#94a3b8;">apps</span> <span style="color:#38bdf8;">install</span> <span style="color:#94a3b8;">uninstall</span> <span style="color:#38bdf8;">launch</span>\n\n';
+      o += '<span style="color:#fbbf24;">── Shell ───────────────────────</span>\n';
+      o += '  <span style="color:#38bdf8;">echo</span> <span style="color:#94a3b8;">clear</span> <span style="color:#38bdf8;">history</span> <span style="color:#94a3b8;">alias</span> <span style="color:#38bdf8;">env</span> <span style="color:#94a3b8;">export</span> <span style="color:#38bdf8;">which</span> <span style="color:#94a3b8;">man</span> <span style="color:#38bdf8;">sleep</span> <span style="color:#94a3b8;">yes</span>\n\n';
+      o += '<span style="color:#fbbf24;">── OS ──────────────────────────</span>\n';
+      o += '  <span style="color:#38bdf8;">theme</span> <span style="color:#94a3b8;">wallpaper</span> <span style="color:#38bdf8;">logout</span> <span style="color:#94a3b8;">reboot</span> <span style="color:#38bdf8;">shutdown</span>\n\n';
+      o += '<span style="color:#fbbf24;">── Fun ─────────────────────────</span>\n';
+      o += '  <span style="color:#38bdf8;">neofetch</span> <span style="color:#94a3b8;">fortune</span> <span style="color:#38bdf8;">cowsay</span> <span style="color:#94a3b8;">matrix</span> <span style="color:#38bdf8;">banner</span> <span style="color:#94a3b8;">rev</span> <span style="color:#38bdf8;">base64</span> <span style="color:#94a3b8;">calc</span>\n\n';
+      o += '<span style="color:#94a3b8;">Type</span> <span style="color:#38bdf8;">help &lt;command&gt;</span> <span style="color:#94a3b8;">for details</span>';
+      return o;
+    }
+  },
+  ls: {
+    desc: 'List directory contents',
+    usage: 'ls [-l] [path]',
+    fn: (args) => {
+      const longFormat = args.includes('-l');
+      const pathArg = args.find(a => !a.startsWith('-'));
+      const target = pathArg ? resolvePath(pathArg) : resolvePath(terminalState.currentDir);
+      if (!target || target.type !== 'dir') return '<span style="color:#ef4444;">ls: not a directory</span>';
+      const entries = Object.entries(target.children);
+      if (entries.length === 0) return '<span style="color:#94a3b8;">(empty)</span>';
+      if (longFormat) {
+        return entries.map(([name, item]) => {
+          const color = item.type === 'dir' ? '#38bdf8' : '#e2e8f0';
+          const perm = item.type === 'dir' ? 'drwxr-xr-x' : '-rw-r--r--';
+          const size = item.type === 'file' ? (item.content?.length || 0) + 'B' : '-';
+          return `<span style="color:#94a3b8;">${perm}  ${size.padStart(6)}</span>  <span style="color:${color};">${name}${item.type === 'dir' ? '/' : ''}</span>`;
+        }).join('\n');
+      }
+      return entries.map(([name, item]) => {
+        const color = item.type === 'dir' ? '#38bdf8' : '#e2e8f0';
+        return `<span style="color:${color};">${name}${item.type === 'dir' ? '/' : ''}</span>`;
+      }).join('  ');
+    }
+  },
+  cd: {
+    desc: 'Change directory',
+    usage: 'cd [path]',
+    fn: (args) => {
+      const path = args[0] || '~';
+      if (path === '..') {
+        if (terminalState.currentDir === '~') return '';
+        const parts = terminalState.currentDir.split('/');
+        parts.pop();
+        terminalState.currentDir = parts.join('/') || '~';
+        return '';
+      }
+      const newPath = path.startsWith('~') ? path : (terminalState.currentDir === '~' ? `~/${path}` : `${terminalState.currentDir}/${path}`);
+      const dir = resolvePath(newPath);
+      if (!dir || dir.type !== 'dir') return `<span style="color:#ef4444;">cd: no such directory: ${path}</span>`;
+      terminalState.currentDir = newPath;
+      return '';
+    }
+  },
+  pwd: {
+    desc: 'Print working directory',
+    usage: 'pwd',
+    fn: () => `/home/user${terminalState.currentDir.replace('~', '')}`
+  },
+  cat: {
+    desc: 'Display file contents',
+    usage: 'cat [-n] <file>',
+    fn: (args) => {
+      const numbered = args.includes('-n');
+      const filename = args.find(a => !a.startsWith('-'));
+      if (!filename) return '<span style="color:#ef4444;">cat: missing file</span>';
+      const file = resolvePath(filename);
+      if (!file) return `<span style="color:#ef4444;">cat: ${filename}: No such file</span>`;
+      if (file.type === 'dir') return `<span style="color:#ef4444;">cat: ${filename}: Is a directory</span>`;
+      const lines = file.content.replace(/</g, '&lt;').replace(/>/g, '&gt;').split('\n');
+      if (numbered) return lines.map((l, i) => `<span style="color:#94a3b8;">${String(i+1).padStart(4)}</span>  ${l}`).join('\n');
+      return lines.join('\n');
+    }
+  },
+  head: {
+    desc: 'Display first lines of file',
+    usage: 'head [-n <count>] <file>',
+    fn: (args) => {
+      let n = 10, filename;
+      for (let i = 0; i < args.length; i++) {
+        if (args[i] === '-n' && args[i+1]) { n = parseInt(args[++i]); }
+        else if (!args[i].startsWith('-')) filename = args[i];
+      }
+      if (!filename) return '<span style="color:#ef4444;">head: missing file</span>';
+      const file = resolvePath(filename);
+      if (!file || file.type === 'dir') return `<span style="color:#ef4444;">head: ${filename}: No such file</span>`;
+      return file.content.split('\n').slice(0, n).join('\n').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+    }
+  },
+  tail: {
+    desc: 'Display last lines of file',
+    usage: 'tail [-n <count>] <file>',
+    fn: (args) => {
+      let n = 10, filename;
+      for (let i = 0; i < args.length; i++) {
+        if (args[i] === '-n' && args[i+1]) { n = parseInt(args[++i]); }
+        else if (!args[i].startsWith('-')) filename = args[i];
+      }
+      if (!filename) return '<span style="color:#ef4444;">tail: missing file</span>';
+      const file = resolvePath(filename);
+      if (!file || file.type === 'dir') return `<span style="color:#ef4444;">tail: ${filename}: No such file</span>`;
+      const lines = file.content.split('\n');
+      return lines.slice(-n).join('\n').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+    }
+  },
+  touch: {
+    desc: 'Create empty file',
+    usage: 'touch <filename>',
+    fn: (args) => {
+      if (!args[0]) return '<span style="color:#ef4444;">touch: missing file</span>';
+      const dir = resolvePath(terminalState.currentDir);
+      if (dir && dir.type === 'dir') {
+        dir.children[args[0]] = { type: 'file', content: '' };
+        return `<span style="color:#34d399;">Created: ${args[0]}</span>`;
+      }
+      return '<span style="color:#ef4444;">touch: error</span>';
+    }
+  },
+  mkdir: {
+    desc: 'Create directory',
+    usage: 'mkdir <dirname>',
+    fn: (args) => {
+      if (!args[0]) return '<span style="color:#ef4444;">mkdir: missing operand</span>';
+      const dir = resolvePath(terminalState.currentDir);
+      if (dir && dir.type === 'dir') {
+        if (dir.children[args[0]]) return `<span style="color:#ef4444;">mkdir: '${args[0]}' exists</span>`;
+        dir.children[args[0]] = { type: 'dir', children: {} };
+        return `<span style="color:#34d399;">Created: ${args[0]}/</span>`;
+      }
+      return '<span style="color:#ef4444;">mkdir: error</span>';
+    }
+  },
+  rm: {
+    desc: 'Remove file or directory',
+    usage: 'rm [-r] <name>',
+    fn: (args) => {
+      const name = args.find(a => !a.startsWith('-'));
+      if (!name) return '<span style="color:#ef4444;">rm: missing operand</span>';
+      const dir = resolvePath(terminalState.currentDir);
+      if (dir && dir.children[name]) {
+        delete dir.children[name];
+        return `<span style="color:#34d399;">Removed: ${name}</span>`;
+      }
+      return `<span style="color:#ef4444;">rm: cannot remove '${name}': No such file</span>`;
+    }
+  },
+  cp: {
+    desc: 'Copy file',
+    usage: 'cp <source> <dest>',
+    fn: (args) => {
+      if (args.length < 2) return '<span style="color:#ef4444;">cp: missing operand</span>';
+      const src = resolvePath(args[0]);
+      if (!src || src.type === 'dir') return `<span style="color:#ef4444;">cp: ${args[0]}: No such file</span>`;
+      const dir = resolvePath(terminalState.currentDir);
+      if (dir && dir.type === 'dir') {
+        dir.children[args[1]] = { type: 'file', content: src.content };
+        return `<span style="color:#34d399;">${args[0]} → ${args[1]}</span>`;
+      }
+      return '<span style="color:#ef4444;">cp: error</span>';
+    }
+  },
+  mv: {
+    desc: 'Move or rename file',
+    usage: 'mv <source> <dest>',
+    fn: (args) => {
+      if (args.length < 2) return '<span style="color:#ef4444;">mv: missing operand</span>';
+      const dir = resolvePath(terminalState.currentDir);
+      if (!dir || !dir.children[args[0]]) return `<span style="color:#ef4444;">mv: ${args[0]}: No such file</span>`;
+      dir.children[args[1]] = dir.children[args[0]];
+      delete dir.children[args[0]];
+      return `<span style="color:#34d399;">Renamed: ${args[0]} → ${args[1]}</span>`;
+    }
+  },
+  write: {
+    desc: 'Write content to a file',
+    usage: 'write <file> <content...>',
+    fn: (args) => {
+      if (!args[0]) return '<span style="color:#ef4444;">write: missing filename</span>';
+      const filename = args[0];
+      const content = args.slice(1).join(' ');
+      const dir = resolvePath(terminalState.currentDir);
+      if (dir && dir.type === 'dir') {
+        dir.children[filename] = { type: 'file', content };
+        return `<span style="color:#34d399;">Written to ${filename}</span>`;
+      }
+      return '<span style="color:#ef4444;">write: error</span>';
+    }
+  },
+  nano: {
+    desc: 'Alias for write',
+    usage: 'nano <file> <content...>',
+    fn: (args) => terminalCommands.write.fn(args)
+  },
+  wc: {
+    desc: 'Word count for a file',
+    usage: 'wc <file>',
+    fn: (args) => {
+      if (!args[0]) return '<span style="color:#ef4444;">wc: missing file</span>';
+      const file = resolvePath(args[0]);
+      if (!file || file.type === 'dir') return `<span style="color:#ef4444;">wc: ${args[0]}: No such file</span>`;
+      const lines = file.content.split('\n').length;
+      const words = file.content.split(/\s+/).filter(Boolean).length;
+      const chars = file.content.length;
+      return `<span style="color:#38bdf8;">${lines}</span> lines  <span style="color:#38bdf8;">${words}</span> words  <span style="color:#38bdf8;">${chars}</span> chars  ${args[0]}`;
+    }
+  },
+  grep: {
+    desc: 'Search pattern in file',
+    usage: 'grep <pattern> <file>',
+    fn: (args) => {
+      if (args.length < 2) return '<span style="color:#ef4444;">grep: usage: grep &lt;pattern&gt; &lt;file&gt;</span>';
+      const pattern = args[0];
+      const file = resolvePath(args[1]);
+      if (!file || file.type === 'dir') return `<span style="color:#ef4444;">grep: ${args[1]}: No such file</span>`;
+      const regex = new RegExp(pattern, 'gi');
+      const matches = file.content.split('\n').filter(l => regex.test(l));
+      if (matches.length === 0) return `<span style="color:#94a3b8;">(no matches)</span>`;
+      return matches.map(l => l.replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(new RegExp(pattern,'gi'), m => `<span style="color:#fbbf24;font-weight:bold;">${m}</span>`)).join('\n');
+    }
+  },
+  diff: {
+    desc: 'Show diff between two files',
+    usage: 'diff <file1> <file2>',
+    fn: (args) => {
+      if (args.length < 2) return '<span style="color:#ef4444;">diff: need two files</span>';
+      const f1 = resolvePath(args[0]), f2 = resolvePath(args[1]);
+      if (!f1 || f1.type === 'dir') return `<span style="color:#ef4444;">diff: ${args[0]}: No such file</span>`;
+      if (!f2 || f2.type === 'dir') return `<span style="color:#ef4444;">diff: ${args[1]}: No such file</span>`;
+      const l1 = f1.content.split('\n'), l2 = f2.content.split('\n');
+      let out = '';
+      const maxLen = Math.max(l1.length, l2.length);
+      for (let i = 0; i < maxLen; i++) {
+        if (l1[i] !== l2[i]) {
+          if (l1[i] !== undefined) out += `<span style="color:#ef4444;">- ${(l1[i]||'').replace(/</g,'&lt;')}</span>\n`;
+          if (l2[i] !== undefined) out += `<span style="color:#34d399;">+ ${(l2[i]||'').replace(/</g,'&lt;')}</span>\n`;
+        }
+      }
+      return out || '<span style="color:#34d399;">Files are identical</span>';
+    }
+  },
+  find: {
+    desc: 'Find files by name',
+    usage: 'find <name>',
+    fn: (args) => {
+      if (!args[0]) return '<span style="color:#ef4444;">find: missing name</span>';
+      const results = [];
+      function search(node, path) {
+        if (!node || node.type !== 'dir') return;
+        for (const [name, child] of Object.entries(node.children)) {
+          if (name.includes(args[0])) results.push(`${path}/${name}${child.type==='dir'?'/':''}`);
+          if (child.type === 'dir') search(child, `${path}/${name}`);
+        }
+      }
+      search(resolvePath('~'), '/home/user');
+      return results.length ? results.map(r => `<span style="color:#38bdf8;">${r}</span>`).join('\n') : '<span style="color:#94a3b8;">(no results)</span>';
+    }
+  },
+  whoami: {
+    desc: 'Display current user',
+    usage: 'whoami',
+    fn: () => `<span style="color:#38bdf8;">${state.user?.username || 'guest'}</span>`
+  },
+  id: {
+    desc: 'Show user identity',
+    usage: 'id',
+    fn: () => {
+      const u = state.user?.username || 'guest';
+      return `uid=1000(<span style="color:#38bdf8;">${u}</span>) gid=1000(<span style="color:#38bdf8;">${u}</span>) groups=1000(${u}),4(adm),27(sudo)`;
+    }
+  },
+  hostname: {
+    desc: 'Show system hostname',
+    usage: 'hostname',
+    fn: () => `<span style="color:#38bdf8;">arctic-${(state.user?.username||'pc').toLowerCase()}</span>`
+  },
+  uname: {
+    desc: 'Print OS information',
+    usage: 'uname [-a]',
+    fn: (args) => {
+      if (args.includes('-a')) return 'arcticOS 2.0.0 Arctic #1 SMP Web Browser 2026 x86_64 arcticOS';
+      return 'arcticOS';
+    }
+  },
+  uptime: {
+    desc: 'Show system uptime',
+    usage: 'uptime',
+    fn: () => {
+      const secs = Math.floor(performance.now() / 1000);
+      const h = Math.floor(secs/3600), m = Math.floor((secs%3600)/60), s = secs%60;
+      return `up ${h}h ${m}m ${s}s — load avg: <span style="color:#34d399;">0.${Math.floor(Math.random()*99)}</span>`;
+    }
+  },
+  date: {
+    desc: 'Display current date/time',
+    usage: 'date',
+    fn: () => new Date().toString()
+  },
+  time: {
+    desc: 'Show current time',
+    usage: 'time',
+    fn: () => {
+      const d = new Date();
+      return `<span style="color:#38bdf8;">${d.toLocaleTimeString()}</span>`;
+    }
+  },
+  ps: {
+    desc: 'List running processes (open windows)',
+    usage: 'ps',
+    fn: () => {
+      let out = `<span style="color:#94a3b8;">  PID  COMMAND</span>\n`;
+      out += `<span style="color:#94a3b8;">    1  arctic-shell</span>\n`;
+      Object.entries(activeWindows).forEach(([key, win], i) => {
+        const status = win.style.display === 'none' ? '<span style="color:#fbbf24;">S</span>' : '<span style="color:#34d399;">R</span>';
+        out += `${status} ${String(100+i).padStart(4)}  <span style="color:#38bdf8;">${ALL_APPS[key]?.title || key}</span>\n`;
+      });
+      return out.trim();
+    }
+  },
+  top: {
+    desc: 'Show top running apps',
+    usage: 'top',
+    fn: () => {
+      let out = `<span style="color:#94a3b8;">arcticOS 2.0  Tasks: ${Object.keys(activeWindows).length} running</span>\n\n`;
+      out += `<span style="color:#94a3b8;">  PID  %CPU  %MEM  COMMAND</span>\n`;
+      Object.entries(activeWindows).forEach(([key], i) => {
+        const cpu = (Math.random()*5).toFixed(1);
+        const mem = (Math.random()*3).toFixed(1);
+        out += `  <span style="color:#38bdf8;">${100+i}</span>   ${cpu}%   ${mem}%  ${ALL_APPS[key]?.title || key}\n`;
+      });
+      if (!Object.keys(activeWindows).length) out += '<span style="color:#94a3b8;">  (no running apps)</span>';
+      return out.trim();
+    }
+  },
+  kill: {
+    desc: 'Close a running app',
+    usage: 'kill <appname>',
+    fn: (args) => {
+      if (!args[0]) return '<span style="color:#ef4444;">kill: missing app name</span>';
+      const name = args[0].toLowerCase();
+      const key = Object.keys(activeWindows).find(k => k.toLowerCase() === name || ALL_APPS[k]?.title.toLowerCase() === name);
+      if (!key) return `<span style="color:#ef4444;">kill: ${args[0]}: not running</span>`;
+      setTimeout(() => closeWin(key), 100);
+      return `<span style="color:#34d399;">Killed: ${ALL_APPS[key]?.title || key}</span>`;
+    }
+  },
+  df: {
+    desc: 'Show disk usage',
+    usage: 'df',
+    fn: () => {
+      const used = Math.round(JSON.stringify(state).length / 1024);
+      return `<span style="color:#94a3b8;">Filesystem         Size  Used  Avail  Use%  Mounted</span>\n` +
+             `<span style="color:#38bdf8;">localStorage</span>       10M   ${used}K   ${10240-used}K    ${Math.round(used/102)}%  /`;
+    }
+  },
+  free: {
+    desc: 'Show memory info',
+    usage: 'free',
+    fn: () => {
+      const total = Math.round(performance.memory?.totalJSHeapSize / 1024 / 1024) || 256;
+      const used = Math.round(performance.memory?.usedJSHeapSize / 1024 / 1024) || Math.floor(total * 0.4);
+      return `<span style="color:#94a3b8;">              total    used    free</span>\n` +
+             `<span style="color:#38bdf8;">Mem:</span>         ${total}MB   ${used}MB   ${total-used}MB\n` +
+             `<span style="color:#38bdf8;">Swap:</span>          0MB     0MB     0MB`;
+    }
+  },
+  battery: {
+    desc: 'Show battery status',
+    usage: 'battery',
+    fn: () => {
+      if (!batteryInfo.supported) return '<span style="color:#94a3b8;">Battery info not available in this browser</span>';
+      const icon = batteryInfo.charging ? '⚡' : '🔋';
+      const color = batteryInfo.level > 50 ? '#34d399' : batteryInfo.level > 20 ? '#fbbf24' : '#ef4444';
+      return `${icon} Battery: <span style="color:${color};font-weight:bold;">${batteryInfo.level}%</span> ${batteryInfo.charging ? '(charging)' : ''}`;
+    }
+  },
+  ifconfig: {
+    desc: 'Show network configuration',
+    usage: 'ifconfig',
+    fn: () =>
+      `<span style="color:#38bdf8;">eth0</span>: flags=4163  mtu 1500\n` +
+      `        inet <span style="color:#34d399;">192.168.1.${Math.floor(Math.random()*200+10)}</span>  netmask 255.255.255.0\n` +
+      `        inet6 fe80::1  prefixlen 64\n` +
+      `        RX packets: ${Math.floor(Math.random()*9999)}  TX packets: ${Math.floor(Math.random()*9999)}\n\n` +
+      `<span style="color:#38bdf8;">lo</span>:    flags=73  mtu 65536\n` +
+      `        inet 127.0.0.1  netmask 255.0.0.0`
+  },
+  ping: {
+    desc: 'Ping a host',
+    usage: 'ping <host>',
+    fn: (args) => {
+      if (!args[0]) return '<span style="color:#ef4444;">ping: missing host</span>';
+      const host = args[0];
+      let out = `PING ${host}: 56 data bytes\n`;
+      for (let i = 0; i < 4; i++) {
+        const ms = (Math.random()*40+5).toFixed(2);
+        out += `64 bytes from ${host}: icmp_seq=${i} ttl=64 time=<span style="color:#34d399;">${ms} ms</span>\n`;
+      }
+      out += `\n--- ${host} ping stats ---\n4 packets transmitted, 4 received, <span style="color:#34d399;">0% loss</span>`;
+      return out;
+    }
+  },
+  curl: {
+    desc: 'Make a fake HTTP request',
+    usage: 'curl <url>',
+    fn: (args) => {
+      if (!args[0]) return '<span style="color:#ef4444;">curl: missing URL</span>';
+      return `<span style="color:#94a3b8;">> GET ${args[0]}</span>\n< HTTP/1.1 200 OK\n< Content-Type: text/html\n<\n<span style="color:#34d399;">[Response received — open Browser to view]</span>`;
+    }
+  },
+  wget: {
+    desc: 'Fake download a file',
+    usage: 'wget <url>',
+    fn: (args) => {
+      if (!args[0]) return '<span style="color:#ef4444;">wget: missing URL</span>';
+      const fname = args[0].split('/').pop() || 'file';
+      return `Resolving host... done.\nConnecting... connected.\nHTTP request sent.\n\n<span style="color:#34d399;">Saved: ${fname} (${Math.floor(Math.random()*900+100)}KB)</span>`;
+    }
+  },
+  open: {
+    desc: 'Open an application by name or key',
+    usage: 'open <appname>',
+    fn: (args) => {
+      if (!args[0]) return '<span style="color:#ef4444;">open: missing app name</span>';
+      const appName = args.join(' ').toLowerCase();
+      const appKey = Object.keys(ALL_APPS).find(k =>
+        k.toLowerCase() === appName ||
+        ALL_APPS[k].title.toLowerCase() === appName ||
+        ALL_APPS[k].title.toLowerCase().replace(/\s+/g,'') === appName.replace(/\s+/g,'')
+      );
+      if (appKey && isAppInstalled(appKey)) {
+        setTimeout(() => spawnWindow(appKey), 100);
+        return `<span style="color:#34d399;">Opening ${ALL_APPS[appKey].title}...</span>`;
+      }
+      // Fuzzy match
+      const fuzzy = Object.keys(ALL_APPS).find(k => ALL_APPS[k].title.toLowerCase().includes(appName));
+      if (fuzzy && isAppInstalled(fuzzy)) {
+        setTimeout(() => spawnWindow(fuzzy), 100);
+        return `<span style="color:#34d399;">Opening ${ALL_APPS[fuzzy].title}...</span>`;
+      }
+      return `<span style="color:#ef4444;">open: '${args[0]}' not found. Type 'apps' to list installed apps.</span>`;
+    }
+  },
+  apps: {
+    desc: 'List installed applications',
+    usage: 'apps',
+    fn: () => {
+      const installed = getInstalledApps();
+      let output = '<span style="color:#34d399;">Installed Apps:</span>\n\n';
+      Object.entries(installed).forEach(([key, app]) => {
+        const running = activeWindows[key] ? '<span style="color:#22c55e;">●</span>' : '<span style="color:#475569;">○</span>';
+        output += `${running} <span style="color:#38bdf8;">${app.title}</span>  <span style="color:#475569;">[${key}]</span>\n`;
+      });
+      return output.trim();
+    }
+  },
+  install: {
+    desc: 'Install an app from the store',
+    usage: 'install <appid>',
+    fn: (args) => {
+      if (!args[0]) return '<span style="color:#ef4444;">install: missing app id</span>';
+      const key = args[0].toLowerCase();
+      const appKey = Object.keys(STORE_APPS).find(k => k.toLowerCase() === key || STORE_APPS[k].title.toLowerCase() === key);
+      if (!appKey) return `<span style="color:#ef4444;">install: '${args[0]}' not found in store</span>`;
+      if (state.downloadedApps.includes(appKey)) return `<span style="color:#fbbf24;">${STORE_APPS[appKey].title} is already installed</span>`;
+      state.downloadedApps.push(appKey);
+      ALL_APPS[appKey] = STORE_APPS[appKey];
+      saveState(); renderDesktop(); renderDock();
+      return `<span style="color:#34d399;">✓ Installed: ${STORE_APPS[appKey].title}</span>`;
+    }
+  },
+  uninstall: {
+    desc: 'Uninstall an app',
+    usage: 'uninstall <appid>',
+    fn: (args) => {
+      if (!args[0]) return '<span style="color:#ef4444;">uninstall: missing app id</span>';
+      const key = args[0].toLowerCase();
+      const appKey = state.downloadedApps.find(k => k.toLowerCase() === key || ALL_APPS[k]?.title.toLowerCase() === key);
+      if (!appKey) return `<span style="color:#ef4444;">uninstall: '${args[0]}' not found</span>`;
+      if (activeWindows[appKey]) closeWin(appKey);
+      state.downloadedApps = state.downloadedApps.filter(id => id !== appKey);
+      state.pinned = state.pinned.filter(id => id !== appKey);
+      saveState(); renderDesktop(); renderDock();
+      return `<span style="color:#34d399;">✓ Uninstalled: ${ALL_APPS[appKey]?.title || appKey}</span>`;
+    }
+  },
+  launch: {
+    desc: 'Open the app launcher',
+    usage: 'launch',
+    fn: () => { setTimeout(openLauncher, 100); return '<span style="color:#34d399;">Opening launcher...</span>'; }
+  },
+  echo: {
+    desc: 'Print text',
+    usage: 'echo <text>',
+    fn: (args) => {
+      let text = args.join(' ').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+      // Handle $VAR substitution
+      text = text.replace(/\$(\w+)/g, (_, v) => {
+        if (terminalEnv[v]) return typeof terminalEnv[v] === 'function' ? terminalEnv[v]() : terminalEnv[v];
+        return terminalAliases[v] || '';
+      });
+      return text;
+    }
+  },
+  clear: {
+    desc: 'Clear terminal screen',
+    usage: 'clear',
+    fn: () => '__CLEAR__'
+  },
+  history: {
+    desc: 'Show command history',
+    usage: 'history',
+    fn: () => {
+      if (!terminalState.history.length) return '<span style="color:#94a3b8;">(empty)</span>';
+      return terminalState.history.map((cmd, i) =>
+        `<span style="color:#94a3b8;">${String(i+1).padStart(4)}</span>  ${cmd.replace(/</g,'&lt;')}`
+      ).join('\n');
+    }
+  },
+  alias: {
+    desc: 'Create a command alias',
+    usage: 'alias <name>=<command>',
+    fn: (args) => {
+      if (!args[0]) {
+        if (!Object.keys(terminalAliases).length) return '<span style="color:#94a3b8;">(no aliases)</span>';
+        return Object.entries(terminalAliases).map(([k,v]) => `<span style="color:#38bdf8;">${k}</span>='${v}'`).join('\n');
+      }
+      const match = args.join(' ').match(/^(\w+)=(.+)$/);
+      if (!match) return '<span style="color:#ef4444;">alias: usage: alias name=command</span>';
+      terminalAliases[match[1]] = match[2];
+      return `<span style="color:#34d399;">Alias set: ${match[1]}='${match[2]}'</span>`;
+    }
+  },
+  env: {
+    desc: 'Show environment variables',
+    usage: 'env',
+    fn: () => Object.entries(terminalEnv).map(([k,v]) => `<span style="color:#38bdf8;">${k}</span>=${typeof v==='function'?v():v}`).join('\n')
+  },
+  export: {
+    desc: 'Set an environment variable',
+    usage: 'export <VAR>=<value>',
+    fn: (args) => {
+      const match = args.join(' ').match(/^(\w+)=(.*)$/);
+      if (!match) return '<span style="color:#ef4444;">export: usage: export VAR=value</span>';
+      terminalEnv[match[1]] = match[2];
+      return `<span style="color:#34d399;">Exported: ${match[1]}=${match[2]}</span>`;
+    }
+  },
+  which: {
+    desc: 'Locate a command',
+    usage: 'which <command>',
+    fn: (args) => {
+      if (!args[0]) return '<span style="color:#ef4444;">which: missing command</span>';
+      if (terminalCommands[args[0]]) return `<span style="color:#38bdf8;">/bin/arctic/${args[0]}</span>`;
+      return `<span style="color:#ef4444;">${args[0]}: not found</span>`;
+    }
+  },
+  man: {
+    desc: 'Show manual for a command',
+    usage: 'man <command>',
+    fn: (args) => {
+      if (!args[0]) return '<span style="color:#ef4444;">man: missing command</span>';
+      const cmd = terminalCommands[args[0]];
+      if (!cmd) return `<span style="color:#ef4444;">No manual entry for '${args[0]}'</span>`;
+      return `<span style="color:#fbbf24;">NAME</span>\n    ${args[0]} — ${cmd.desc}\n\n<span style="color:#fbbf24;">SYNOPSIS</span>\n    ${cmd.usage}\n\n<span style="color:#fbbf24;">DESCRIPTION</span>\n    ${cmd.desc}. Part of arcticOS shell.`;
+    }
+  },
+  sleep: {
+    desc: 'Pause for N seconds (fake)',
+    usage: 'sleep <seconds>',
+    fn: (args) => {
+      const n = parseFloat(args[0]) || 1;
+      return `<span style="color:#94a3b8;">Slept for ${n}s</span>`;
+    }
+  },
+  yes: {
+    desc: 'Repeat text (limited to 10)',
+    usage: 'yes [text]',
+    fn: (args) => {
+      const text = args.join(' ') || 'y';
+      return Array(10).fill(text.replace(/</g,'&lt;')).join('\n') + '\n<span style="color:#94a3b8;">...(10 lines shown)</span>';
+    }
+  },
+  rev: {
+    desc: 'Reverse text',
+    usage: 'rev <text>',
+    fn: (args) => args.join(' ').split('').reverse().join('')
+  },
+  base64: {
+    desc: 'Base64 encode text',
+    usage: 'base64 <text>',
+    fn: (args) => {
+      if (!args[0]) return '<span style="color:#ef4444;">base64: missing text</span>';
+      return btoa(args.join(' '));
+    }
+  },
+  calc: {
+    desc: 'Calculate a math expression',
+    usage: 'calc <expression>',
+    fn: (args) => {
+      if (!args[0]) return '<span style="color:#ef4444;">calc: missing expression</span>';
+      try {
+        const expr = args.join(' ').replace(/[^0-9+\-*/().\s%^]/g,'');
+        const result = Function(`"use strict"; return (${expr})`)();
+        return `<span style="color:#34d399;">${result}</span>`;
+      } catch { return '<span style="color:#ef4444;">calc: invalid expression</span>'; }
+    }
+  },
+  theme: {
+    desc: 'Change OS theme',
+    usage: 'theme <dark|light|sunset|forest|ambient|ocean>',
+    fn: (args) => {
+      const t = args[0]?.toLowerCase();
+      if (!t || !THEMES[t]) return `<span style="color:#ef4444;">theme: valid themes: ${Object.keys(THEMES).join(', ')}</span>`;
+      setTheme(t);
+      return `<span style="color:#34d399;">Theme set to: ${THEMES[t].name}</span>`;
+    }
+  },
+  wallpaper: {
+    desc: 'Set wallpaper by URL',
+    usage: 'wallpaper <url>',
+    fn: (args) => {
+      if (!args[0]) return '<span style="color:#ef4444;">wallpaper: missing URL</span>';
+      state.wallpaper = args[0];
+      document.getElementById('wall').style.backgroundImage = `url(${args[0]})`;
+      saveState();
+      return `<span style="color:#34d399;">Wallpaper updated</span>`;
+    }
+  },
+  logout: {
+    desc: 'Log out of arcticOS',
+    usage: 'logout',
+    fn: () => { setTimeout(logout, 500); return '<span style="color:#fbbf24;">Logging out...</span>'; }
+  },
+  exit: {
+    desc: 'Alias for logout',
+    usage: 'exit',
+    fn: () => terminalCommands.logout.fn([])
+  },
+  reboot: {
+    desc: 'Reboot arcticOS',
+    usage: 'reboot',
+    fn: () => { setTimeout(() => location.reload(), 800); return '<span style="color:#fbbf24;">Rebooting arcticOS...</span>'; }
+  },
+  restart: {
+    desc: 'Alias for reboot',
+    usage: 'restart',
+    fn: () => terminalCommands.reboot.fn([])
+  },
+  shutdown: {
+    desc: 'Shut down arcticOS',
+    usage: 'shutdown',
+    fn: () => {
+      setTimeout(() => {
+        document.body.style.transition = 'opacity 1s';
+        document.body.style.opacity = '0';
+        setTimeout(() => { document.body.innerHTML = '<div style="background:#000;height:100vh;display:flex;align-items:center;justify-content:center;color:#333;font-family:monospace;">System offline</div>'; document.body.style.opacity='1'; }, 1000);
+      }, 500);
+      return '<span style="color:#ef4444;">Shutting down...</span>';
+    }
+  },
+  neofetch: {
+    desc: 'Display system info',
+    usage: 'neofetch',
+    fn: () => {
+      const u = state.user?.username || 'guest';
+      const t = state.theme;
+      const apps = Object.keys(getInstalledApps()).length;
+      const wins = Object.keys(activeWindows).length;
+      return `<span style="color:#38bdf8;">
+    ___              __  _     ___  ____
+   /   |  __________/ /_(_)___/ __ \\/ __/
+  / /| | / ___/ __  / __/ / __/ / / /\\__ \\
+ / ___ |/ /  / /_/ / /_/ / /__/ /_/ /___/ /
+/_/  |_/_/   \\__,_/\\__/_/\\___/\\____//____/
+</span>
+<span style="color:#38bdf8;">${u}</span>@<span style="color:#38bdf8;">arcticOS</span>
+<span style="color:#94a3b8;">─────────────────────────────</span>
+<span style="color:#38bdf8;">OS:</span>        arcticOS 2.0
+<span style="color:#38bdf8;">Shell:</span>     Arctic Shell
+<span style="color:#38bdf8;">Theme:</span>     ${THEMES[t]?.name || t}
+<span style="color:#38bdf8;">Apps:</span>      ${apps} installed
+<span style="color:#38bdf8;">Windows:</span>   ${wins} open
+<span style="color:#38bdf8;">Browser:</span>   ${navigator.userAgent.split(' ').find(s=>s.includes('Chrome')||s.includes('Firefox')||s.includes('Safari')) || 'Web Browser'}
+<span style="color:#38bdf8;">Memory:</span>   ${Math.round((performance.memory?.usedJSHeapSize||0)/1024/1024)||'?'}MB used
+<span style="color:#38bdf8;">Uptime:</span>   ${Math.floor(performance.now()/60000)}m
+`;
+    }
+  },
+  fortune: {
+    desc: 'Display a random fortune',
+    usage: 'fortune',
+    fn: () => {
+      const fortunes = [
+        'The best time to plant a tree was 20 years ago. The second best time is now.',
+        'A journey of a thousand miles begins with a single command.',
+        'In the world of 1s and 0s, you are a 1.',
+        'rm -rf problems && mkdir solutions',
+        'Keep calm and sudo on.',
+        'There is no place like 127.0.0.1.',
+        'Code is poetry. Yours is a haiku.',
+        'The cloud is just someone else\'s computer.',
+        'Debugging: removing bugs. Programming: adding bugs.',
+        'It works on my machine.',
+        'Have you tried turning it off and on again?',
+        'The answer is always 42.',
+        '// TODO: write a meaningful fortune',
+        'git commit -m "fixed it (i think)"',
+        'To understand recursion, you must first understand recursion.'
+      ];
+      return `<span style="color:#fbbf24;">"${fortunes[Math.floor(Math.random()*fortunes.length)]}"</span>`;
+    }
+  },
+  cowsay: {
+    desc: 'ASCII cow says something',
+    usage: 'cowsay <text>',
+    fn: (args) => {
+      const text = args.join(' ') || 'Moo!';
+      const line = '-'.repeat(text.length + 2);
+      return `<pre style="color:#e2e8f0;font-family:monospace;"> ${line}\n&lt; ${text.replace(/</g,'&lt;')} &gt;\n ${line}\n        \\   ^__^\n         \\  (oo)\\_______\n            (__)\\       )\\/\\\n                ||----w |\n                ||     ||</pre>`;
+    }
+  },
+  matrix: {
+    desc: 'Show a matrix effect briefly',
+    usage: 'matrix',
+    fn: () => {
+      const chars = '01アイウエオカキクケコサシスセソタチツテト';
+      let out = '<span style="color:#00ff41;font-family:monospace;">';
+      for (let row = 0; row < 6; row++) {
+        let line = '';
+        for (let col = 0; col < 40; col++) {
+          line += chars[Math.floor(Math.random()*chars.length)] + ' ';
+        }
+        out += line + '\n';
+      }
+      return out + '</span><span style="color:#94a3b8;">Wake up, Neo...</span>';
+    }
+  },
+  banner: {
+    desc: 'Print a large text banner',
+    usage: 'banner <text>',
+    fn: (args) => {
+      const text = (args[0] || 'ARCTIC').toUpperCase().substring(0,8);
+      return `<span style="color:#38bdf8;font-size:20px;font-weight:bold;letter-spacing:8px;font-family:monospace;">★ ${text} ★</span>`;
+    }
+  },
+  printenv: {
+    desc: 'Print environment variable',
+    usage: 'printenv [VAR]',
+    fn: (args) => {
+      if (args[0]) {
+        const val = terminalEnv[args[0]];
+        if (!val) return `<span style="color:#ef4444;">${args[0]}: not set</span>`;
+        return typeof val === 'function' ? val() : val;
+      }
+      return terminalCommands.env.fn([]);
+    }
+  }
+};
+
+function resolvePath(path) {
+  if (!path) return null;
+  const fullPath = path.startsWith('~') ? path : (terminalState.currentDir === '~' ? `~/${path}` : `${terminalState.currentDir}/${path}`);
+  const parts = fullPath.split('/').filter(p => p && p !== '.');
+
+  let current = terminalState.fileSystem;
+  for (const part of parts) {
+    if (part === '..') continue;
+    if (current[part]) {
+      current = current[part];
+    } else if (current.children && current.children[part]) {
+      current = current.children[part];
+    } else {
+      return null;
+    }
+  }
+  return current;
+}
+
+function executeTerminalCommand(input) {
+  const trimmed = input.trim();
+  if (!trimmed) return '';
+
+  terminalState.history.push(trimmed);
+  terminalState.historyIndex = terminalState.history.length;
+
+  const parts = trimmed.match(/(?:[^\s"]+|"[^"]*")+/g) || [];
+  const cmd = parts[0]?.toLowerCase();
+  const args = parts.slice(1).map(a => a.replace(/^"|"$/g, ''));
+
+  // Check aliases first
+  if (terminalAliases[cmd]) {
+    const aliasCmd = terminalAliases[cmd].split(' ');
+    const aliasKey = aliasCmd[0].toLowerCase();
+    const aliasArgs = [...aliasCmd.slice(1), ...args];
+    if (terminalCommands[aliasKey]) return terminalCommands[aliasKey].fn(aliasArgs);
+  }
+
+  if (terminalCommands[cmd]) {
+    return terminalCommands[cmd].fn(args);
+  }
+
+  return `<span style="color:#ef4444;">Command not found:</span> ${cmd}\n<span style="color:#94a3b8;">Type 'help' for available commands</span>`;
+}
+
+// The system default wallpaper. Used as the ultimate fallback any time
+// state.wallpaper is empty/null and the current theme doesn't define its
+// own wallpaper (none currently do) — so the desktop is never left blank.
+const DEFAULT_WALLPAPER = 'Apps/wallpaper.jpg';
+
+let state = {
+  user: null,
+  downloadedApps: [],
+  customApps: {}, // Store custom apps
+  pinned: ['browser', 'terminal', 'appstore'],
+  wallpaper: DEFAULT_WALLPAPER,
+  theme: 'forest',
+  notes: '',
+  windows: [],
+  showBatteryPercent: true,
+  photos: [],
+  dockPosition: 'bottom',
+  hideTopbarOnFullscreen: false
+};
+
+/* ─────────────────────────────────────────────────────────────
+   Multi-user registry, presence & bans.
+   NOTE: everything here is stored ONLY in this browser's localStorage.
+   No data is ever sent over the network. "Users" are local profiles
+   on this machine, and the Dev Console simply inspects them.
+   ───────────────────────────────────────────────────────────── */
+const USERS_KEY = 'arctic_users_v1';
+let usersDB = {};
+
+function loadUsersDB() {
+  try { usersDB = JSON.parse(localStorage.getItem(USERS_KEY)) || {}; }
+  catch (e) { usersDB = {}; }
+}
+function saveUsersDB() { localStorage.setItem(USERS_KEY, JSON.stringify(usersDB)); }
+function uKey(name) { return (name || '').trim().toLowerCase(); }
+function isDevUser() { return !!state.user?.isDev; }
+function currentUserRecord() {
+  const k = uKey(state.user?.username);
+  return k ? usersDB[k] : null;
+}
+function devEsc(s) {
+  return String(s == null ? '' : s)
+    .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;').replace(/'/g, '&#39;');
+}
+
+const ENV_FIELDS = ['downloadedApps','customApps','pinned','wallpaper','theme','notes','photos','dockPosition','showBatteryPercent','hideTopbarOnFullscreen','windows'];
+function captureEnv() {
+  const env = {};
+  ENV_FIELDS.forEach(f => { env[f] = state[f]; });
+  return JSON.parse(JSON.stringify(env));
+}
+function applyEnv(env) {
+  if (!env) return;
+  ENV_FIELDS.forEach(f => { if (env[f] !== undefined) state[f] = env[f]; });
+}
+// A fresh desktop for a brand-new account (independent of who is currently signed in)
+function defaultEnv() {
+  return {
+    downloadedApps: [], customApps: {},
+    pinned: ['browser','terminal','appstore'],
+    wallpaper: DEFAULT_WALLPAPER, theme: 'forest', notes: '',
+    photos: [], dockPosition: 'bottom', showBatteryPercent: true,
+    hideTopbarOnFullscreen: false, windows: []
+  };
+}
+function applyEnvVisuals() {
+  document.body.setAttribute('data-theme', state.theme || 'forest');
+  const wall = document.getElementById('wall');
+  if (state.wallpaper) wall.style.backgroundImage = `url(${state.wallpaper})`;
+  else if (THEMES[state.theme]?.wallpaper) wall.style.backgroundImage = `url(${THEMES[state.theme].wallpaper})`;
+  else wall.style.backgroundImage = `url(${DEFAULT_WALLPAPER})`;
+  const dock = document.getElementById('dock');
+  dock.classList.remove('position-left','position-right');
+  if (state.dockPosition && state.dockPosition !== 'bottom') dock.classList.add('position-' + state.dockPosition);
+}
+
+// Seed the built-in developer account: ghxst / dev, with every app installed.
+function seedDevUser() {
+  const k = 'ghxst';
+  if (!usersDB[k]) {
+    usersDB[k] = {
+      username: 'ghxst', password: 'dev', isDev: true, banned: false,
+      online: false, createdAt: Date.now(), lastActive: null,
+      env: {
+        downloadedApps: Object.keys(STORE_APPS), // all store apps pre-installed
+        customApps: {},
+        pinned: ['browser','settings'],
+        wallpaper: DEFAULT_WALLPAPER, theme: 'forest', notes: '',
+        photos: [], dockPosition: 'bottom', showBatteryPercent: true,
+        hideTopbarOnFullscreen: false, windows: []
+      }
+    };
+  } else {
+    usersDB[k].isDev = true;
+    if (!usersDB[k].password) usersDB[k].password = 'dev';
+    usersDB[k].banned = false;
+    if (usersDB[k].env) {
+      usersDB[k].env.downloadedApps = Object.keys(STORE_APPS);
+      // One-time cleanup: remove the redundant Terminal and App Store pins
+      // from the dev dock (runs once; re-pinning later is respected).
+      if (!usersDB[k].pinCleanupV1) {
+        usersDB[k].env.pinned = (usersDB[k].env.pinned || []).filter(id => id !== 'terminal' && id !== 'appstore');
+        usersDB[k].pinCleanupV1 = true;
+      }
+      // Remove the retired Dev Console pin / any saved window for it.
+      if (usersDB[k].env.pinned) usersDB[k].env.pinned = usersDB[k].env.pinned.filter(id => id !== 'devconsole');
+      if (usersDB[k].env.windows) usersDB[k].env.windows = usersDB[k].env.windows.filter(w => w.key !== 'devconsole');
+    }
+  }
+  saveUsersDB();
+}
+
+// Bring a pre-existing single-user profile into the registry.
+function migrateCurrentUser() {
+  if (!state.user) return;
+  const k = uKey(state.user.username);
+  if (!usersDB[k]) {
+    usersDB[k] = {
+      username: state.user.username, password: state.user.password || '',
+      isDev: !!state.user.isDev, banned: false, online: false,
+      createdAt: Date.now(), lastActive: null, env: captureEnv()
+    };
+    saveUsersDB();
+  } else if (usersDB[k].isDev) {
+    state.user.isDev = true;
+  }
+}
+
+function markOnline() {
+  const r = currentUserRecord();
+  if (r) { r.online = true; r.lastActive = Date.now(); saveUsersDB(); }
+}
+function markOffline() {
+  const r = currentUserRecord();
+  if (r) { r.online = false; r.lastActive = Date.now(); saveUsersDB(); }
+}
+
+function getInstalledApps() {
+  const installed = { ...DEFAULT_APPS };
+  state.downloadedApps.forEach(appId => {
+    if (STORE_APPS[appId]) {
+      installed[appId] = STORE_APPS[appId];
+    }
+  });
+  // Add custom apps
+  Object.entries(state.customApps).forEach(([id, app]) => {
+    installed[id] = app;
+  });
+  // Dev-only apps are hidden from regular accounts
+  if (!isDevUser()) {
+    Object.keys(installed).forEach(id => { if (installed[id]?.devOnly) delete installed[id]; });
+  }
+  return installed;
+}
+
+function isAppInstalled(appId) {
+  if (DEFAULT_APPS[appId]?.devOnly) return isDevUser();
+  return DEFAULT_APPS[appId] || state.downloadedApps.includes(appId) || state.customApps[appId];
+}
+
+function saveState() {
+  state.windows = Object.entries(activeWindows).map(([key, win]) => ({
+    key,
+    w: win.style.width,
+    h: win.style.height,
+    t: win.style.top,
+    l: win.style.left,
+    f: win.classList.contains('fullscreen'),
+    min: win.style.display === 'none'
+  }));
+  state.notes = document.getElementById('note-text')?.value || state.notes;
+  localStorage.setItem('arctic_state_v10', JSON.stringify(state));
+
+  // Mirror the live environment into the multi-user registry
+  const rec = currentUserRecord();
+  if (rec) { rec.env = captureEnv(); rec.lastActive = Date.now(); saveUsersDB(); }
+}
+
+function loadState() {
+  const saved = localStorage.getItem('arctic_state_v10');
+  if (saved) {
+    const parsed = JSON.parse(saved);
+    state = { ...state, ...parsed };
+
+    // Rebuild ALL_APPS with custom apps
+    ALL_APPS = { ...DEFAULT_APPS, ...STORE_APPS, ...state.customApps };
+
+    document.body.setAttribute('data-theme', state.theme);
+
+    // Apply dock position
+    const dock = document.getElementById('dock');
+    if (state.dockPosition && state.dockPosition !== 'bottom') {
+      dock.classList.add('position-' + state.dockPosition);
+    }
+  }
+
+  // Always apply wallpaper (covers fresh loads where no saved state exists,
+  // and guarantees the desktop is never left blank even if state.wallpaper
+  // was ever cleared out).
+  const wall = document.getElementById('wall');
+  if (state.wallpaper) {
+    wall.style.backgroundImage = `url(${state.wallpaper})`;
+  } else if (THEMES[state.theme]?.wallpaper) {
+    wall.style.backgroundImage = `url(${THEMES[state.theme].wallpaper})`;
+  } else {
+    wall.style.backgroundImage = `url(${DEFAULT_WALLPAPER})`;
+  }
+}
+
+let loginClockInterval = null;
+
+function updateLoginClock() {
+  const el = document.getElementById('login-clock-time');
+  const dateEl = document.getElementById('login-clock-date');
+  if (!el) return;
+  const now = new Date();
+  let h = now.getHours(), m = now.getMinutes();
+  const ampm = h >= 12 ? 'PM' : 'AM';
+  h = h % 12 || 12;
+  el.textContent = `${h}:${String(m).padStart(2,'0')} ${ampm}`;
+  if (dateEl) {
+    dateEl.textContent = now.toLocaleDateString('en-US', { weekday:'long', month:'long', day:'numeric' });
+  }
+}
+
+function checkFirstTime() {
+  loadState();
+  loadUsersDB();
+  seedDevUser();
+  migrateCurrentUser();
+
+  const loginScreen = document.getElementById('login-screen');
+  const userField = document.getElementById('username');
+  const loginTitle = document.getElementById('login-title');
+  const loginSubtitle = document.getElementById('login-subtitle');
+  const loginBtn = document.getElementById('login-btn');
+  const loginPwd = document.getElementById('password');
+  const wall = document.getElementById('wall');
+  const clockWrap = document.getElementById('login-clock-wrap');
+  const switchLink = document.getElementById('login-switch');
+
+  loginScreen.style.display = 'flex';
+  wall.classList.add('blurred');
+  loginSubtitle.style.color = '';
+
+  // A banned account cannot resume its session — force the login prompt.
+  if (state.user && currentUserRecord()?.banned) {
+    switchLink.style.display = 'none';
+    clockWrap.style.display = 'none';
+    userField.style.display = 'block';
+    userField.value = '';
+    loginTitle.innerText = 'Account banned';
+    loginSubtitle.innerText = 'This account is banned. Contact a developer to be unbanned.';
+    loginSubtitle.style.color = '#ef4444';
+    loginPwd.style.display = 'block';
+    loginPwd.placeholder = 'Password';
+    loginBtn.innerText = 'Log In';
+    return;
+  }
+
+  if (state.user) {
+    // Returning user — show clock
+    clockWrap.style.display = 'flex';
+    updateLoginClock();
+    loginClockInterval = setInterval(updateLoginClock, 1000);
+
+    userField.style.display = 'none';
+    switchLink.style.display = 'block';
+    loginTitle.innerText = `Welcome back, ${state.user.username}`;
+
+    const hasPassword = state.user.password && state.user.password.trim() !== '';
+    if (hasPassword) {
+      loginSubtitle.innerText = 'Enter your password to continue';
+      loginPwd.style.display = 'block';
+      loginPwd.placeholder = 'Password';
+    } else {
+      loginSubtitle.innerText = 'Click Unlock to continue';
+      loginPwd.style.display = 'none';
+    }
+    loginBtn.innerText = 'Unlock';
+  } else {
+    // New user — no clock
+    clockWrap.style.display = 'none';
+    userField.style.display = 'block';
+    switchLink.style.display = 'none';
+    loginTitle.innerText = 'Welcome to arcticOS';
+    loginSubtitle.innerText = 'Create your account to get started';
+    loginPwd.placeholder = 'Password (optional)';
+    loginPwd.style.display = 'block';
+    loginBtn.innerText = 'Create Account';
+  }
+}
+
+// Reveal the username field so any registered account (e.g. the dev
+// account ghxst) can sign in from the "Welcome back" screen.
+function showUserSwitch() {
+  if (loginClockInterval) { clearInterval(loginClockInterval); loginClockInterval = null; }
+  const userField = document.getElementById('username');
+  const loginPwd = document.getElementById('password');
+  document.getElementById('login-clock-wrap').style.display = 'none';
+  document.getElementById('login-switch').style.display = 'none';
+  const sub = document.getElementById('login-subtitle');
+  userField.style.display = 'block';
+  userField.value = '';
+  userField.placeholder = 'Username';
+  loginPwd.style.display = 'block';
+  loginPwd.value = '';
+  loginPwd.placeholder = 'Password (optional)';
+  document.getElementById('login-title').innerText = 'Log in';
+  sub.innerText = 'Enter your account details';
+  sub.style.color = '';
+  document.getElementById('login-btn').innerText = 'Log In';
+  userField.focus();
+}
+
+// Reacts live as a username is typed on any screen where the username field
+// is editable (first-run screen or "log in as a different user" screen).
+// If the typed name matches an existing account, the password box only
+// shows when that account actually has a password — and when it does,
+// it's no longer optional, so the placeholder reflects that.
+function syncPasswordFieldToUsername() {
+  const uField = document.getElementById('username');
+  const pField = document.getElementById('password');
+  if (!uField || !pField) return;
+
+  const name = uField.value.trim();
+  const existing = name ? usersDB[uKey(name)] : null;
+
+  if (existing) {
+    const hasPassword = existing.password && existing.password.trim() !== '';
+    if (hasPassword) {
+      pField.style.display = 'block';
+      pField.placeholder = 'Password';
+    } else {
+      pField.style.display = 'none';
+      pField.value = '';
+    }
+  } else {
+    // No matching account yet (or field cleared) — this will create a new
+    // account, where a password is optional.
+    pField.style.display = 'block';
+    pField.placeholder = 'Password';
+  }
+}
+
+function showLoginError(pField, msg) {
+  pField.value = '';
+  pField.style.borderColor = '#ef4444';
+  pField.style.boxShadow = '0 0 0 3px rgba(239,68,68,0.3)';
+  setTimeout(() => { pField.style.borderColor = ''; pField.style.boxShadow = ''; }, 1500);
+  if (msg) {
+    const sub = document.getElementById('login-subtitle');
+    if (sub) { sub.textContent = msg; sub.style.color = '#ef4444'; }
+  }
+}
+
+function handleAuth() {
+  const uField = document.getElementById('username');
+  const pField = document.getElementById('password');
+  const usernameVisible = uField.style.display !== 'none';
+  const p = pField.value;
+
+  const targetName = usernameVisible ? uField.value.trim() : state.user?.username;
+  if (!targetName) return alert('Please enter a username');
+  const k = uKey(targetName);
+  const existing = usersDB[k];
+
+  if (existing) {
+    // Sign in to an existing local account
+    if (existing.banned) { showLoginError(pField, 'This account is banned. Contact a developer to be unbanned.'); return; }
+    const hasPassword = existing.password && existing.password.trim() !== '';
+    // The built-in dev account (ghxst) can always sign in, password or not —
+    // it never blocks on a wrong-password error.
+    if (hasPassword && k !== 'ghxst' && p !== existing.password) { showLoginError(pField); return; }
+
+    // Save & sign out whoever was active, then swap in the target's environment
+    const cur = currentUserRecord();
+    if (cur && uKey(cur.username) !== k) { cur.env = captureEnv(); cur.online = false; }
+    state.user = { username: existing.username, password: existing.password, isDev: !!existing.isDev };
+    applyEnv(existing.env || defaultEnv());
+    saveUsersDB();
+  } else {
+    // Create a brand-new local account with a fresh desktop (never inherit the
+    // currently signed-in user's apps/wallpaper).
+    const cur = currentUserRecord();
+    if (cur) { cur.env = captureEnv(); cur.online = false; }
+    const fresh = defaultEnv();
+    applyEnv(fresh);
+    state.user = { username: targetName, password: p, isDev: false };
+    usersDB[k] = {
+      username: targetName, password: p, isDev: false, banned: false,
+      online: false, createdAt: Date.now(), lastActive: null, env: fresh
+    };
+    saveUsersDB();
+  }
+
+  if (loginClockInterval) { clearInterval(loginClockInterval); loginClockInterval = null; }
+
+  markOnline();
+  // Persist the active session without recomputing open windows (they are
+  // restored by startUI); a full saveState() here would clear state.windows.
+  localStorage.setItem('arctic_state_v10', JSON.stringify(state));
+
+  const loginScreen = document.getElementById('login-screen');
+  loginScreen.style.transition = 'opacity 0.5s cubic-bezier(0.4,0,0.2,1)';
+  loginScreen.style.opacity = '0';
+  document.getElementById('wall').classList.remove('blurred');
+
+  setTimeout(() => {
+    loginScreen.style.display = 'none';
+    startUI();
+  }, 500);
+}
+
+let presenceHeartbeat = null;
+
+function startUI() {
+  document.getElementById('mainTopbar').classList.add('loaded');
+  document.getElementById('desktop').classList.add('loaded');
+  document.getElementById('dock').classList.add('loaded');
+
+  applyEnvVisuals();
+
+  if (state.user) {
+    document.getElementById('os-brand').innerText = state.user.username;
+  }
+
+  // Keep this user's "online" status & last-active time fresh
+  markOnline();
+  if (presenceHeartbeat) clearInterval(presenceHeartbeat);
+  presenceHeartbeat = setInterval(() => {
+    const r = currentUserRecord();
+    if (r) { r.online = true; r.lastActive = Date.now(); saveUsersDB(); }
+  }, 30000);
+
+  renderDesktop();
+  renderDock();
+  initBattery();
+  updateBatteryDisplay();
+
+  // Restore windows
+  state.windows.forEach(w => {
+    if (ALL_APPS[w.key] && isAppInstalled(w.key)) {
+      spawnWindow(w.key, true);
+      const win = activeWindows[w.key];
+      if (win) {
+        win.style.width = w.w;
+        win.style.height = w.h;
+        win.style.top = w.t;
+        win.style.left = w.l;
+        if (w.f) toggleFullscreen(w.key);
+        if (w.min) minimizeWin(w.key);
+      }
+    }
+  });
+
+  // Desktop context menu
+  const desk = document.getElementById('desktop');
+  desk.oncontextmenu = (e) => showDesktopCtx(e);
+  addLongPress(desk, (e) => showDesktopCtx(e));
+}
+
+// Battery Functions
+function initBattery() {
+  if ('getBattery' in navigator) {
+    navigator.getBattery().then(battery => {
+      batteryInfo.supported = true;
+      updateBatteryInfo(battery);
+
+      battery.addEventListener('levelchange', () => updateBatteryInfo(battery));
+      battery.addEventListener('chargingchange', () => updateBatteryInfo(battery));
+    }).catch(() => {
+      batteryInfo.supported = false;
+      updateBatteryDisplay();
+    });
+  } else {
+    batteryInfo.supported = false;
+    updateBatteryDisplay();
+  }
+}
+
+function updateBatteryInfo(battery) {
+  batteryInfo.level = Math.round(battery.level * 100);
+  batteryInfo.charging = battery.charging;
+  updateBatteryDisplay();
+}
+
+function updateBatteryDisplay() {
+  const levelEl = document.getElementById('battery-level');
+  const percentEl = document.getElementById('battery-percent');
+  const chargingEl = document.getElementById('battery-charging');
+  const containerEl = document.getElementById('battery-container');
+
+  if (!batteryInfo.supported) {
+    containerEl.style.display = 'none';
+    return;
+  }
+
+  containerEl.style.display = 'flex';
+
+  const level = batteryInfo.level;
+  levelEl.style.width = level + '%';
+
+  levelEl.classList.remove('low', 'medium', 'high');
+  if (level <= 20) {
+    levelEl.classList.add('low');
+  } else if (level <= 50) {
+    levelEl.classList.add('medium');
+  } else {
+    levelEl.classList.add('high');
+  }
+
+  chargingEl.style.display = batteryInfo.charging ? 'block' : 'none';
+
+  if (state.showBatteryPercent) {
+    percentEl.style.display = 'block';
+    percentEl.textContent = level + '%';
+    containerEl.classList.add('show-percent');
+  } else {
+    percentEl.style.display = 'none';
+    containerEl.classList.remove('show-percent');
+  }
+}
+
+function toggleBatteryPercent() {
+  state.showBatteryPercent = !state.showBatteryPercent;
+  saveState();
+  updateBatteryDisplay();
+
+  if (activeWindows['settings']) {
+    const settingsBody = activeWindows['settings'].querySelector('.win-body');
+    settingsBody.innerHTML = renderSettings();
+  }
+}
+
+// App Creator Functions
+function openAppCreator() {
+  document.getElementById('app-creator-modal').classList.add('visible');
+}
+
+function closeAppCreator() {
+  document.getElementById('app-creator-modal').classList.remove('visible');
+  // Clear form
+  document.getElementById('custom-app-name').value = '';
+  document.getElementById('custom-app-icon').value = '';
+  document.getElementById('custom-app-code').value = '';
+  document.getElementById('custom-app-file').value = '';
+}
+
+function switchCreatorTab(tab) {
+  document.querySelectorAll('.creator-tab').forEach(t => t.classList.remove('active'));
+  document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+  
+  if (tab === 'code') {
+    document.querySelector('[onclick="switchCreatorTab(\'code\')"]').classList.add('active');
+    document.getElementById('code-tab').classList.add('active');
+  } else {
+    document.querySelector('[onclick="switchCreatorTab(\'upload\')"]').classList.add('active');
+    document.getElementById('upload-tab').classList.add('active');
+  }
+}
+
+function handleAppFileUpload(input) {
+  const file = input.files[0];
+  if (!file) return;
+  
+  const reader = new FileReader();
+  reader.onload = (e) => {
+    document.getElementById('custom-app-code').value = e.target.result;
+    switchCreatorTab('code');
+  };
+  reader.readAsText(file);
+}
+
+function createCustomApp() {
+  const name = document.getElementById('custom-app-name').value.trim();
+  const icon = document.getElementById('custom-app-icon').value.trim() || 'https://iili.io/fiufO2p.png';
+  const code = document.getElementById('custom-app-code').value.trim();
+  
+  if (!name) {
+    alert('Please enter an app name');
+    return;
+  }
+  
+  if (!code) {
+    alert('Please provide HTML code for your app');
+    return;
+  }
+  
+  // Create a unique ID
+  const appId = 'custom_' + Date.now();
+  
+  // Create blob URL from code
+  const blob = new Blob([code], { type: 'text/html' });
+  const url = URL.createObjectURL(blob);
+  
+  // Add to custom apps
+  state.customApps[appId] = {
+    title: name,
+    icon: icon,
+    src: url,
+    description: 'Custom app',
+    isCustom: true
+  };
+  
+  // Add to all apps
+  ALL_APPS[appId] = state.customApps[appId];
+  
+  saveState();
+  closeAppCreator();
+  
+  // Refresh app store if open
+  if (activeWindows['appstore']) {
+    const storeBody = activeWindows['appstore'].querySelector('.win-body');
+    storeBody.innerHTML = renderAppStore();
+  }
+  
+  // Refresh desktop
+  renderDesktop();
+  
+  alert(`✓ Created app: ${name}`);
+}
+
+function spawnWindow(key, isRestore = false) {
+  if (!ALL_APPS[key]) return;
+  if (ALL_APPS[key]?.devOnly && !isDevUser()) return; // dev-only apps are gated
+
+  if (activeWindows[key]) {
+    activeWindows[key].style.display = 'flex';
+    activeWindows[key].style.zIndex = ++zIndexCounter;
+    setTimeout(() => activeWindows[key].classList.add('visible'), 10);
+    renderDock();
+    return;
+  }
+
+  const app = ALL_APPS[key];
+  const win = document.createElement('div');
+  win.className = 'window';
+  win.dataset.key = key;
+
+  const isMobile = window.innerWidth < 600;
+  if (!isRestore && isMobile) {
+    win.style.width = '94%';
+    win.style.height = '70%';
+    win.style.left = '3%';
+    win.style.top = '8%';
+  } else if (!isRestore) {
+    win.style.width = '800px';
+    win.style.height = '550px';
+    win.style.left = (100 + Object.keys(activeWindows).length * 30) + 'px';
+    win.style.top = (80 + Object.keys(activeWindows).length * 30) + 'px';
+  }
+
+  win.style.zIndex = ++zIndexCounter;
+
+  let bodyContent = '';
+  if (app.src) {
+    bodyContent = `<iframe src="${app.src}"></iframe>`;
+  } else if (app.type === 'notes') {
+    bodyContent = `<textarea id="note-text" class="notes-area" placeholder="Start typing..." oninput="saveState()">${state.notes}</textarea>`;
+  } else if (app.type === 'term') {
+    bodyContent = `
+      <div id="terminal-container" style="background:#0a0a0a; color:#22d3ee; font-family:'SF Mono', Consolas, monospace; padding:20px; height:100%; box-sizing:border-box; font-size:14px; line-height:1.6; display:flex; flex-direction:column;">
+        <div id="terminal-output" style="flex:1; overflow-y:auto; white-space:pre-wrap; word-wrap:break-word;">
+<span style="color:#34d399;">arcticOS Terminal v1.0</span>
+<span style="color:#94a3b8;">Type 'help' for available commands</span>
+
+</div>
+        <div style="display:flex; align-items:center; gap:8px; flex-shrink:0; padding-top:8px;">
+          <span style="color:#f472b6;" id="terminal-dir">~</span>
+          <span style="color:#38bdf8;">$</span>
+          <input type="text" id="terminal-input" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"
+            style="flex:1; background:transparent; border:none; outline:none; color:#e2e8f0; font-family:inherit; font-size:inherit; caret-color:#22d3ee;"
+            onkeydown="handleTerminalKeydown(event)" autofocus>
+        </div>
+        <style>
+          #terminal-output::-webkit-scrollbar { width: 8px; }
+          #terminal-output::-webkit-scrollbar-track { background: #1a1a1a; }
+          #terminal-output::-webkit-scrollbar-thumb { background: #333; border-radius: 4px; }
+        </style>
+      </div>`;
+    setTimeout(() => {
+      const input = document.getElementById('terminal-input');
+      if (input) input.focus();
+    }, 100);
+  } else if (app.type === 'appstore') {
+    bodyContent = renderAppStore();
+  } else if (app.type === 'settings') {
+    bodyContent = renderSettings();
+  } else if (app.type === 'photos') {
+    bodyContent = renderPhotosApp();
+  } else if (app.type === 'weather') {
+    bodyContent = renderWeatherApp();
+  } else if (app.type === 'calculator') {
+    bodyContent = renderCalculatorApp();
+  } else if (app.type === 'camera') {
+    bodyContent = renderCameraApp();
+  }
+
+  win.innerHTML = `
+    <div class="resizer resizer-r"></div>
+    <div class="resizer resizer-b"></div>
+    <div class="resizer resizer-rb"></div>
+    <div class="resizer resizer-l"></div>
+    <div class="resizer resizer-t"></div>
+    <div class="resizer resizer-lt"></div>
+    <div class="resizer resizer-rt"></div>
+    <div class="resizer resizer-lb"></div>
+    <div class="win-head">
+      <div class="win-controls">
+        <button class="win-btn close" onclick="closeWin('${key}')"></button>
+        <button class="win-btn minimize" onclick="minimizeWin('${key}')"></button>
+        <button class="win-btn fullscreen" onclick="toggleFullscreen('${key}')"></button>
+      </div>
+      <span class="win-title">${app.title}</span>
+      <div style="width: 62px;"></div>
+    </div>
+    <div class="win-body">${bodyContent}</div>
+  `;
+
+  activeWindows[key] = win;
+  initWindowInteractions(win);
+  document.body.appendChild(win);
+
+  requestAnimationFrame(() => {
+    win.classList.add('visible');
+  });
+
+  renderDock();
+  saveState();
+}
+
+function renderAppStore() {
+  let storeApps = Object.entries(STORE_APPS).map(([id, app]) => {
+    const installed = state.downloadedApps.includes(id);
+    return `
+      <div class="store-app-card" data-app-id="${id}">
+        <img src="${app.icon}" class="store-app-icon" alt="${app.title}">
+        <div class="store-app-info">
+          <h3>${app.title}</h3>
+          <p>${app.description}</p>
+          <button class="store-btn ${installed ? 'open' : 'download'}"
+                  onclick="${installed ? `openAppFromStore('${id}')` : `downloadApp('${id}')`}">
+            ${installed ? 'Open' : 'Download'}
+          </button>
+        </div>
+      </div>
+    `;
+  }).join('');
+
+  // Custom Apps
+  let customAppsHTML = '';
+  const customAppsList = Object.entries(state.customApps);
+  if (customAppsList.length > 0) {
+    customAppsHTML = customAppsList.map(([id, app]) => `
+      <div class="store-app-card" data-app-id="${id}">
+        <img src="${app.icon}" class="store-app-icon" alt="${app.title}">
+        <div class="store-app-info">
+          <h3>${app.title}</h3>
+          <p>${app.description}</p>
+          <div style="display: flex; gap: 8px;">
+            <button class="store-btn open" onclick="openAppFromStore('${id}')">Open</button>
+            <button class="store-btn open" onclick="deleteCustomApp('${id}')" style="background: #ef4444; color: white;">Delete</button>
+          </div>
+        </div>
+      </div>
+    `).join('');
+  }
+
+  return `
+    <div class="app-store">
+      <div class="app-store-header">
+        <h1>App Store</h1>
+        <p>Discover and download apps for your arcticOS</p>
+        <input class="store-search" id="store-search" type="text" placeholder="Search apps…" oninput="filterStoreApps(this.value)">
+      </div>
+      
+      <div class="app-store-section">
+        <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 16px;">
+          <h2 style="margin: 0;">Create Your Own App</h2>
+          <button class="store-btn download" onclick="openAppCreator()">+ New App</button>
+        </div>
+        <p style="color: var(--text-secondary); font-size: 14px;">Build custom apps by uploading HTML files or using the built-in code editor</p>
+      </div>
+
+      ${customAppsList.length > 0 ? `
+        <div class="app-store-section">
+          <h2>Your Custom Apps</h2>
+          <div class="app-store-grid" style="padding: 0;">
+            ${customAppsHTML}
+          </div>
+        </div>
+      ` : ''}
+      
+      <div class="app-store-section">
+        <h2>Available Apps</h2>
+        <div class="app-store-grid" style="padding: 0;">
+          ${storeApps}
+        </div>
+      </div>
+    </div>
+  `;
+}
+
+function filterStoreApps(query) {
+  const q = query.toLowerCase();
+  document.querySelectorAll('.store-app-card').forEach(card => {
+    const title = (card.querySelector('h3')?.textContent || '').toLowerCase();
+    card.style.display = title.includes(q) ? '' : 'none';
+  });
+  document.querySelectorAll('.app-store-section').forEach(section => {
+    const cards = section.querySelectorAll('.store-app-card');
+    if (cards.length > 0) {
+      const allHidden = Array.from(cards).every(c => c.style.display === 'none');
+      section.style.display = allHidden ? 'none' : '';
+    }
+  });
+}
+
+function deleteCustomApp(appId) {
+  if (!confirm('Are you sure you want to delete this custom app?')) return;
+  
+  // Close window if open
+  if (activeWindows[appId]) {
+    closeWin(appId);
+  }
+  
+  // Remove from state
+  delete state.customApps[appId];
+  delete ALL_APPS[appId];
+  
+  // Remove from pinned
+  state.pinned = state.pinned.filter(id => id !== appId);
+  
+  saveState();
+  
+  // Refresh UI
+  if (activeWindows['appstore']) {
+    const storeBody = activeWindows['appstore'].querySelector('.win-body');
+    storeBody.innerHTML = renderAppStore();
+  }
+  renderDesktop();
+  renderDock();
+}
+
+function renderSettings() {
+  const themeOptions = Object.entries(THEMES).map(([id, theme]) => `
+    <div class="theme-option ${state.theme === id ? 'active' : ''}" onclick="setTheme('${id}')">
+      <div class="theme-preview" style="background: ${theme.preview};"></div>
+      <span>${theme.name}</span>
+    </div>
+  `).join('');
+
+  const dockPositions = ['bottom', 'left', 'right'].map(pos => `
+    <div class="theme-option ${state.dockPosition === pos ? 'active' : ''}" onclick="setDockPosition('${pos}')" style="padding: 12px;">
+      <span style="text-transform: capitalize;">${pos}</span>
+    </div>
+  `).join('');
+
+  return `
+    <div class="settings-panel">
+      <div class="settings-header">
+        <h1>Settings</h1>
+      </div>
+      <div class="settings-section">
+        <h2>Appearance</h2>
+        <div class="theme-grid">
+          ${themeOptions}
+        </div>
+      </div>
+      <div class="settings-section">
+        <h2>Dock Position</h2>
+        <div class="theme-grid" style="grid-template-columns: repeat(3, 1fr);">
+          ${dockPositions}
+        </div>
+      </div>
+      <div class="settings-section">
+        <h2>Status Bar</h2>
+        <div class="settings-toggle">
+          <span class="settings-toggle-label">Show Battery Percentage</span>
+          <div class="toggle-switch ${state.showBatteryPercent ? 'active' : ''}" onclick="toggleBatteryPercent()"></div>
+        </div>
+      </div>
+      <div class="settings-section">
+        <h2>Window Behavior</h2>
+        <div class="settings-toggle">
+          <span class="settings-toggle-label">Hide title bar on fullscreen</span>
+          <div class="toggle-switch ${state.hideTopbarOnFullscreen ? 'active' : ''}" onclick="toggleHideTopbarOnFullscreen()"></div>
+        </div>
+        <p style="color: var(--text-secondary); font-size: 12px; margin-top: 8px;">Note: Hover your mouse at the top of the screen to bring the title bar back when hidden.</p>
+      </div>
+      <div class="settings-section">
+        <h2>Wallpaper</h2>
+        <div style="display: flex; gap: 12px; flex-wrap: wrap;">
+          <button class="store-btn download" onclick="promptWall()">Set URL</button>
+          <button class="store-btn download" onclick="document.getElementById('wall-upload').click()">Upload Image</button>
+          <button class="store-btn open" onclick="resetWallpaper()">Reset Wallpaper</button>
+        </div>
+      </div>
+      <div class="settings-section">
+        <h2>Account</h2>
+        <p style="color: var(--text-secondary); margin-bottom: 12px;">Logged in as: ${state.user?.username || 'Guest'}</p>
+        <div style="display: flex; gap: 12px; flex-wrap: wrap;">
+          <button class="store-btn download" onclick="changeUsername()">Change Name</button>
+          <button class="store-btn open" onclick="logout()">Logout</button>
+        </div>
+      </div>
+    </div>
+  `;
+}
+
+function setDockPosition(position) {
+  state.dockPosition = position;
+  const dock = document.getElementById('dock');
+  dock.classList.remove('position-left', 'position-right');
+  if (position !== 'bottom') {
+    dock.classList.add('position-' + position);
+  }
+  saveState();
+  if (activeWindows['settings']) {
+    const settingsBody = activeWindows['settings'].querySelector('.win-body');
+    settingsBody.innerHTML = renderSettings();
+  }
+}
+
+function toggleHideTopbarOnFullscreen() {
+  state.hideTopbarOnFullscreen = !state.hideTopbarOnFullscreen;
+  saveState();
+  if (activeWindows['settings']) {
+    const settingsBody = activeWindows['settings'].querySelector('.win-body');
+    settingsBody.innerHTML = renderSettings();
+  }
+}
+
+function changeUsername() {
+  const newName = prompt('Enter new account name:', state.user?.username || '');
+  if (newName && newName.trim()) {
+    state.user.username = newName.trim();
+    document.getElementById('os-brand').innerText = state.user.username;
+    saveState();
+    if (activeWindows['settings']) {
+      const settingsBody = activeWindows['settings'].querySelector('.win-body');
+      settingsBody.innerHTML = renderSettings();
+    }
+  }
+}
+
+// Weather App Functions
+function renderWeatherApp() {
+  setTimeout(loadWeatherData, 100);
+  return `
+    <div class="weather-app" id="weather-app">
+      <div class="weather-loading">
+        <div class="spinner"></div>
+        <p>Getting your location...</p>
+      </div>
+    </div>
+  `;
+}
+
+async function loadWeatherData() {
+  const container = document.getElementById('weather-app');
+  if (!container) return;
+
+  container.innerHTML = `
+    <div class="weather-loading">
+      <div class="spinner"></div>
+      <p>Getting weather data...</p>
+    </div>
+  `;
+
+  try {
+    // Get user's location
+    let latitude, longitude;
+
+    try {
+      const position = await new Promise((resolve, reject) => {
+        navigator.geolocation.getCurrentPosition(resolve, reject, {
+          timeout: 10000,
+          enableHighAccuracy: false,
+          maximumAge: 300000
+        });
+      });
+      latitude = position.coords.latitude;
+      longitude = position.coords.longitude;
+    } catch (geoError) {
+      // If geolocation fails, try IP-based location
+      try {
+        const ipResponse = await fetch('https://ipapi.co/json/');
+        const ipData = await ipResponse.json();
+        latitude = ipData.latitude;
+        longitude = ipData.longitude;
+      } catch {
+        throw { code: 1, message: 'Location unavailable' };
+      }
+    }
+
+    // Fetch weather from Open-Meteo API
+    const weatherResponse = await fetch(
+      `https://api.open-meteo.com/v1/forecast?latitude=${latitude}&longitude=${longitude}&current=temperature_2m,weather_code,wind_speed_10m,relative_humidity_2m,apparent_temperature&temperature_unit=fahrenheit&wind_speed_unit=mph`
+    );
+
+    if (!weatherResponse.ok) throw new Error('Weather API error');
+    const weatherData = await weatherResponse.json();
+
+    // Try to get location name, but don't fail if it doesn't work
+    let city = 'Your Location';
+    let country = '';
+
+    try {
+      const geoResponse = await fetch(
+        `https://nominatim.openstreetmap.org/reverse?lat=${latitude}&lon=${longitude}&format=json`,
+        { headers: { 'User-Agent': 'ArcticOS Weather App' } }
+      );
+      if (geoResponse.ok) {
+        const geoData = await geoResponse.json();
+        city = geoData.address?.city || geoData.address?.town || geoData.address?.village || geoData.address?.county || 'Your Location';
+        country = geoData.address?.country || '';
+      }
+    } catch {
+      // Silently fail - we'll just show "Your Location"
+    }
+
+    const temp = Math.round(weatherData.current.temperature_2m);
+    const feelsLike = Math.round(weatherData.current.apparent_temperature);
+    const humidity = weatherData.current.relative_humidity_2m;
+    const windSpeed = Math.round(weatherData.current.wind_speed_10m);
+    const weatherCode = weatherData.current.weather_code;
+
+    const weatherInfo = {
+      0: { desc: 'Clear sky', icon: '☀️' },
+      1: { desc: 'Mainly clear', icon: '🌤️' },
+      2: { desc: 'Partly cloudy', icon: '⛅' },
+      3: { desc: 'Overcast', icon: '☁️' },
+      45: { desc: 'Foggy', icon: '🌫️' },
+      48: { desc: 'Icy fog', icon: '🌫️' },
+      51: { desc: 'Light drizzle', icon: '🌧️' },
+      53: { desc: 'Drizzle', icon: '🌧️' },
+      55: { desc: 'Dense drizzle', icon: '🌧️' },
+      61: { desc: 'Light rain', icon: '🌧️' },
+      63: { desc: 'Rain', icon: '🌧️' },
+      65: { desc: 'Heavy rain', icon: '🌧️' },
+      71: { desc: 'Light snow', icon: '🌨️' },
+      73: { desc: 'Snow', icon: '🌨️' },
+      75: { desc: 'Heavy snow', icon: '🌨️' },
+      80: { desc: 'Rain showers', icon: '🌦️' },
+      81: { desc: 'Rain showers', icon: '🌦️' },
+      82: { desc: 'Heavy showers', icon: '🌦️' },
+      95: { desc: 'Thunderstorm', icon: '⛈️' },
+      96: { desc: 'Thunderstorm', icon: '⛈️' },
+      99: { desc: 'Severe storm', icon: '⛈️' }
+    };
+
+    const weather = weatherInfo[weatherCode] || { desc: 'Unknown', icon: '🌡️' };
+
+    container.innerHTML = `
+      <div class="weather-content">
+        <div class="weather-icon">${weather.icon}</div>
+        <div class="weather-temp">${temp}°F</div>
+        <div class="weather-desc">${weather.desc}</div>
+        <div class="weather-location">${city}${country ? ', ' + country : ''}</div>
+        <div class="weather-details">
+          <div class="weather-detail">
+            <div class="weather-detail-label">Feels Like</div>
+            <div class="weather-detail-value">${feelsLike}°</div>
+          </div>
+          <div class="weather-detail">
+            <div class="weather-detail-label">Humidity</div>
+            <div class="weather-detail-value">${humidity}%</div>
+          </div>
+          <div class="weather-detail">
+            <div class="weather-detail-label">Wind</div>
+            <div class="weather-detail-value">${windSpeed} mph</div>
+          </div>
+        </div>
+        <button class="weather-refresh" onclick="loadWeatherData()">↻ Refresh</button>
+      </div>
+    `;
+  } catch (error) {
+    console.error('Weather error:', error);
+    container.innerHTML = `
+      <div class="weather-error">
+        <div style="font-size: 48px; margin-bottom: 16px;">⚠️</div>
+        <h2 style="margin-bottom: 8px; color: var(--text);">Unable to Load Weather</h2>
+        <p style="color: var(--text-secondary); margin-bottom: 16px;">${error.code === 1 ? 'Please enable location access.' : 'Check your internet connection and try again.'}</p>
+        <button onclick="loadWeatherData()">Try Again</button>
+      </div>
+    `;
+  }
+}
+
+// Calculator App Functions
+let calcExpression = '';
+let calcResult = '0';
+let calcNewNumber = true;
+
+function renderCalculatorApp() {
+  calcExpression = '';
+  calcResult = '0';
+  calcNewNumber = true;
+
+  setTimeout(() => {
+    const calcWindow = activeWindows['calculator'];
+    if (calcWindow) {
+      calcWindow.addEventListener('keydown', handleCalcKeydown);
+    }
+  }, 100);
+
+  return `
+    <div class="calculator-app" id="calculator-app" tabindex="0">
+      <div class="calc-display">
+        <div class="calc-expression" id="calc-expression"></div>
+        <div class="calc-result" id="calc-result">0</div>
+      </div>
+      <div class="calc-buttons">
+        <button class="calc-btn function" onclick="calcClear()">AC</button>
+        <button class="calc-btn function" onclick="calcToggleSign()">±</button>
+        <button class="calc-btn function" onclick="calcPercent()">%</button>
+        <button class="calc-btn operator" onclick="calcOperator('/')">÷</button>
+
+        <button class="calc-btn number" onclick="calcDigit('7')">7</button>
+        <button class="calc-btn number" onclick="calcDigit('8')">8</button>
+        <button class="calc-btn number" onclick="calcDigit('9')">9</button>
+        <button class="calc-btn operator" onclick="calcOperator('*')">×</button>
+
+        <button class="calc-btn number" onclick="calcDigit('4')">4</button>
+        <button class="calc-btn number" onclick="calcDigit('5')">5</button>
+        <button class="calc-btn number" onclick="calcDigit('6')">6</button>
+        <button class="calc-btn operator" onclick="calcOperator('-')">−</button>
+
+        <button class="calc-btn number" onclick="calcDigit('1')">1</button>
+        <button class="calc-btn number" onclick="calcDigit('2')">2</button>
+        <button class="calc-btn number" onclick="calcDigit('3')">3</button>
+        <button class="calc-btn operator" onclick="calcOperator('+')">+</button>
+
+        <button class="calc-btn number wide" onclick="calcDigit('0')">0</button>
+        <button class="calc-btn number" onclick="calcDecimal()">.</button>
+        <button class="calc-btn equals" onclick="calcEquals()">=</button>
+      </div>
+    </div>
+  `;
+}
+
+function handleCalcKeydown(e) {
+  if (!activeWindows['calculator'] || activeWindows['calculator'].style.display === 'none') return;
+
+  const key = e.key;
+
+  if (/^[0-9]$/.test(key)) {
+    calcDigit(key);
+  } else if (key === '.') {
+    calcDecimal();
+  } else if (key === '+' || key === '-') {
+    calcOperator(key);
+  } else if (key === '*' || key === 'x' || key === 'X') {
+    calcOperator('*');
+  } else if (key === '/' || key === '÷') {
+    calcOperator('/');
+  } else if (key === 'Enter' || key === '=') {
+    e.preventDefault();
+    calcEquals();
+  } else if (key === 'Escape' || key === 'c' || key === 'C') {
+    calcClear();
+  } else if (key === 'Backspace') {
+    calcBackspace();
+  } else if (key === '%') {
+    calcPercent();
+  }
+}
+
+function calcDigit(d) {
+  if (calcNewNumber) {
+    calcResult = d;
+    calcNewNumber = false;
+  } else {
+    if (calcResult === '0' && d !== '.') {
+      calcResult = d;
+    } else {
+      calcResult += d;
+    }
+  }
+  updateCalcDisplay();
+}
+
+function calcDecimal() {
+  if (calcNewNumber) {
+    calcResult = '0.';
+    calcNewNumber = false;
+  } else if (!calcResult.includes('.')) {
+    calcResult += '.';
+  }
+  updateCalcDisplay();
+}
+
+function calcOperator(op) {
+  const opSymbols = { '+': ' + ', '-': ' − ', '*': ' × ', '/': ' ÷ ' };
+  if (calcExpression && !calcNewNumber) {
+    calcEquals();
+  }
+  calcExpression = calcResult + opSymbols[op];
+  calcNewNumber = true;
+  updateCalcDisplay();
+}
+
+function calcEquals() {
+  if (!calcExpression) return;
+
+  try {
+    // Parse the expression
+    const expr = calcExpression.replace(' + ', '+').replace(' − ', '-').replace(' × ', '*').replace(' ÷ ', '/');
+    const fullExpr = expr + calcResult;
+
+    // Evaluate safely
+    const result = evaluateExpression(fullExpr);
+
+    // Format result - handle fractions/decimals nicely
+    if (Number.isInteger(result)) {
+      calcResult = result.toString();
+    } else {
+      // Round to avoid floating point issues, but keep precision
+      const rounded = parseFloat(result.toPrecision(12));
+      calcResult = rounded.toString();
+    }
+
+    calcExpression = '';
+    calcNewNumber = true;
+  } catch (e) {
+    calcResult = 'Error';
+    calcExpression = '';
+    calcNewNumber = true;
+  }
+  updateCalcDisplay();
+}
+
+function evaluateExpression(expr) {
+  // Safe evaluation for basic math
+  const tokens = expr.match(/(\d+\.?\d*|[+\-*/])/g);
+  if (!tokens) return 0;
+
+  let result = parseFloat(tokens[0]);
+
+  for (let i = 1; i < tokens.length; i += 2) {
+    const operator = tokens[i];
+    const operand = parseFloat(tokens[i + 1]);
+
+    switch (operator) {
+      case '+': result += operand; break;
+      case '-': result -= operand; break;
+      case '*': result *= operand; break;
+      case '/': result = operand !== 0 ? result / operand : NaN; break;
+    }
+  }
+
+  return result;
+}
+
+function calcClear() {
+  calcExpression = '';
+  calcResult = '0';
+  calcNewNumber = true;
+  updateCalcDisplay();
+}
+
+function calcBackspace() {
+  if (calcResult.length > 1) {
+    calcResult = calcResult.slice(0, -1);
+  } else {
+    calcResult = '0';
+    calcNewNumber = true;
+  }
+  updateCalcDisplay();
+}
+
+function calcToggleSign() {
+  if (calcResult !== '0') {
+    if (calcResult.startsWith('-')) {
+      calcResult = calcResult.slice(1);
+    } else {
+      calcResult = '-' + calcResult;
+    }
+  }
+  updateCalcDisplay();
+}
+
+function calcPercent() {
+  calcResult = (parseFloat(calcResult) / 100).toString();
+  updateCalcDisplay();
+}
+
+function updateCalcDisplay() {
+  const exprEl = document.getElementById('calc-expression');
+  const resultEl = document.getElementById('calc-result');
+  if (exprEl) exprEl.textContent = calcExpression;
+  if (resultEl) {
+    // Format large numbers with commas
+    let display = calcResult;
+    if (!isNaN(parseFloat(calcResult)) && calcResult !== 'Error') {
+      const num = parseFloat(calcResult);
+      if (Math.abs(num) >= 1000 && Number.isInteger(num)) {
+        display = num.toLocaleString();
+      }
+    }
+    resultEl.textContent = display;
+  }
+}
+
+function closePhotoViewer() {
+  updatePhotosAppUI();
+}
+
+function updatePhotosAppUI() {
+  if (!activeWindows['photos']) return;
+  const body = activeWindows['photos'].querySelector('.win-body');
+  if (body) body.innerHTML = renderPhotosApp();
+}
+
+function downloadApp(appId) {
+  const card = document.querySelector(`[data-app-id="${appId}"]`);
+  const btn = card.querySelector('.store-btn');
+
+  btn.className = 'store-btn downloading downloading-shimmer';
+  btn.textContent = 'Installing...';
+  btn.onclick = null;
+
+  setTimeout(() => {
+    state.downloadedApps.push(appId);
+    saveState();
+
+    btn.className = 'store-btn open';
+    btn.textContent = 'Open';
+    btn.onclick = () => openAppFromStore(appId);
+
+    renderDesktop();
+    renderDock();
+  }, 1500);
+}
+
+function openAppFromStore(appId) {
+  spawnWindow(appId);
+}
+
+function setTheme(themeId) {
+  const previousTheme = state.theme;
+  state.theme = themeId;
+  document.body.setAttribute('data-theme', themeId);
+
+  const wall = document.getElementById('wall');
+
+  // If switching away from a theme with a wallpaper (like ambient), remove it
+  if (previousTheme !== themeId && THEMES[previousTheme]?.wallpaper && !state.wallpaper) {
+    wall.style.backgroundImage = `url(${DEFAULT_WALLPAPER})`;
+  }
+
+  // Apply new theme wallpaper if no custom wallpaper is set
+  if (!state.wallpaper) {
+    if (THEMES[themeId]?.wallpaper) {
+      wall.style.backgroundImage = `url(${THEMES[themeId].wallpaper})`;
+    } else {
+      wall.style.backgroundImage = `url(${DEFAULT_WALLPAPER})`;
+    }
+  }
+
+  saveState();
+
+  if (activeWindows['settings']) {
+    const settingsBody = activeWindows['settings'].querySelector('.win-body');
+    settingsBody.innerHTML = renderSettings();
+  }
+}
+
+function toggleFullscreen(key) {
+  const win = activeWindows[key];
+  const isGoingFullscreen = !win.classList.contains('fullscreen');
+
+  win.classList.toggle('fullscreen');
+  document.getElementById('mainTopbar').classList.toggle('hidden', win.classList.contains('fullscreen'));
+
+  // Handle hide-topbar setting
+  if (isGoingFullscreen && state.hideTopbarOnFullscreen) {
+    win.classList.add('hide-topbar');
+    // Add hover zone for triggering the title bar
+    let hoverZone = win.querySelector('.fullscreen-hover-zone');
+    if (!hoverZone) {
+      hoverZone = document.createElement('div');
+      hoverZone.className = 'fullscreen-hover-zone';
+      hoverZone.onmouseenter = () => {
+        const winHead = win.querySelector('.win-head');
+        if (winHead) winHead.classList.add('visible');
+      };
+      hoverZone.onmouseleave = () => {
+        const winHead = win.querySelector('.win-head');
+        if (winHead) winHead.classList.remove('visible');
+      };
+      win.appendChild(hoverZone);
+    }
+    // Also add hover handlers to the win-head itself
+    const winHead = win.querySelector('.win-head');
+    winHead.onmouseenter = () => winHead.classList.add('visible');
+    winHead.onmouseleave = () => winHead.classList.remove('visible');
+  } else {
+    win.classList.remove('hide-topbar');
+    const hoverZone = win.querySelector('.fullscreen-hover-zone');
+    if (hoverZone) hoverZone.remove();
+  }
+
+  const anyFullscreen = Object.values(activeWindows).some(w => w.classList.contains('fullscreen'));
+  document.getElementById('dock').style.display = anyFullscreen ? 'none' : 'flex';
+  saveState();
+}
+
+function minimizeWin(key) {
+  const win = activeWindows[key];
+  const wasFullscreen = win.classList.contains('fullscreen');
+
+  // If window was fullscreen, exit fullscreen first
+  if (wasFullscreen) {
+    win.classList.remove('fullscreen');
+    document.getElementById('mainTopbar').classList.remove('hidden');
+    document.getElementById('dock').style.display = 'flex';
+  }
+
+  const dock = document.getElementById('dock');
+  const dockRect = dock.getBoundingClientRect();
+  const winRect = win.getBoundingClientRect();
+
+  const dockCenterX = dockRect.left + dockRect.width / 2;
+  const dockCenterY = dockRect.top + dockRect.height / 2;
+
+  const translateX = dockCenterX - (winRect.left + winRect.width / 2);
+  const translateY = dockCenterY - (winRect.top + winRect.height / 2);
+
+  win.classList.add('minimizing');
+  win.style.transform = `translate(${translateX}px, ${translateY}px) scale(0.1)`;
+  win.style.opacity = '0';
+
+  setTimeout(() => {
+    win.classList.remove('minimizing');
+    win.style.transform = '';
+    win.style.opacity = '';
+    win.style.display = 'none';
+    win.classList.remove('visible');
+    renderDock();
+    updateDockVisibility();
+    saveState();
+  }, 400);
+}
+
+function closeWin(key) {
+  if (key === 'camera') stopCameraStream();
+  const win = activeWindows[key];
+  const isFull = win.classList.contains('fullscreen');
+
+  win.classList.add('closing');
+  win.classList.remove('visible');
+
+  setTimeout(() => {
+    win.remove();
+    delete activeWindows[key];
+    if (isFull) document.getElementById('mainTopbar').classList.remove('hidden');
+    renderDock();
+    updateDockVisibility();
+
+    const dock = document.getElementById('dock');
+    const dockApp = dock.querySelector(`.dock-app img[src="${ALL_APPS[key]?.icon}"]`)?.parentElement;
+    if (dockApp) {
+    }
+
+    saveState();
+  }, 250);
+}
+
+function updateDockVisibility() {
+  const anyFullscreen = Object.values(activeWindows).some(w => w.classList.contains('fullscreen'));
+  document.getElementById('dock').style.display = anyFullscreen ? 'none' : 'flex';
+}
+
+function showDesktopCtx(e) {
+  e.preventDefault();
+  const menu = document.getElementById('ctx-menu');
+
+  menu.innerHTML = `
+    <div class="ctx-item" onclick="spawnWindow('settings')">Settings</div>
+    <div class="ctx-item" onclick="spawnWindow('appstore')">App Store</div>
+    <div class="ctx-separator"></div>
+    <div class="ctx-item" onclick="promptWall()">Set Wallpaper URL</div>
+    <div class="ctx-item" onclick="document.getElementById('wall-upload').click()">Upload Wallpaper</div>
+    <div class="ctx-separator"></div>
+    <div class="ctx-item" onclick="logout()">Logout</div>
+  `;
+
+  let clientX = e.clientX ?? e.changedTouches?.[0]?.clientX ?? 0;
+  let clientY = e.clientY ?? e.changedTouches?.[0]?.clientY ?? 0;
+
+  if (clientX + 200 > window.innerWidth) clientX = window.innerWidth - 210;
+  if (clientY + 250 > window.innerHeight) clientY = window.innerHeight - 260;
+
+  menu.style.left = clientX + 'px';
+  menu.style.top = clientY + 'px';
+  menu.style.display = 'block';
+
+  requestAnimationFrame(() => {
+    menu.classList.add('visible');
+  });
+}
+
+function logout() {
+  hideCtx();
+  markOffline();
+  location.reload();
+}
+
+window.addEventListener('beforeunload', markOffline);
+
+function promptWall() {
+  const url = prompt("Enter image URL:");
+  if (url) {
+    state.wallpaper = url;
+    document.getElementById('wall').style.backgroundImage = `url(${url})`;
+    saveState();
+  }
+  hideCtx();
+}
+
+function handleFileWall(input) {
+  const file = input.files[0];
+  if (!file) return;
+
+  const reader = new FileReader();
+  reader.onload = (e) => {
+    state.wallpaper = e.target.result;
+    document.getElementById('wall').style.backgroundImage = `url(${e.target.result})`;
+    saveState();
+  };
+  reader.readAsDataURL(file);
+  hideCtx();
+}
+
+function resetWallpaper() {
+  // Set theme's wallpaper if it has one, otherwise fall back to the
+  // system default — never leave the desktop blank.
+  const wall = document.getElementById('wall');
+  if (THEMES[state.theme]?.wallpaper) {
+    state.wallpaper = THEMES[state.theme].wallpaper;
+  } else {
+    state.wallpaper = DEFAULT_WALLPAPER;
+  }
+  wall.style.backgroundImage = `url(${state.wallpaper})`;
+
+  saveState();
+
+  if (activeWindows['settings']) {
+    const settingsBody = activeWindows['settings'].querySelector('.win-body');
+    settingsBody.innerHTML = renderSettings();
+  }
+}
+
+function initWindowInteractions(win) {
+  const head = win.querySelector('.win-head');
+  const key = win.dataset.key;
+
+  head.onmousedown = (e) => {
+    if (e.target.classList.contains('win-btn')) return;
+    startDrag(e, win, 'mouse');
+  };
+  head.ontouchstart = (e) => {
+    if (e.target.classList.contains('win-btn')) return;
+    startDrag(e, win, 'touch');
+  };
+  // Double-click the title bar toggles maximize / float
+  head.ondblclick = (e) => {
+    if (e.target.classList.contains('win-btn')) return;
+    applySnap(key, win.dataset.snap === 'max' ? 'float' : 'max');
+  };
+
+  // Hover the green button for the snap-layout flyout
+  const greenBtn = win.querySelector('.win-btn.fullscreen');
+  if (greenBtn) {
+    greenBtn.addEventListener('mouseenter', () => showSnapFlyout(key, greenBtn));
+    greenBtn.addEventListener('mouseleave', hideSnapFlyoutSoon);
+  }
+
+  win.querySelectorAll('.resizer').forEach(r => {
+    r.onmousedown = (e) => {
+      e.preventDefault();
+      e.stopPropagation();
+      document.onmousemove = (me) => resize(me, win, r);
+      document.onmouseup = () => { document.onmousemove = null; saveState(); };
+    };
+  });
+
+  win.onmousedown = () => win.style.zIndex = ++zIndexCounter;
+  win.ontouchstart = () => win.style.zIndex = ++zIndexCounter;
+}
+
+function startDrag(e, win, type) {
+  if (win.classList.contains('fullscreen')) return;
+  if (type === 'mouse') e.preventDefault();
+
+  const key = win.dataset.key;
+  let startX = (type === 'mouse') ? e.clientX : e.touches[0].clientX;
+  let startY = (type === 'mouse') ? e.clientY : e.touches[0].clientY;
+
+  // If the window is snapped, restore its floating size and re-grab under the cursor
+  if (win.classList.contains('snapped')) {
+    const g = win._floatGeom || {};
+    const floatW = parseInt(g.width) || 800;
+    win.classList.remove('snapped');
+    delete win.dataset.snap;
+    win.style.width = (g.width || '800px');
+    win.style.height = (g.height || '550px');
+    win.style.left = (startX - floatW / 2) + 'px';
+    win.style.top = (startY - 22) + 'px';
+  }
+
+  const initialLeft = win.offsetLeft;
+  const initialTop = win.offsetTop;
+  let pendingZone = null;
+
+  const moveHandler = (me) => {
+    const currentX = (type === 'mouse') ? me.clientX : me.touches[0].clientX;
+    const currentY = (type === 'mouse') ? me.clientY : me.touches[0].clientY;
+
+    let newLeft = initialLeft + (currentX - startX);
+    let newTop = initialTop + (currentY - startY);
+
+    // Constrain horizontally
+    const winWidth = win.offsetWidth;
+    if (newLeft < 0) newLeft = 0;
+    if (newLeft + winWidth > window.innerWidth) newLeft = window.innerWidth - winWidth;
+
+    // Constrain vertically (topbar boundary removed; only keep on-screen)
+    const winHeight = win.offsetHeight;
+    if (newTop < 0) newTop = 0;
+    if (newTop + winHeight > window.innerHeight) newTop = window.innerHeight - winHeight;
+
+    win.style.left = newLeft + "px";
+    win.style.top = newTop + "px";
+
+    // Snap-zone detection & preview
+    pendingZone = detectSnapZone(currentX, currentY, win);
+    showSnapPreview(pendingZone);
+  };
+
+  const endHandler = () => {
+    document.removeEventListener(type === 'mouse' ? 'mousemove' : 'touchmove', moveHandler);
+    document.removeEventListener(type === 'mouse' ? 'mouseup' : 'touchend', endHandler);
+    hideSnapPreview();
+    if (pendingZone) applySnap(key, pendingZone);
+    else saveState();
+  };
+
+  document.addEventListener(type === 'mouse' ? 'mousemove' : 'touchmove', moveHandler, { passive: false });
+  document.addEventListener(type === 'mouse' ? 'mouseup' : 'touchend', endHandler);
+}
+
+function resize(e, win, r) {
+  const dockHeight = 100;
+  const minWidth = 280;
+  const minHeight = 200;
+
+  const rect = win.getBoundingClientRect();
+
+  // Right edge resize
+  if (r.classList.contains('resizer-r') || r.classList.contains('resizer-rb') || r.classList.contains('resizer-rt')) {
+    const newWidth = Math.max(minWidth, e.clientX - rect.left);
+    win.style.width = newWidth + 'px';
+  }
+
+  // Bottom edge resize
+  if (r.classList.contains('resizer-b') || r.classList.contains('resizer-rb') || r.classList.contains('resizer-lb')) {
+    const maxHeight = window.innerHeight - rect.top - dockHeight;
+    const newHeight = Math.min(maxHeight, Math.max(minHeight, e.clientY - rect.top));
+    win.style.height = newHeight + 'px';
+  }
+
+  // Left edge resize
+  if (r.classList.contains('resizer-l') || r.classList.contains('resizer-lt') || r.classList.contains('resizer-lb')) {
+    const right = rect.right;
+    const newWidth = Math.max(minWidth, right - e.clientX);
+    const newLeft = Math.min(e.clientX, right - minWidth);
+    win.style.width = newWidth + 'px';
+    win.style.left = newLeft + 'px';
+  }
+
+  // Top edge resize
+  if (r.classList.contains('resizer-t') || r.classList.contains('resizer-lt') || r.classList.contains('resizer-rt')) {
+    const bottom = rect.bottom;
+    const newHeight = Math.max(minHeight, bottom - e.clientY);
+    const newTop = Math.min(e.clientY, bottom - minHeight);
+    win.style.height = newHeight + 'px';
+    win.style.top = newTop + 'px';
+  }
+}
+
+function renderDesktop() {
+  const d = document.getElementById('desktop');
+  d.innerHTML = '';
+}
+
+function renderDock() {
+  const d = document.getElementById('dock');
+  d.innerHTML = '';
+
+  const items = [...new Set([...state.pinned, ...Object.keys(activeWindows)])];
+
+  // Dynamic icon sizing based on item count (+1 for launcher button)
+  const total = items.filter(k => ALL_APPS[k] && isAppInstalled(k)).length + 1;
+  d.classList.remove('dock-crowded', 'dock-very-crowded');
+  if (total > 14) d.classList.add('dock-very-crowded');
+  else if (total > 9) d.classList.add('dock-crowded');
+
+  // Launcher button (always first)
+  const launcherBtn = document.createElement('div');
+  launcherBtn.className = 'dock-launcher-btn';
+  launcherBtn.title = 'Applications';
+  launcherBtn.innerHTML = `<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,0.85)" stroke-width="1.8">
+    <rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/>
+    <rect x="3" y="14" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/>
+  </svg>`;
+  launcherBtn.onclick = openLauncher;
+  d.appendChild(launcherBtn);
+
+  // Separator after launcher
+  if (items.length > 0) {
+    const sep = document.createElement('div');
+    sep.className = 'dock-separator';
+    d.appendChild(sep);
+  }
+
+  items.forEach(key => {
+    if (!ALL_APPS[key] || !isAppInstalled(key)) return;
+
+    const div = document.createElement('div');
+    div.className = `dock-app ${activeWindows[key] ? 'running' : ''}`;
+    div.title = ALL_APPS[key].title;
+    div.innerHTML = `<img src="${ALL_APPS[key].icon}" alt="${ALL_APPS[key].title}">`;
+    div.onclick = () => spawnWindow(key);
+    div.oncontextmenu = (e) => showAppCtx(e, key);
+    addLongPress(div, (e) => showAppCtx(e, key));
+    d.appendChild(div);
+  });
+}
+
+function addLongPress(el, callback) {
+  let timer;
+  const start = (e) => {
+    timer = setTimeout(() => callback(e), 500);
+  };
+  const end = () => clearTimeout(timer);
+
+  el.addEventListener('touchstart', start, { passive: true });
+  el.addEventListener('touchend', end);
+  el.addEventListener('touchmove', end);
+}
+
+function showAppCtx(e, key) {
+  e.preventDefault();
+  e.stopPropagation();
+
+  const menu = document.getElementById('ctx-menu');
+  const isPinned = state.pinned.includes(key);
+  const isDefault = DEFAULT_APPS[key];
+  const isCustom = state.customApps[key];
+
+  let menuItems = `<div class="ctx-item" onclick="togglePin('${key}')">${isPinned ? 'Unpin from Dock' : 'Pin to Dock'}</div>`;
+
+  if (!isDefault && (state.downloadedApps.includes(key) || isCustom)) {
+    menuItems += `<div class="ctx-separator"></div>`;
+    menuItems += `<div class="ctx-item" onclick="uninstallApp('${key}')" style="color: #ef4444;">Uninstall</div>`;
+  }
+
+  menu.innerHTML = menuItems;
+
+  let clientX = e.clientX ?? e.changedTouches?.[0]?.clientX ?? 0;
+  let clientY = e.clientY ?? e.changedTouches?.[0]?.clientY ?? 0;
+
+  if (clientY > window.innerHeight - 120) clientY -= 100;
+  if (clientX + 200 > window.innerWidth) clientX = window.innerWidth - 210;
+
+  menu.style.left = clientX + 'px';
+  menu.style.top = clientY + 'px';
+  menu.style.display = 'block';
+
+  requestAnimationFrame(() => {
+    menu.classList.add('visible');
+  });
+}
+
+function uninstallApp(key) {
+  if (activeWindows[key]) {
+    closeWin(key);
+  }
+
+  // Check if it's a custom app
+  if (state.customApps[key]) {
+    deleteCustomApp(key);
+    return;
+  }
+
+  state.downloadedApps = state.downloadedApps.filter(id => id !== key);
+  state.pinned = state.pinned.filter(id => id !== key);
+  saveState();
+
+  renderDesktop();
+  renderDock();
+
+  if (activeWindows['appstore']) {
+    const storeBody = activeWindows['appstore'].querySelector('.win-body');
+    storeBody.innerHTML = renderAppStore();
+  }
+
+  hideCtx();
+}
+
+function togglePin(key) {
+  if (state.pinned.includes(key)) {
+    state.pinned = state.pinned.filter(k => k !== key);
+  } else {
+    state.pinned.push(key);
+  }
+  saveState();
+  renderDock();
+  hideCtx();
+}
+
+function hideCtx() {
+  const menu = document.getElementById('ctx-menu');
+  menu.classList.remove('visible');
+  setTimeout(() => {
+    menu.style.display = 'none';
+  }, 200);
+}
+
+document.addEventListener('click', (e) => {
+  if (!e.target.closest('#ctx-menu') && !e.target.closest('.ctx-item')) {
+    hideCtx();
+  }
+});
+
+window.addEventListener('keydown', (e) => {
+  if (activeWindows['minecraft'] && activeWindows['minecraft'].style.display !== 'none') {
+    e.stopPropagation();
+  }
+}, true);
+
+function updateClock() {
+  const clock = document.getElementById('clock');
+  if (clock) {
+    const now = new Date();
+    let hours = now.getHours();
+    const minutes = now.getMinutes();
+    const ampm = hours >= 12 ? 'PM' : 'AM';
+    hours = hours % 12 || 12;
+    const minutesStr = minutes.toString().padStart(2, '0');
+    clock.innerText = `${hours}:${minutesStr} ${ampm}`;
+  }
+}
+
+// Terminal keydown handler
+function handleTerminalKeydown(event) {
+  const input = document.getElementById('terminal-input');
+  const output = document.getElementById('terminal-output');
+  const dirDisplay = document.getElementById('terminal-dir');
+
+  if (event.key === 'Enter') {
+    const command = input.value;
+    const prompt = `<span style="color:#f472b6;">${terminalState.currentDir}</span> <span style="color:#38bdf8;">$</span> `;
+
+    output.innerHTML += `${prompt}<span style="color:#e2e8f0;">${command.replace(/</g, '&lt;').replace(/>/g, '&gt;')}</span>\n`;
+
+    const result = executeTerminalCommand(command);
+
+    if (result === '__CLEAR__') {
+      output.innerHTML = '';
+    } else if (result) {
+      output.innerHTML += result + '\n';
+    }
+
+    output.innerHTML += '\n';
+    input.value = '';
+
+    if (dirDisplay) {
+      dirDisplay.textContent = terminalState.currentDir;
+    }
+
+    output.scrollTop = output.scrollHeight;
+
+  } else if (event.key === 'ArrowUp') {
+    event.preventDefault();
+    if (terminalState.historyIndex > 0) {
+      terminalState.historyIndex--;
+      input.value = terminalState.history[terminalState.historyIndex] || '';
+    }
+  } else if (event.key === 'ArrowDown') {
+    event.preventDefault();
+    if (terminalState.historyIndex < terminalState.history.length - 1) {
+      terminalState.historyIndex++;
+      input.value = terminalState.history[terminalState.historyIndex] || '';
+    } else {
+      terminalState.historyIndex = terminalState.history.length;
+      input.value = '';
+    }
+  }
+}
+
+document.addEventListener('click', (e) => {
+  if (e.target.closest('#terminal-container')) {
+    const input = document.getElementById('terminal-input');
+    if (input) input.focus();
+  }
+});
+
+// ── Launcher (Launchpad) ──────────────────────────────────────
+function openLauncher() {
+  const overlay = document.getElementById('launcher-overlay');
+  overlay.classList.add('visible');
+  renderLauncherGrid('');
+  setTimeout(() => {
+    const search = document.getElementById('launcher-search');
+    if (search) search.focus();
+  }, 150);
+}
+
+function closeLauncher() {
+  document.getElementById('launcher-overlay').classList.remove('visible');
+}
+
+function handleLauncherOverlayClick(e) {
+  if (e.target === document.getElementById('launcher-overlay')) closeLauncher();
+}
+
+function filterLauncher(query) {
+  renderLauncherGrid(query);
+}
+
+function renderLauncherGrid(query) {
+  const grid = document.getElementById('launcher-grid');
+  if (!grid) return;
+  const installed = getInstalledApps();
+  const q = (query || '').toLowerCase().trim();
+
+  const entries = Object.entries(installed).filter(([, app]) =>
+    !q || app.title.toLowerCase().includes(q)
+  );
+
+  if (entries.length === 0) {
+    grid.innerHTML = `<div class="launcher-empty">No apps found for "<strong>${q}</strong>"</div>`;
+    return;
+  }
+
+  grid.innerHTML = entries.map(([key, app]) => `
+    <div class="launcher-app" onclick="launcherOpenApp('${key}')" oncontextmenu="launcherAppCtx(event,'${key}')">
+      <img src="${app.icon}" alt="${app.title}" onerror="this.src='https://iili.io/fiufO2p.png'">
+      <span>${app.title}</span>
+    </div>
+  `).join('');
+}
+
+function launcherOpenApp(key) {
+  closeLauncher();
+  setTimeout(() => spawnWindow(key), 150);
+}
+
+function launcherAppCtx(e, key) {
+  e.preventDefault();
+  e.stopPropagation();
+  closeLauncher();
+  setTimeout(() => showAppCtx(e, key), 10);
+}
+
+// Close launcher on Escape
+document.addEventListener('keydown', (e) => {
+  if (e.key === 'Escape') {
+    const overlay = document.getElementById('launcher-overlay');
+    if (overlay && overlay.classList.contains('visible')) closeLauncher();
+  }
+});
+
+// ── Camera App ────────────────────────────────────────────────
+let cameraStream = null;
+let mediaRecorder = null;
+let recordedChunks = [];
+let cameraMode = 'photo'; // 'photo' or 'video'
+
+function renderCameraApp() {
+  return `
+    <div class="camera-app" id="camera-app">
+      <div class="camera-viewfinder" id="camera-viewfinder">
+        <div class="camera-recording-indicator" id="rec-indicator">
+          <span style="width:8px;height:8px;background:white;border-radius:50%;display:inline-block;"></span>
+          REC
+        </div>
+        <video id="camera-video" autoplay playsinline muted style="width:100%;height:100%;object-fit:cover;"></video>
+        <canvas id="camera-canvas" style="display:none;"></canvas>
+      </div>
+      <div class="camera-controls">
+        <div style="display:flex;flex-direction:column;align-items:center;gap:8px;">
+          <button class="camera-mode-btn ${cameraMode==='photo'?'active':''}" id="mode-photo" onclick="setCameraMode('photo')">PHOTO</button>
+          <button class="camera-mode-btn ${cameraMode==='video'?'active':''}" id="mode-video" onclick="setCameraMode('video')">VIDEO</button>
+        </div>
+        <button class="camera-shutter" id="camera-shutter" onclick="cameraCapture()" title="Take Photo"></button>
+        <button class="camera-record-btn" id="camera-record" onclick="toggleVideoRecord()" title="Record Video" style="${cameraMode==='photo'?'display:none':'display:flex'}"></button>
+        <div style="width:44px;"></div>
+      </div>
+    </div>
+  `;
+}
+
+async function initCameraStream() {
+  const video = document.getElementById('camera-video');
+  if (!video) return;
+  try {
+    cameraStream = await navigator.mediaDevices.getUserMedia({ video: { facingMode: 'user' }, audio: true });
+    video.srcObject = cameraStream;
+  } catch (err) {
+    const viewfinder = document.getElementById('camera-viewfinder');
+    if (viewfinder) viewfinder.innerHTML = `
+      <div class="camera-error">
+        <svg width="60" height="60" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+          <path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/>
+          <line x1="1" y1="1" x2="23" y2="23" stroke="#ef4444"/>
+        </svg>
+        <p style="margin-top:12px;font-size:15px;">Camera access denied</p>
+        <p style="font-size:12px;margin-top:6px;opacity:0.6;">Allow camera permissions and reopen</p>
+      </div>`;
+  }
+}
+
+function stopCameraStream() {
+  if (cameraStream) {
+    cameraStream.getTracks().forEach(t => t.stop());
+    cameraStream = null;
+  }
+  if (mediaRecorder && mediaRecorder.state !== 'inactive') {
+    mediaRecorder.stop();
+  }
+}
+
+function setCameraMode(mode) {
+  cameraMode = mode;
+  const shutter = document.getElementById('camera-shutter');
+  const record = document.getElementById('camera-record');
+  const photoBtn = document.getElementById('mode-photo');
+  const videoBtn = document.getElementById('mode-video');
+  if (photoBtn) photoBtn.classList.toggle('active', mode === 'photo');
+  if (videoBtn) videoBtn.classList.toggle('active', mode === 'video');
+  if (shutter) shutter.style.display = mode === 'photo' ? 'flex' : 'none';
+  if (record) record.style.display = mode === 'video' ? 'flex' : 'none';
+}
+
+function cameraCapture() {
+  const video = document.getElementById('camera-video');
+  const canvas = document.getElementById('camera-canvas');
+  if (!video || !canvas || !cameraStream) return;
+
+  canvas.width = video.videoWidth || 640;
+  canvas.height = video.videoHeight || 480;
+  const ctx = canvas.getContext('2d');
+  ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
+
+  // Flash effect
+  const viewfinder = document.getElementById('camera-viewfinder');
+  if (viewfinder) {
+    const flash = document.createElement('div');
+    flash.style.cssText = 'position:absolute;inset:0;background:white;opacity:0.8;transition:opacity 0.3s;z-index:10;pointer-events:none;';
+    viewfinder.appendChild(flash);
+    setTimeout(() => { flash.style.opacity = '0'; setTimeout(() => flash.remove(), 300); }, 50);
+  }
+
+  const dataUrl = canvas.toDataURL('image/jpeg', 0.92);
+  const timestamp = new Date().toLocaleString().replace(/[/:,\s]/g, '-');
+  const photo = { id: Date.now(), name: `Photo-${timestamp}`, data: dataUrl, type: 'image' };
+
+  if (!state.photos) state.photos = [];
+  state.photos.unshift(photo);
+  saveState();
+}
+
+function toggleVideoRecord() {
+  const btn = document.getElementById('camera-record');
+  const indicator = document.getElementById('rec-indicator');
+
+  if (!mediaRecorder || mediaRecorder.state === 'inactive') {
+    if (!cameraStream) return;
+    recordedChunks = [];
+    try {
+      mediaRecorder = new MediaRecorder(cameraStream, { mimeType: 'video/webm;codecs=vp9,opus' });
+    } catch {
+      mediaRecorder = new MediaRecorder(cameraStream);
+    }
+    mediaRecorder.ondataavailable = (e) => { if (e.data.size > 0) recordedChunks.push(e.data); };
+    mediaRecorder.onstop = () => {
+      const blob = new Blob(recordedChunks, { type: 'video/webm' });
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        const timestamp = new Date().toLocaleString().replace(/[/:,\s]/g, '-');
+        const video = { id: Date.now(), name: `Video-${timestamp}`, data: e.target.result, type: 'video' };
+        if (!state.photos) state.photos = [];
+        state.photos.unshift(video);
+        saveState();
+      };
+      reader.readAsDataURL(blob);
+    };
+    mediaRecorder.start();
+    if (btn) btn.classList.add('recording');
+    if (indicator) indicator.classList.add('visible');
+  } else {
+    mediaRecorder.stop();
+    if (btn) btn.classList.remove('recording');
+    if (indicator) indicator.classList.remove('visible');
+  }
+}
+
+// Camera cleanup is handled inside the main closeWin via key check
+
+// ── Photos App (updated: video + download) ────────────────────
+function renderPhotosApp() {
+  const photos = state.photos || [];
+
+  const uploadBtn = `
+    <div style="display:flex;gap:10px;align-items:center;">
+      <label class="photos-upload-btn">
+        <input type="file" accept="image/*,video/*" multiple onchange="handlePhotosUpload(this.files)" style="display:none;">
+        + Upload
+      </label>
+    </div>`;
+
+  if (photos.length === 0) {
+    return `
+      <div class="photos-app">
+        <div class="photos-header">
+          <h1>Photos</h1>
+          ${uploadBtn}
+        </div>
+        <div class="photos-empty">
+          <svg width="80" height="80" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+            <rect x="3" y="3" width="18" height="18" rx="2" ry="2"/>
+            <circle cx="8.5" cy="8.5" r="1.5"/>
+            <polyline points="21,15 16,10 5,21"/>
+          </svg>
+          <h2 style="margin:0 0 8px;font-size:20px;color:var(--text);">No photos or videos yet</h2>
+          <p style="font-size:14px;margin:0;">Upload files or use the Camera app</p>
+        </div>
+      </div>`;
+  }
+
+  const grid = photos.map((item, index) => {
+    const isVideo = item.type === 'video';
+    return `
+      <div class="photo-item" onclick="viewPhoto(${index})">
+        ${isVideo
+          ? `<video src="${item.data}" style="width:100%;height:100%;object-fit:cover;" muted></video>
+             <div class="video-badge">▶ VIDEO</div>`
+          : `<img src="${item.data}" alt="${item.name}">`}
+        <div class="photo-item-name">${item.name}</div>
+      </div>`;
+  }).join('');
+
+  return `
+    <div class="photos-app">
+      <div class="photos-header">
+        <h1>Photos</h1>
+        ${uploadBtn}
+      </div>
+      <div class="photos-grid">${grid}</div>
+    </div>`;
+}
+
+function handlePhotosUpload(files) {
+  const promises = [];
+  for (const file of files) {
+    const isVideo = file.type.startsWith('video/');
+    const isImage = file.type.startsWith('image/');
+    if (!isImage && !isVideo) continue;
+    const promise = new Promise((resolve) => {
+      const reader = new FileReader();
+      reader.onload = (e) => resolve({
+        id: Date.now() + Math.random(),
+        name: file.name.replace(/\.[^/.]+$/, ''),
+        data: e.target.result,
+        type: isVideo ? 'video' : 'image'
+      });
+      reader.readAsDataURL(file);
+    });
+    promises.push(promise);
+  }
+  Promise.all(promises).then((newItems) => {
+    if (!state.photos) state.photos = [];
+    state.photos.push(...newItems);
+    saveState();
+    updatePhotosAppUI();
+  });
+}
+
+function viewPhoto(index) {
+  const item = state.photos[index];
+  if (!item) return;
+  const photosApp = activeWindows['photos'];
+  if (!photosApp) return;
+  const body = photosApp.querySelector('.win-body');
+  const isVideo = item.type === 'video';
+
+  body.innerHTML = `
+    <div class="photo-viewer">
+      <div class="photo-viewer-header">
+        <span class="photo-viewer-title">${item.name}</span>
+        <div style="display:flex;gap:8px;align-items:center;">
+          <a class="download-btn" href="${item.data}" download="${item.name}.${isVideo?'webm':'jpg'}">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+            Download
+          </a>
+          <button class="download-btn" onclick="deletePhoto(${index})" style="background:#ef4444;">
+            Delete
+          </button>
+          <button class="photo-viewer-close" onclick="closePhotoViewer()">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 6L6 18M6 6l12 12"/></svg>
+          </button>
+        </div>
+      </div>
+      <div class="photo-viewer-content">
+        ${isVideo
+          ? `<video src="${item.data}" controls autoplay style="max-width:100%;max-height:100%;border-radius:8px;box-shadow:0 8px 40px rgba(0,0,0,0.5);"></video>`
+          : `<img src="${item.data}" alt="${item.name}">`}
+      </div>
+    </div>`;
+}
+
+function deletePhoto(index) {
+  if (!confirm('Delete this item?')) return;
+  state.photos.splice(index, 1);
+  saveState();
+  updatePhotosAppUI();
+}
+
+/* ─────────────────────────────────────────────────────────────
+   Window Snap Manager — float, halves, quarters, maximize.
+   Drag a window to a screen edge to snap; hover the green button
+   for the snap-layout flyout; double-click the title bar to toggle.
+   ───────────────────────────────────────────────────────────── */
+function workArea() {
+  const pos = state.dockPosition || 'bottom';
+  let top = 0, left = 0, right = window.innerWidth, bottom = window.innerHeight;
+  const reserve = 100, m = 8;
+  if (pos === 'bottom') bottom -= reserve;
+  else if (pos === 'left') left += reserve;
+  else if (pos === 'right') right -= reserve;
+  return { top: top + m, left: left + m, width: (right - m) - (left + m), height: (bottom - m) - (top + m) };
+}
+
+function snapRect(zone) {
+  const a = workArea();
+  const halfW = a.width / 2, halfH = a.height / 2;
+  switch (zone) {
+    case 'max':    return { left: a.left,          top: a.top,          width: a.width, height: a.height };
+    case 'left':   return { left: a.left,          top: a.top,          width: halfW,   height: a.height };
+    case 'right':  return { left: a.left + halfW,  top: a.top,          width: halfW,   height: a.height };
+    case 'top':    return { left: a.left,          top: a.top,          width: a.width, height: halfH };
+    case 'bottom': return { left: a.left,          top: a.top + halfH,  width: a.width, height: halfH };
+    case 'tl':     return { left: a.left,          top: a.top,          width: halfW,   height: halfH };
+    case 'tr':     return { left: a.left + halfW,  top: a.top,          width: halfW,   height: halfH };
+    case 'bl':     return { left: a.left,          top: a.top + halfH,  width: halfW,   height: halfH };
+    case 'br':     return { left: a.left + halfW,  top: a.top + halfH,  width: halfW,   height: halfH };
+  }
+  return null;
+}
+
+function floatWindow(win) {
+  const g = win._floatGeom;
+  if (g) {
+    win.style.width = g.width || '800px';
+    win.style.height = g.height || '550px';
+    win.style.left = g.left || '120px';
+    win.style.top = g.top || '90px';
+  }
+  win.classList.remove('snapped');
+  delete win.dataset.snap;
+}
+
+function applySnap(key, zone) {
+  const win = activeWindows[key];
+  if (!win) return;
+  hideSnapFlyout();
+  win.style.zIndex = ++zIndexCounter;
+
+  if (zone === 'float') { floatWindow(win); saveState(); return; }
+
+  const r = snapRect(zone);
+  if (!r) return;
+
+  // Remember floating geometry the first time we snap
+  if (!win.classList.contains('snapped')) {
+    win._floatGeom = { width: win.style.width, height: win.style.height, left: win.style.left, top: win.style.top };
+  }
+  // Leave fullscreen if it was active
+  if (win.classList.contains('fullscreen')) {
+    win.classList.remove('fullscreen', 'hide-topbar');
+    document.getElementById('mainTopbar').classList.remove('hidden');
+    document.getElementById('dock').style.display = 'flex';
+    const hz = win.querySelector('.fullscreen-hover-zone');
+    if (hz) hz.remove();
+  }
+  win.classList.add('snapped');
+  win.dataset.snap = zone;
+  win.style.left = r.left + 'px';
+  win.style.top = r.top + 'px';
+  win.style.width = r.width + 'px';
+  win.style.height = r.height + 'px';
+  saveState();
+}
+
+function detectSnapZone(x, y, win) {
+  const W = window.innerWidth, H = window.innerHeight;
+  const CE = 44;   // cursor edge band
+  const WE = 10;   // "window edge pinned against screen edge" threshold
+  const CC = 100;  // corner region for quarter snaps
+  const r = win ? win.getBoundingClientRect() : null;
+  const fullW = r ? r.width  >= W - 6 : false;
+  const fullH = r ? r.height >= H - 6 : false;
+
+  // Horizontal intent: cursor near an edge OR the window shoved against it.
+  // The window-edge trigger is what makes left/right halves (and side-by-side
+  // split screen) work without slamming the cursor to the very screen edge.
+  let hi = 0; // -1 = left, +1 = right
+  if (x <= CE) hi = -1; else if (x >= W - CE) hi = 1;
+  if (r && !fullW) {
+    if (r.left <= WE) hi = -1;
+    else if (r.right >= W - WE) hi = 1;
+  }
+
+  // Vertical intent
+  let vi = 0; // -1 = top, +1 = bottom
+  if (y <= CE) vi = -1; else if (y >= H - CE) vi = 1;
+  if (r && !fullH) {
+    if (r.top <= WE) vi = -1;
+    else if (r.bottom >= H - WE) vi = 1;
+  }
+
+  // Quarter only when both intents point somewhere AND the cursor is genuinely
+  // in a corner region — otherwise a half wins (halves are the common case).
+  const cornerish = (x <= CC || x >= W - CC) && (y <= CC || y >= H - CC);
+  if (hi && vi && cornerish) return (vi < 0 ? 't' : 'b') + (hi < 0 ? 'l' : 'r');
+
+  if (hi < 0) return 'left';
+  if (hi > 0) return 'right';
+  if (vi < 0) return 'max';    // top edge → maximize
+  if (vi > 0) return 'bottom';
+  return null;
+}
+
+function showSnapPreview(zone) {
+  const el = document.getElementById('snap-preview');
+  if (!zone) { el.classList.remove('visible'); return; }
+  const r = snapRect(zone);
+  if (!r) { el.classList.remove('visible'); return; }
+  el.style.display = 'block';
+  el.style.left = r.left + 'px';
+  el.style.top = r.top + 'px';
+  el.style.width = r.width + 'px';
+  el.style.height = r.height + 'px';
+  requestAnimationFrame(() => el.classList.add('visible'));
+}
+
+function hideSnapPreview() {
+  const el = document.getElementById('snap-preview');
+  el.classList.remove('visible');
+  setTimeout(() => { if (!el.classList.contains('visible')) el.style.display = 'none'; }, 160);
+}
+
+// Snap-layout flyout, shown on hover of the green window button
+let snapFlyoutTimer = null;
+function snapFlyoutHTML(key) {
+  const cell = (zone, extra = '') => `<div class="snap-cell" style="${extra}" onclick="applySnap('${key}','${zone}')"></div>`;
+  return `
+    <div class="snap-group">
+      <div class="snap-group-title">Halves</div>
+      <div class="snap-row">${cell('left')}${cell('right')}</div>
+      <div class="snap-row">${cell('top')}${cell('bottom')}</div>
+    </div>
+    <div class="snap-group">
+      <div class="snap-group-title">Corners</div>
+      <div class="snap-quad">${cell('tl')}${cell('tr')}${cell('bl')}${cell('br')}</div>
+    </div>
+    <div class="snap-group" style="grid-column:1 / -1; grid-template-columns:1fr 1fr;">
+      <div class="snap-cell" style="height:30px;background:linear-gradient(180deg,rgba(34,197,94,0.4),rgba(34,197,94,0.2));border-color:rgba(34,197,94,0.5);display:flex;align-items:center;justify-content:center;font-size:11px;color:var(--text);" onclick="applySnap('${key}','max')">Maximize</div>
+      <div class="snap-cell" style="height:30px;background:linear-gradient(180deg,rgba(148,163,184,0.35),rgba(148,163,184,0.18));border-color:rgba(148,163,184,0.5);display:flex;align-items:center;justify-content:center;font-size:11px;color:var(--text);" onclick="applySnap('${key}','float')">Float</div>
+    </div>`;
+}
+
+function showSnapFlyout(key, btn) {
+  const fly = document.getElementById('snap-flyout');
+  fly.innerHTML = snapFlyoutHTML(key);
+  const rect = btn.getBoundingClientRect();
+  fly.style.left = Math.max(8, Math.min(rect.left - 6, window.innerWidth - 232)) + 'px';
+  fly.style.top = (rect.bottom + 8) + 'px';
+  fly.classList.add('visible');
+  if (snapFlyoutTimer) { clearTimeout(snapFlyoutTimer); snapFlyoutTimer = null; }
+  fly.onmouseenter = () => { if (snapFlyoutTimer) { clearTimeout(snapFlyoutTimer); snapFlyoutTimer = null; } };
+  fly.onmouseleave = hideSnapFlyoutSoon;
+}
+
+function hideSnapFlyoutSoon() {
+  if (snapFlyoutTimer) clearTimeout(snapFlyoutTimer);
+  snapFlyoutTimer = setTimeout(hideSnapFlyout, 180);
+}
+
+function hideSnapFlyout() {
+  document.getElementById('snap-flyout').classList.remove('visible');
+}
+
+window.onload = () => {
+  setInterval(updateClock, 1000);
+  updateClock();
+  checkFirstTime();
+
+  // Init camera when camera window opens (MutationObserver)
+  const observer = new MutationObserver(() => {
+    if (document.getElementById('camera-video') && !cameraStream) {
+      initCameraStream();
+    }
+  });
+  observer.observe(document.body, { childList: true, subtree: true });
+};
+</script>
+<script type="module" src="https://static.cloudflareinsights.com/beacon.min.js/vce701823e78c4301a35b7e07294d87301792088814092" integrity="sha512-UKNk8GbxkABxKcXYuLkO16EleLGUkcvJWtpSNmExE0Too3ZaFAxTscNWEc1OdAv5/BikHawapSCaiD2XCmp+Bw==" data-cf-beacon='{"version":"2024.11.0","token":"6639332d24284d4c85ebca0acc4aef67","r":1,"spa":2}' crossorigin="anonymous"></script>
+</body>
+</html>

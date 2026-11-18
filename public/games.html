@@ -1,0 +1,163 @@
+<!doctype html>
+<html lang="en" data-theme="dark">
+	<head>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>Games - Vodious</title>
+
+		<script>
+			// Arriving from the home page's black hole dive: the CSS and galaxy.js play the matching "coming out" animation
+			try {
+				var dived = Number(sessionStorage.getItem("vodious-dive"));
+				sessionStorage.removeItem("vodious-dive");
+				if (dived && Date.now() - dived < 10000) document.documentElement.classList.add("from-dive");
+			} catch (e) {}
+		</script>
+
+		<link rel="icon" href="favicon.webp" />
+
+		<link rel="preconnect" href="https://fonts.googleapis.com" />
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+		<link
+			rel="stylesheet"
+			href="https://fonts.googleapis.com/css2?family=Orbitron:wght@700;800;900&family=Space+Grotesk:wght@400;500;600;700&display=swap"
+		/>
+
+		<link rel="stylesheet" href="index.css" />
+		<link rel="stylesheet" href="games.css" />
+		<script src="home.js" defer></script>
+		<script src="galaxy.js" defer></script>
+		<script src="games.js" defer></script>
+	</head>
+
+	<body>
+		<canvas id="galaxy" aria-hidden="true"></canvas>
+
+		<header class="top">
+			<a class="brand" href="/" title="Vodious">Vodious</a>
+			<nav class="nav" aria-label="Main">
+				<a href="/" class="nav-link">
+					<svg viewBox="0 0 24 24" aria-hidden="true">
+						<path d="M3 11.5 12 4l9 7.5" />
+						<path d="M5.5 10v9.5h13V10" />
+					</svg>
+					Home
+				</a>
+				<a href="games.html" class="nav-link" aria-current="page">
+					<svg viewBox="0 0 24 24" aria-hidden="true">
+						<rect x="2.5" y="7" width="19" height="11" rx="5" />
+						<path d="M7.5 10.5v4M5.5 12.5h4" />
+						<circle cx="15.5" cy="11.5" r=".6" />
+						<circle cx="17.8" cy="13.5" r=".6" />
+					</svg>
+					Games
+				</a>
+				<button
+					type="button"
+					id="theme-toggle"
+					class="icon-btn"
+					aria-label="Switch to light theme"
+				>
+					<svg viewBox="0 0 24 24" aria-hidden="true">
+						<circle cx="12" cy="12" r="4" />
+						<path
+							d="M12 2.5v2.2M12 19.3v2.2M2.5 12h2.2M19.3 12h2.2M5.3 5.3l1.6 1.6M17.1 17.1l1.6 1.6M5.3 18.7l1.6-1.6M17.1 6.9l1.6-1.6"
+						/>
+					</svg>
+				</button>
+			</nav>
+		</header>
+
+		<main class="games-page">
+			<h1 class="title">Games</h1>
+			<p id="games-count" class="games-count"></p>
+
+			<div id="games-tabs" class="games-tabs" role="tablist" aria-label="Game sources">
+				<button type="button" role="tab" data-tab="site" aria-selected="true">This site <span class="tab-count"></span></button>
+				<button type="button" role="tab" data-tab="mirror" aria-selected="false" tabindex="-1">Mirror <span class="tab-count"></span></button>
+				<button type="button" role="tab" data-tab="gn" aria-selected="false" tabindex="-1">GN-Math</button>
+			</div>
+
+			<section id="gn-panel" class="gn-panel" hidden aria-label="gn-math games">
+				<iframe id="gn-frame" class="gn-frame" title="gn-math" allow="autoplay; fullscreen; gamepad" allowfullscreen></iframe>
+			</section>
+
+			<div class="games-tools">
+				<label class="sr-only" for="games-search">Search games</label>
+				<div class="field games-search">
+					<svg class="field-icon" viewBox="0 0 24 24" aria-hidden="true">
+						<circle cx="11" cy="11" r="6.5" />
+						<path d="m20 20-4.2-4.2" />
+					</svg>
+					<input
+						id="games-search"
+						type="search"
+						placeholder="Search games"
+						autocomplete="off"
+						autocapitalize="off"
+						spellcheck="false"
+					/>
+				</div>
+				<nav id="games-letters" class="pill-row letters" aria-label="Jump to letter"></nav>
+			</div>
+
+			<div id="games-list"></div>
+			<p id="games-status" class="games-status" role="status"></p>
+		</main>
+
+		<footer class="foot">
+			<span>Vodious, built on Scramjet by</span>
+			<a href="https://github.com/MercuryWorkshop" title="The Mercury Workshop GitHub organization"
+				>Mercury Workshop</a
+			>
+			<a href="credits.html" title="License information">Credits</a>
+		</footer>
+
+		<!-- In-page game player: games.js puts the game's iframe inside #player-stage -->
+		<section
+			id="player"
+			class="player"
+			role="dialog"
+			aria-modal="true"
+			aria-labelledby="player-title"
+			hidden
+		>
+			<header class="player-bar">
+				<h2 id="player-title" class="player-title"></h2>
+				<div class="player-actions">
+					<button type="button" id="player-fullscreen" class="player-btn" aria-label="Enter fullscreen">
+						<svg viewBox="0 0 24 24" aria-hidden="true">
+							<path d="M4 9V4h5M20 9V4h-5M4 15v5h5M20 15v5h-5" />
+						</svg>
+						<span id="player-fullscreen-label">Fullscreen</span>
+					</button>
+					<button type="button" id="player-alt" class="player-btn" aria-label="Black screen? Try another way to load the game">
+						<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h12l-3-3M20 17H8l3 3" /></svg>
+						<span>Other way</span>
+					</button>
+					<button type="button" id="player-tab" class="player-btn" aria-label="Open the game in a new tab">
+						<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M14 4h6v6M20 4l-9 9M18 14v5H5V6h5" /></svg>
+						<span>New tab</span>
+					</button>
+					<button type="button" id="player-reload" class="player-btn" aria-label="Reload game">
+						<svg viewBox="0 0 24 24" aria-hidden="true">
+							<path d="M20 11a8 8 0 0 0-14.5-4.2L4 8.5" />
+							<path d="M4 4v4.5h4.5" />
+							<path d="M4 13a8 8 0 0 0 14.5 4.2l1.5-1.7" />
+							<path d="M20 20v-4.5h-4.5" />
+						</svg>
+						<span>Reload</span>
+					</button>
+				</div>
+				<button type="button" id="player-close" class="player-close" aria-label="Close game">
+					<svg viewBox="0 0 24 24" aria-hidden="true">
+						<path d="M6 6l12 12M18 6 6 18" />
+					</svg>
+				</button>
+			</header>
+			<div id="player-stage" class="player-stage">
+				<div id="player-loading" class="player-loading" role="status"></div>
+			</div>
+		</section>
+	</body>
+</html>

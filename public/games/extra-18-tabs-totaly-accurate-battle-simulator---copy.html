@@ -1,0 +1,124 @@
+<html lang="en-us"><head>
+    <meta charset="utf-8">
+    <base href="https://cdn.jsdmirror.com/gh/reeyuki/tabs@3facd4136b3c5916914d3cdb7396a72e14c4efea/">
+<script>try{const _rs=history.replaceState.bind(history),_ps=history.pushState.bind(history);history.replaceState=function(s,t,u){try{return _rs(s,t,u);}catch(e){if(String(e).includes("SecurityError")&&String(u||"").startsWith("blob:"))return;throw e;}};history.pushState=function(s,t,u){try{return _ps(s,t,u);}catch(e){if(String(e).includes("SecurityError")&&String(u||"").startsWith("blob:"))return;throw e;}};}catch{}</script>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <title>Totally Accurate Battle Simulator</title>
+    <style>
+        body {
+            margin: 0;
+            background: #050505;
+            color: #eee;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            overflow: hidden;
+        }
+
+        #u {
+            width: 100vw;
+            height: 100vh;
+        }
+
+        #l {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            text-align: center;
+            z-index: 10;
+            pointer-events: none;
+        }
+
+        #f {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            cursor: pointer;
+            background: rgba(30, 30, 30, 0.8);
+            border: 1px solid #444;
+            padding: 8px 16px;
+            border-radius: 4px;
+            z-index: 20;
+            font-size: 14px;
+            transition: background 0.2s;
+        }
+
+        #f:hover {
+            background: rgba(50, 50, 50, 0.9);
+        }
+    </style>
+    <script src="Build/UnityLoader.js"></script>
+</head>
+
+<body>
+    <div id="l">Loading assets... 0%</div>
+    <div id="f" onclick="u.SetFullscreen(1)">Fullscreen</div>
+    <div id="u"></div>
+    <script>
+        const base = "";
+        const dC = 78, wC = 3;
+        let u, n = 0, t = dC + wC, blobs = {};
+        const up = (v, m) => {
+            document.getElementById('l').innerText = m + "... " + Math.round(v * 100) + "%";
+        };
+
+        // Generic fetch with retry
+        async function fetchWithRetry(url, options = {}, retries = 3, delay = 1000) {
+            for (let attempt = 0; attempt <= retries; attempt++) {
+                try {
+                    const response = await fetch(url, options);
+                    if (!response.ok) throw new Error(`HTTP ${response.status}`);
+                    return response;
+                } catch (err) {
+                    if (attempt === retries) throw err;
+                    await new Promise(res => setTimeout(res, delay * (attempt + 1)));
+                }
+            }
+        }
+
+        const ld = async (s, c) => {
+            const r = await Promise.all([...Array(c)].map(async (_, i) => {
+                const url = base + "Build/tabs." + s + (i < 10 ? "0" + i : i);
+                const x = await fetchWithRetry(url);
+                const a = await x.arrayBuffer();
+                n++;
+                up(n / t, "Loading assets");
+                return a;
+            }));
+            return new Blob(r).arrayBuffer();
+        };
+
+        const shim = () => {
+            const ox = XMLHttpRequest.prototype.open, sx = XMLHttpRequest.prototype.send;
+            XMLHttpRequest.prototype.open = function (m, url) { this._u = url; return ox.apply(this, arguments); };
+            XMLHttpRequest.prototype.send = function () {
+                const p = new URL(this._u, window.location.href).pathname;
+                for (const k in blobs) if (p.endsWith(k)) {
+                    setTimeout(() => {
+                        Object.defineProperty(this, 'status', { value: 200 });
+                        Object.defineProperty(this, 'readyState', { value: 4 });
+                        Object.defineProperty(this, 'response', { value: blobs[k] });
+                        this.dispatchEvent(new Event('load'));
+                    }, 1);
+                    return;
+                }
+                return sx.apply(this, arguments);
+            };
+        };
+
+        (async () => {
+            const [dB, wB] = await Promise.all([ld("data", dC), ld("wasm", wC)]);
+            blobs["tabs.data.unityweb"] = dB;
+            blobs["tabs.wasm.code.unityweb"] = wB;
+            shim();
+            u = UnityLoader.instantiate("u", base + "Build/tabs.json", {
+                onProgress: (inst, v) => {
+                    if (v < 1) up(v, "Initializing");
+                    else document.getElementById('l').style.display = 'none';
+                }
+            });
+        })();
+    </script>
+
+
+
+</body></html>
