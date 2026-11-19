@@ -26,11 +26,8 @@
 	// The page behind the player is made inert while a game is open, so Tab can't wander into it
 	const behind = [$(".top"), $(".games-page"), $(".foot")].filter(Boolean);
 
-	const tools = $(".games-tools");
-	const gnPanel = $("#gn-panel");
-	const gnFrame = $("#gn-frame");
 	const tabButtons = [...document.querySelectorAll("#games-tabs [data-tab]")];
-	let tab = "site"; // "site": games hosted on this site, "mirror": games loaded from the mirror, "gn": gn-math
+	let tab = "site"; // "site": hosted on this site, "mirror": from the jsdmirror CDN, "static": from staticdelivr, "gn": gn-math
 	let games = [];
 	let sections = [];
 	let current = null; // the game being played
@@ -61,7 +58,8 @@
 		const image = typeof entry.image === "string" ? safeUrl(entry.image.trim()) : "";
 		// Links relative to this site are games hosted on this site; full http(s) links live on other hosts
 		const local = !/^[a-z][a-z0-9+.-]*:/i.test(entry.url.trim());
-		return { name, url, image, local };
+		const src = entry.s === "static" || entry.s === "gn" ? entry.s : local ? "site" : "mirror";
+		return { name, url, image, local, src, mode: entry.mode === 1 || entry.mode === 2 ? entry.mode : 0 };
 	}
 
 	async function loadGames() {
@@ -147,7 +145,7 @@
 			const tiles = groups.get(key).map((i) => {
 				const el = tile(games[i], i);
 				grid.appendChild(el);
-				return { el, lc: games[i].name.toLowerCase(), local: games[i].local };
+				return { el, lc: games[i].name.toLowerCase(), src: games[i].src };
 			});
 			section.append(heading, grid);
 			list.appendChild(section);
@@ -165,12 +163,12 @@
 
 	function applyFilter() {
 		const query = search.value.trim().toLowerCase();
-		const inTab = (g) => (tab === "site" ? g.local : !g.local);
+		const inTab = (g) => g.src === tab;
 		let shown = 0;
 		for (const s of sections) {
 			let any = false;
 			for (const t of s.tiles) {
-				const hit = (!query || t.lc.includes(query)) && (tab === "site" ? t.local : !t.local);
+				const hit = (!query || t.lc.includes(query)) && t.src === tab;
 				t.el.hidden = !hit;
 				if (hit) {
 					any = true;
@@ -185,40 +183,27 @@
 			? shown + " of " + total + (total === 1 ? " game" : " games")
 			: total + (total === 1 ? " game" : " games");
 		status.textContent = shown ? "" : query ? "No games match “" + search.value.trim() + "”." : "No games in this tab.";
-		const nSite = games.filter((g) => g.local).length;
 		tabButtons.forEach((b) => {
-			const n = b.dataset.tab === "site" ? nSite : b.dataset.tab === "mirror" ? games.length - nSite : 0;
 			const badge = b.querySelector(".tab-count");
-			if (badge && b.dataset.tab !== "gn") badge.textContent = n ? n.toLocaleString() : "";
+			if (badge) {
+				const n = games.filter((g) => g.src === b.dataset.tab).length;
+				badge.textContent = n ? n.toLocaleString() : "";
+			}
 		});
 	}
 
 	/* ---------------------------------------------------------------- tabs */
 
-	async function selectTab(name) {
+	function selectTab(name) {
 		tab = name;
 		tabButtons.forEach((b) => {
 			const on = b.dataset.tab === name;
 			b.setAttribute("aria-selected", on ? "true" : "false");
 			b.tabIndex = on ? 0 : -1;
 		});
-		const gn = name === "gn";
-		gnPanel.hidden = !gn;
-		tools.hidden = gn;
-		list.hidden = gn;
-		status.hidden = gn;
-		count.hidden = gn;
-		if (gn) {
-			if (!gnFrame.getAttribute("src")) {
-				try {
-					gnFrame.src = window.__gnSrc ? await window.__gnSrc() : "games/gn-math/index.html";
-				} catch (err) {
-					gnFrame.src = "games/gn-math/index.html";
-				}
-			}
-		} else {
-			applyFilter();
-		}
+		search.value = "";
+		applyFilter();
+		window.scrollTo(0, 0);
 	}
 
 	/* -------------------------------------------------------------- player */
@@ -347,7 +332,7 @@
 
 	function openGame(game, tile) {
 		current = game;
-		mode = 0;
+		mode = game.mode || 0;
 		opener = tile;
 		titleEl.textContent = game.name;
 		player.hidden = false;
