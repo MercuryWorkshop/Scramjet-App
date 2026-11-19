@@ -1,0 +1,48 @@
+/* Settings page */
+.settings-page { max-width: 760px; margin: 0 auto; padding: 1rem 1rem 3rem; text-align: center; }
+.settings-sub { color: var(--muted); margin: 0.25rem 0 1.5rem; }
+.set-card {
+	text-align: left;
+	background: var(--surface);
+	border: 1px solid var(--border);
+	border-radius: 16px;
+	padding: 1.25rem 1.25rem 1.1rem;
+	margin: 0 0 1rem;
+}
+.set-card h2 { margin: 0 0 0.25rem; font-size: 1.15rem; }
+.set-note { margin: 0 0 1rem; color: var(--muted); font-size: 0.95rem; }
+.presets { display: flex; flex-wrap: wrap; gap: 0.5rem; margin-bottom: 1rem; }
+.preset {
+	display: inline-flex; align-items: center; gap: 0.55rem;
+	font: inherit; font-size: 0.95rem; color: inherit; cursor: pointer;
+	padding: 0.5rem 0.95rem 0.5rem 0.7rem; border-radius: 999px;
+	background: transparent; border: 1px solid var(--border);
+}
+.preset img { border-radius: 4px; }
+.preset[aria-checked="true"] { background: var(--accent-strong); border-color: transparent; color: var(--on-accent); }
+.set-fields { display: grid; gap: 0.75rem; grid-template-columns: 1fr 1fr; }
+@media (max-width: 620px) { .set-fields { grid-template-columns: 1fr; } }
+.set-field { display: grid; gap: 0.3rem; font-size: 0.85rem; color: var(--muted); }
+.set-field.inline { display: flex; align-items: center; gap: 0.75rem; margin-top: 1rem; flex-wrap: wrap; }
+.set-field input, .set-field select {
+	font: inherit; font-size: 0.95rem; color: var(--text);
+	background: transparent; border: 1px solid var(--border); border-radius: 10px; padding: 0.55rem 0.7rem;
+}
+.set-field select option { color: #1b1033; }
+.set-field input:focus-visible, .set-field select:focus-visible, .preset:focus-visible, .set-btn:focus-visible {
+	outline: 2px solid var(--ring); outline-offset: 2px;
+}
+.tab-preview {
+	display: inline-flex; align-items: center; gap: 0.5rem; margin-top: 1rem;
+	padding: 0.45rem 0.9rem; border-radius: 10px 10px 0 0; border: 1px solid var(--border); border-bottom: 0;
+	font-size: 0.85rem; max-width: 100%;
+}
+.tab-preview span { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.set-row { display: flex; flex-wrap: wrap; gap: 0.6rem; }
+.set-btn {
+	font: inherit; font-size: 0.95rem; cursor: pointer; padding: 0.65rem 1.1rem; border-radius: 12px;
+	border: 0; background: var(--accent-strong); color: var(--on-accent);
+}
+.set-btn:hover { background: var(--accent); }
+.set-status { min-height: 1.3em; margin: 0.75rem 0 0; color: var(--accent-soft); font-size: 0.9rem; }
+.set-link { font: inherit; font-size: 0.85rem; background: none; border: 0; padding: 0; color: var(--muted); cursor: pointer; text-decoration: underline; }
