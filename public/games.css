@@ -333,13 +333,3 @@ body.playing {
 	color: #fff;
 }
 .games-tabs .tab-count { opacity: 0.7; font-size: 0.8em; margin-left: 0.25rem; }
-.gn-panel { margin: 0 0 2rem; }
-.gn-frame {
-	display: block;
-	width: 100%;
-	height: min(80vh, 900px);
-	min-height: 480px;
-	border: 1px solid var(--line, rgba(201, 147, 255, 0.3));
-	border-radius: 14px;
-	background: #0d1426;
-}
