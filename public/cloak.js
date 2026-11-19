@@ -59,7 +59,8 @@
 			return {};
 		}
 	}
-	let state = Object.assign({ preset: "vodious", customTitle: "", customIcon: "", redirect: "none" }, read());
+	const DEFAULTS = { preset: "vodious", customTitle: "", customIcon: "", redirect: "none", panicKey: null, panicTo: "classroom", panicUrl: "" };
+	let state = Object.assign({}, DEFAULTS, read());
 	function save() {
 		try {
 			localStorage.setItem(KEY, JSON.stringify(state));
@@ -137,9 +138,149 @@
 		afterOpen();
 	}
 
+	/* ---------------------------------------------------------- panic key */
+
+	const MODIFIER_KEYS = ["Shift", "Control", "Alt", "Meta", "AltGraph", "CapsLock"];
+
+	function describeKey(k) {
+		if (!k) return "Not set";
+		const parts = [];
+		if (k.ctrl) parts.push("Ctrl");
+		if (k.alt) parts.push("Alt");
+		if (k.shift) parts.push("Shift");
+		if (k.meta) parts.push("Meta");
+		parts.push(k.key === " " ? "Space" : k.key.length === 1 ? k.key.toUpperCase() : k.key);
+		return parts.join(" + ");
+	}
+
+	function panicTarget() {
+		if (state.panicTo === "custom") {
+			let u = state.panicUrl.trim();
+			if (!u) return "";
+			if (!/^[a-z][a-z0-9+.-]*:/i.test(u)) u = "https://" + u;
+			return /^https?:\/\//i.test(u) ? u : "";
+		}
+		const p = PRESETS[state.panicTo];
+		return p && p.go ? p.go : "https://www.google.com/";
+	}
+
+	function panic() {
+		const target = panicTarget() || "https://www.google.com/";
+		// If Vodious is open inside an about:blank or blob: page, send that whole tab away, not just the frame
+		try {
+			if (window.top !== window) {
+				window.top.location.replace(target);
+				return;
+			}
+		} catch (err) {
+			/* the outer page is not ours: fall through */
+		}
+		location.replace(target);
+	}
+
+	let capturing = false;
+	const sameKey = (e, k) =>
+		k && e.code === k.code && e.ctrlKey === k.ctrl && e.altKey === k.alt && e.shiftKey === k.shift && e.metaKey === k.meta;
+
+	function onKey(e) {
+		if (capturing) {
+			if (MODIFIER_KEYS.includes(e.key)) return; // wait for the real key
+			e.preventDefault();
+			e.stopPropagation();
+			capturing = false;
+			const btn = document.getElementById("panic-set");
+			if (e.key === "Escape" && !e.ctrlKey && !e.altKey && !e.shiftKey && !e.metaKey) {
+				if (btn) btn.textContent = describeKey(state.panicKey);
+				return say2("Cancelled.");
+			}
+			state.panicKey = { key: e.key, code: e.code, ctrl: e.ctrlKey, alt: e.altKey, shift: e.shiftKey, meta: e.metaKey };
+			save();
+			if (btn) btn.textContent = describeKey(state.panicKey);
+			return say2("Panic key set to " + describeKey(state.panicKey) + ".");
+		}
+		if (!state.panicKey || !sameKey(e, state.panicKey)) return;
+		// A plain letter or number would fire while you type; only act on it when no text box has focus
+		const t = e.target;
+		const typing = t && (t.tagName === "INPUT" || t.tagName === "TEXTAREA" || t.tagName === "SELECT" || t.isContentEditable);
+		const plain = !e.ctrlKey && !e.altKey && !e.metaKey && state.panicKey.key.length === 1;
+		if (typing && plain) return;
+		e.preventDefault();
+		panic();
+	}
+	document.addEventListener("keydown", onKey, true);
+
+	// Lets the game player listen inside games that run in a frame on this site
+	function attachKeys(win) {
+		try {
+			win.document.addEventListener("keydown", onKey, true);
+		} catch (err) {
+			/* a game from another site: its keys cannot be seen from here */
+		}
+	}
+
+	function say2(message) {
+		const el = document.getElementById("panic-status");
+		if (el) el.textContent = message;
+	}
+
+	function buildPanicUi() {
+		const set = document.getElementById("panic-set");
+		if (!set || set.dataset.ready) return;
+		set.dataset.ready = "1";
+		const dest = document.getElementById("panic-dest");
+		const url = document.getElementById("panic-url");
+		const clear = document.getElementById("panic-clear");
+		const test = document.getElementById("panic-test");
+		set.textContent = describeKey(state.panicKey);
+		set.addEventListener("click", () => {
+			capturing = true;
+			set.textContent = "Press a key... (Esc to cancel)";
+			say2("");
+		});
+		set.addEventListener("blur", () => {
+			if (capturing) {
+				capturing = false;
+				set.textContent = describeKey(state.panicKey);
+			}
+		});
+		if (clear)
+			clear.addEventListener("click", () => {
+				state.panicKey = null;
+				save();
+				set.textContent = describeKey(null);
+				say2("Panic key removed.");
+			});
+		const showUrl = () => {
+			if (url) url.hidden = !dest || dest.value !== "custom";
+		};
+		if (dest) {
+			dest.value = state.panicTo;
+			dest.addEventListener("change", () => {
+				state.panicTo = dest.value;
+				save();
+				showUrl();
+			});
+		}
+		if (url) {
+			url.value = state.panicUrl;
+			url.addEventListener("input", () => {
+				state.panicUrl = url.value;
+				save();
+			});
+		}
+		if (test)
+			test.addEventListener("click", () => {
+				const t = panicTarget();
+				if (!t) return say2("Type a website address first.");
+				window.open(t, "_blank", "noopener");
+			});
+		showUrl();
+	}
+
 	/* ----------------------------------------------------------- settings UI */
 
 	function buildUi() {
+		buildPanicUi();
 		const box = document.getElementById("cloak-presets");
 		if (!box || box.dataset.ready) return;
 		box.dataset.ready = "1";
@@ -211,7 +352,7 @@
 		const reset = document.getElementById("cloak-reset");
 		if (reset)
 			reset.addEventListener("click", () => {
-				state = { preset: "vodious", customTitle: "", customIcon: "", redirect: "none" };
+				state = Object.assign({}, DEFAULTS, { panicKey: state.panicKey, panicTo: state.panicTo, panicUrl: state.panicUrl });
 				if (titleIn) titleIn.value = "";
 				if (iconIn) iconIn.value = "";
 				if (redirect) redirect.value = "none";
@@ -226,7 +367,7 @@
 		sync();
 	}
 
-	window.VodiousCloak = { apply, buildUi, PRESETS };
+	window.VodiousCloak = { apply, buildUi, attachKeys, PRESETS };
 
 	// Settings may be a page of its own or a view inside the single-file build; build the controls when the DOM is ready
 	function start() {

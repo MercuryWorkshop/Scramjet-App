@@ -119,6 +119,32 @@
 					<p id="cloak-status" class="set-status" role="status"></p>
 					<button type="button" id="cloak-reset" class="set-link">Reset to Vodious</button>
 				</section>
+							<section class="set-card" aria-labelledby="panic-h">
+					<h2 id="panic-h">Panic key</h2>
+					<p class="set-note">Press this key on any page to jump straight to another site.</p>
+					<div class="set-row">
+						<button type="button" id="panic-set" class="set-keybtn" aria-label="Choose the panic key">Not set</button>
+						<button type="button" id="panic-clear" class="set-link">Remove</button>
+					</div>
+					<label class="set-field inline">
+						<span>Then go to</span>
+						<select id="panic-dest">
+							<option value="google">Google</option>
+							<option value="newtab">New Tab (Google)</option>
+							<option value="classroom">Google Classroom</option>
+							<option value="docs">Google Docs</option>
+							<option value="custom">Another site...</option>
+						</select>
+					</label>
+					<label class="set-field" style="margin-top:0.6rem">
+						<input id="panic-url" type="text" placeholder="example.com" autocomplete="off" spellcheck="false" hidden />
+					</label>
+					<div class="set-row" style="margin-top:0.9rem">
+						<button type="button" id="panic-test" class="set-link">Try the destination in a new tab</button>
+					</div>
+					<p id="panic-status" class="set-status" role="status"></p>
+					<p class="set-note" style="margin:0.25rem 0 0">Tip: pick a key you will not type in a search box, or add Ctrl or Alt. It cannot fire while a game from another website has focus.</p>
+				</section>
 			</main>
 
 			<footer class="foot">

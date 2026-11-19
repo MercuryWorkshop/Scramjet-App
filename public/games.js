@@ -266,6 +266,7 @@
 			},
 			{ once: true }
 		);
+		f.addEventListener("load", () => window.VodiousCloak && window.VodiousCloak.attachKeys(f.contentWindow));
 		if (source.srcdoc !== undefined) f.srcdoc = source.srcdoc;
 		else if (source.blob !== undefined) {
 			frameBlob = URL.createObjectURL(new Blob([source.blob], { type: "text/html" }));

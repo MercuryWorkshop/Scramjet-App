@@ -46,3 +46,11 @@
 .set-btn:hover { background: var(--accent); }
 .set-status { min-height: 1.3em; margin: 0.75rem 0 0; color: var(--accent-soft); font-size: 0.9rem; }
 .set-link { font: inherit; font-size: 0.85rem; background: none; border: 0; padding: 0; color: var(--muted); cursor: pointer; text-decoration: underline; }
+.set-keybtn {
+	font: inherit; font-size: 0.95rem; cursor: pointer; padding: 0.6rem 1rem; border-radius: 12px; min-width: 9rem;
+	color: var(--text); background: transparent; border: 1px dashed var(--accent-soft);
+}
+.set-keybtn:focus-visible { outline: 2px solid var(--ring); outline-offset: 2px; background: var(--ring); }
+.set-row { align-items: center; }
+
+[hidden] { display: none !important; }
