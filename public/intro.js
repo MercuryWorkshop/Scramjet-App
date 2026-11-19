@@ -741,12 +741,10 @@
 	window.addEventListener("resize", resize);
 	window.addEventListener("pointerdown", onPointerDown);
 	window.addEventListener("pointerup", onPointerUp);
-	window.addEventListener("keydown", onGesture);
 	// Fallbacks for browsers that report touches oddly (a scroll gesture cancels the pointer events)
 	window.addEventListener("touchend", onGesture, { passive: true });
 	window.addEventListener("click", onGesture);
 	const skipBtn = intro.querySelector(".intro-skip-btn");
-	if (skipBtn) skipBtn.addEventListener("click", (e) => { e.stopPropagation(); finish(true); });
 	// Safety net: whatever happens, the intro is gone a few seconds after it should have ended
 	watchdog = setTimeout(() => finish(true), TIMING.galaxy + TIMING.zoom + TIMING.hold + TIMING.title + TIMING.fade + 3000);
 
@@ -760,11 +758,6 @@
 		});
 		// Works straight away where autoplay is allowed; otherwise stays suspended
 		audio.ctx.resume().catch(() => {});
-			setTimeout(() => {
-			if (audio && !audio.stopped && !audio.unlockTried && audio.ctx.state !== "running") {
-				setHint(true);
-			}
-		}, 300);
 
 	}
 
