@@ -165,7 +165,7 @@
 		running = true;
 
 		const galaxy = window.VodiousGalaxy;
-		if (reduceMotion || !galaxy) {
+		if (reduceMotion || !galaxy || /^(image|grid|plain)$/.test(document.documentElement.dataset.bg || "")) {
 			go(href, false);
 			return;
 		}

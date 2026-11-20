@@ -1,0 +1,122 @@
+<!doctype html>
+<html lang="en" data-theme="dark">
+	<head>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>Design - Vodious</title>
+
+		<script>
+			// Arriving from the home page's black hole dive: the CSS and galaxy.js play the matching "coming out" animation
+			try {
+				var dived = Number(sessionStorage.getItem("vodious-dive"));
+				sessionStorage.removeItem("vodious-dive");
+				if (dived && Date.now() - dived < 10000) document.documentElement.classList.add("from-dive");
+			} catch (e) {}
+		</script>
+
+		<link rel="icon" href="favicon.ico" />
+
+		<link rel="preconnect" href="https://fonts.googleapis.com" />
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+		<link
+			rel="stylesheet"
+			href="https://fonts.googleapis.com/css2?family=Orbitron:wght@700;800;900&family=Space+Grotesk:wght@400;500;600;700&display=swap"
+		/>
+
+		<link rel="stylesheet" href="index.css" />
+		<link rel="stylesheet" href="settings.css" />
+		<link rel="stylesheet" href="design.css" />
+		<script src="home.js" defer></script>
+		<script src="cloak.js" defer></script>
+		<script src="design.js" defer></script>
+		<script src="profile.js" defer></script>
+		<script src="galaxy.js" defer></script>
+			</head>
+
+	<body>
+		<canvas id="galaxy" aria-hidden="true"></canvas>
+
+		<header class="top">
+			<a class="brand" href="/" title="Vodious">Vodious</a>
+			<nav class="nav" aria-label="Main">
+				<a href="/" class="nav-link">
+					<svg viewBox="0 0 24 24" aria-hidden="true">
+						<path d="M3 11.5 12 4l9 7.5" />
+						<path d="M5.5 10v9.5h13V10" />
+					</svg>
+					Home
+				</a>
+				<a href="games.html" class="nav-link">
+					<svg viewBox="0 0 24 24" aria-hidden="true">
+						<rect x="2.5" y="7" width="19" height="11" rx="5" />
+						<path d="M7.5 10.5v4M5.5 12.5h4" />
+						<circle cx="15.5" cy="11.5" r=".6" />
+						<circle cx="17.8" cy="13.5" r=".6" />
+					</svg>
+					Games
+				</a>
+				<a href="design.html" class="nav-link" aria-current="page">
+					<svg viewBox="0 0 24 24" aria-hidden="true">
+						<path d="M12 3a9 9 0 1 0 0 18c1.4 0 2-.9 2-1.8 0-1.2-1-1.5-1-2.7 0-1 .8-1.5 1.8-1.5H17a4 4 0 0 0 4-4c0-4-4-8-9-8z" />
+						<circle cx="7.6" cy="11" r=".9" />
+						<circle cx="10.5" cy="7.4" r=".9" />
+						<circle cx="15" cy="7.8" r=".9" />
+					</svg>
+					Design
+				</a>
+				<a href="profile.html" class="nav-link">
+					<svg viewBox="0 0 24 24" aria-hidden="true">
+						<circle cx="12" cy="8.5" r="3.6" />
+						<path d="M4.8 20c.6-3.7 3.4-5.6 7.2-5.6s6.6 1.9 7.2 5.6" />
+					</svg>
+					Profile
+				</a>
+				<a href="settings.html" class="nav-link">
+					<svg viewBox="0 0 24 24" aria-hidden="true">
+						<path d="M4 7h9M17 7h3M4 17h3M11 17h9M4 12h3M11 12h9" />
+						<circle cx="15" cy="7" r="2" />
+						<circle cx="9" cy="17" r="2" />
+						<circle cx="9" cy="12" r="0" />
+					</svg>
+					Settings
+				</a>
+				<button
+					type="button"
+					id="theme-toggle"
+					class="icon-btn"
+					aria-label="Switch to light theme"
+				>
+					<svg viewBox="0 0 24 24" aria-hidden="true">
+						<circle cx="12" cy="12" r="4" />
+						<path
+							d="M12 2.5v2.2M12 19.3v2.2M2.5 12h2.2M19.3 12h2.2M5.3 5.3l1.6 1.6M17.1 17.1l1.6 1.6M5.3 18.7l1.6-1.6M17.1 6.9l1.6-1.6"
+						/>
+					</svg>
+				</button>
+			</nav>
+		</header>
+
+		<main class="settings-page">
+				<h1 class="title">Design</h1>
+				<p class="settings-sub">Choose how the background of Vodious looks.</p>
+
+				<section class="set-card" aria-labelledby="bg-h">
+					<h2 id="bg-h">Background</h2>
+					<p class="set-note">Pick a look, or use one of your own images.</p>
+					<div id="bg-options" class="bg-options" role="radiogroup" aria-label="Background"></div>
+					<div class="set-row">
+						<button type="button" id="bg-pick" class="set-btn">Upload an image</button>
+						<button type="button" id="bg-remove" class="set-link" hidden>Remove my image</button>
+						<input type="file" id="bg-file" accept="image/*" hidden />
+					</div>
+					<p id="design-status" class="set-status" role="status"></p>
+				</section>
+			</main>
+
+			<footer class="foot">
+				<span>Vodious, built on Scramjet by</span>
+				<a href="https://github.com/MercuryWorkshop" title="The Mercury Workshop GitHub organization">Mercury Workshop</a>
+				<a href="credits.html" title="License information">Credits</a>
+			</footer>
+		</body>
+</html>

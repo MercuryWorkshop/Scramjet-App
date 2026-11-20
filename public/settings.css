@@ -1,5 +1,5 @@
 /* Settings page */
-.settings-page { max-width: 760px; margin: 0 auto; padding: 1rem 1rem 3rem; text-align: center; }
+.settings-page { position: relative; z-index: 1; max-width: 760px; margin: 0 auto; padding: 1rem 1rem 3rem; text-align: center; }
 .settings-sub { color: var(--muted); margin: 0.25rem 0 1.5rem; }
 .set-card {
 	text-align: left;

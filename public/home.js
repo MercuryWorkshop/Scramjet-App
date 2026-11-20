@@ -67,7 +67,13 @@
 				minute: "2-digit",
 			});
 		}
-		if (hello) hello.textContent = part + " - " + date;
+		let who = "";
+		try {
+			who = (JSON.parse(localStorage.getItem("vodious-profile") || "{}").name || "").trim();
+		} catch (err) {
+			/* no saved profile */
+		}
+		if (hello) hello.textContent = part + (who ? ", " + who : "") + " - " + date;
 	}
 
 	tick();

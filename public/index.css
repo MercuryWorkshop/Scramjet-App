@@ -874,3 +874,37 @@ html.from-dive .foot {
 	cursor: pointer;
 }
 #intro.titled .intro-skip-btn { opacity: 0; pointer-events: none; }
+
+/* Backgrounds chosen on the Design page */
+#bg-layer { position: fixed; inset: 0; z-index: 0; pointer-events: none; display: none; background-size: cover; background-position: center; }
+html[data-bg="image"] #bg-layer, html[data-bg="grid"] #bg-layer, html[data-bg="plain"] #bg-layer { display: block; }
+html[data-bg="image"] #galaxy, html[data-bg="grid"] #galaxy, html[data-bg="plain"] #galaxy { display: none; }
+html[data-bg="plain"] #bg-layer { background: #0b0b10; }
+html[data-bg="grid"] #bg-layer {
+	background-color: #04110a;
+	background-image:
+		radial-gradient(ellipse at 50% 35%, rgba(34, 197, 94, 0.16), transparent 65%),
+		linear-gradient(rgba(34, 197, 94, 0.28) 1px, transparent 1px),
+		linear-gradient(90deg, rgba(34, 197, 94, 0.28) 1px, transparent 1px);
+	background-size: auto, 44px 44px, 44px 44px;
+	animation: bg-grid-drift 14s linear infinite;
+}
+@keyframes bg-grid-drift { to { background-position: 0 0, 0 44px, 44px 0; } }
+:root[data-theme="light"][data-bg="plain"] #bg-layer { background: #f4f1fb; }
+:root[data-theme="light"][data-bg="grid"] #bg-layer { background-color: #f3fff8; background-image:
+	linear-gradient(rgba(22, 163, 74, 0.25) 1px, transparent 1px), linear-gradient(90deg, rgba(22, 163, 74, 0.25) 1px, transparent 1px);
+	background-size: 44px 44px, 44px 44px; }
+html[data-bg="blue"] #galaxy { filter: hue-rotate(-45deg); }
+html[data-bg="green"] #galaxy { filter: hue-rotate(-120deg); }
+html[data-bg="red"] #galaxy { filter: hue-rotate(100deg); }
+@media (prefers-reduced-motion: reduce) { html[data-bg="grid"] #bg-layer { animation: none; } }
+.nav-avatar { width: 1.15rem; height: 1.15rem; border-radius: 50%; object-fit: cover; }
+
+/* Narrow screens: the menu shows icons only so all the pages fit */
+@media (max-width: 640px) {
+	.nav { gap: 0.9rem; }
+	.nav-link { font-size: 0; gap: 0; padding: 0.35rem; }
+	.nav-link svg { width: 1.3rem; height: 1.3rem; }
+	.nav-link[aria-current="page"] { color: var(--text); }
+	.nav-avatar { width: 1.4rem; height: 1.4rem; }
+}

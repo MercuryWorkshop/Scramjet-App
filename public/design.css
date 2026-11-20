@@ -1,0 +1,12 @@
+/* Design page */
+.bg-options { display: grid; grid-template-columns: repeat(auto-fill, minmax(130px, 1fr)); gap: 0.75rem; margin-bottom: 1rem; }
+.bg-tile {
+	font: inherit; font-size: 0.85rem; color: inherit; cursor: pointer; text-align: center;
+	display: grid; gap: 0.45rem; padding: 0.45rem; border-radius: 14px;
+	background: transparent; border: 2px solid var(--border);
+}
+.bg-tile .thumb { display: block; aspect-ratio: 16 / 10; border-radius: 9px; background-size: cover; background-position: center; }
+.bg-tile .thumb-upload { background: repeating-linear-gradient(45deg, rgba(139,92,246,.18) 0 8px, rgba(139,92,246,.06) 8px 16px); display: grid; place-items: center; }
+.bg-tile .thumb-upload::after { content: "+"; font-size: 1.6rem; color: var(--accent-soft); }
+.bg-tile[aria-checked="true"] { border-color: var(--accent); box-shadow: 0 0 0 3px var(--ring); }
+.bg-tile:focus-visible { outline: 2px solid var(--ring); outline-offset: 2px; }
