@@ -198,7 +198,7 @@
 	// A black hole with a lensed accretion disk: the black shadow, a thin bright photon ring, the disk's light bent
 	// over the top and under the bottom of the shadow, and the flat disk crossing in front. One side of the disk is
 	// brighter (Doppler beaming).
-	function drawBlackHole(s) {
+	function drawBlackHole(s, cx, cy) {
 		const R = HOLE * U * s;
 		const glowC = RING[0];
 		const midC = RING[1];
@@ -287,9 +287,19 @@
 		ctx.restore();
 	}
 
+	// The fall aims at the bright ring just outside the black shadow, not at the shadow itself
+	const PIVOT_R = 1.22;
 	function render(spin, s, sTrail, dt, zoomP) {
+		const R0 = HOLE * U;
+		const px = cx + Math.cos(-0.2) * R0 * PIVOT_R;
+		const py = cy + Math.sin(-0.2) * R0 * PIVOT_R;
+		const hx = px + (cx - px) * s;
+		const hy = py + (cy - py) * s;
 		ctx.globalCompositeOperation = "source-over";
 		if (gl) {
+			// Stars streak away from the point we are falling toward
+			const k = zoomP * zoomP;
+			gl.setFocal(0.5 + (px / W - 0.5) * k, 0.5 - (py / H - 0.5) * k);
 			ctx.clearRect(0, 0, W, H);
 			// Stars drift gently, then streak away from the black hole as the fall begins
 			gl.speedUp = 1 + 10 * zoomP * zoomP;
@@ -302,12 +312,22 @@
 			drawNebula(spin, s);
 			drawStars(spin, s, sTrail);
 		}
-		drawBlackHole(s);
+		drawBlackHole(s, hx, hy);
 		ctx.globalCompositeOperation = "source-over";
 	}
 
 	// Sequence
 	const title = intro.querySelector(".intro-title");
+	// The title takes the colour chosen on the Design page; a wash of the same light floods the screen at the end of the fall
+	const mixWhite = (c, m) => c.map((v) => Math.round(v + (255 - v) * m)).join(",");
+	intro.style.setProperty("--ti-text", "rgb(" + mixWhite(RING[2], 0.55) + ")");
+	intro.style.setProperty("--ti-glow", "rgb(" + RING[1].join(",") + ")");
+	intro.style.setProperty("--ti-deep", "rgb(" + RING[3].join(",") + ")");
+	intro.style.setProperty("--ti-hi", "rgb(" + mixWhite(RING[2], 0.7) + ")");
+	intro.style.setProperty("--ti-mid", "rgb(" + RING[1].join(",") + ")");
+	const flash = document.createElement("div");
+	flash.className = "intro-flash";
+	intro.insertBefore(flash, title);
 	const ring = intro.querySelector(".intro-ring");
 	const hint = intro.querySelector(".intro-skip");
 	let raf = 0;
@@ -782,8 +802,10 @@
 		ctx.fillStyle = "#000";
 		ctx.fillRect(0, 0, W, H);
 		intro.classList.add("titled");
+		if (gl) gl.canvas.style.display = "none";
+		flash.classList.add("out");
+		flash.style.opacity = "0";
 		if (title) title.classList.add("show");
-		if (ring) ring.classList.add("show");
 		if (audio && !audio.stopped && !audio.impact && audio.ctx.state === "running") {
 			audio.impact = true;
 			playImpact();
@@ -829,6 +851,8 @@
 			showTitle();
 			return;
 		}
+		const fl = clamp((zoomP - 0.7) / 0.28, 0, 1);
+		flash.style.opacity = String(fl * fl * (3 - 2 * fl));
 		render(spin, s, sTrail, dt, zoomP);
 		raf = requestAnimationFrame(frame);
 	}

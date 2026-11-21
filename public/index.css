@@ -609,15 +609,15 @@ footer:not(.foot) a:hover {
 	line-height: 1;
 	letter-spacing: 0.25em;
 	padding-left: 0.25em; /* balances the trailing letter-spacing so the word stays centered */
-	color: #f4f0ff;
-	text-shadow: 0 0 24px rgba(168, 85, 247, 0.85), 0 0 80px rgba(124, 58, 237, 0.7);
+	color: var(--ti-text, #f4f0ff);
+	text-shadow: 0 0 24px var(--ti-glow, rgba(168, 85, 247, 0.85)), 0 0 80px var(--ti-deep, rgba(124, 58, 237, 0.7));
 	opacity: 0;
 	transform: scale(0.4);
 	filter: blur(14px);
 }
 
 .intro-title.show {
-	animation: intro-pop 0.8s cubic-bezier(0.2, 1.4, 0.4, 1) forwards;
+	animation: intro-pop 0.8s cubic-bezier(0.2, 1.4, 0.4, 1) 0.35s forwards;
 }
 
 .intro-ring {
@@ -904,4 +904,19 @@ html[data-bg="grid"] #bg-layer {
 	.nav-link svg { width: 1.3rem; height: 1.3rem; }
 	.nav-link[aria-current="page"] { color: var(--text); }
 	.nav-avatar { width: 1.4rem; height: 1.4rem; }
+}
+
+/* Intro: the bright wash at the end of the fall, and no ring (the title just appears) */
+.intro-flash {
+	position: absolute;
+	inset: 0;
+	opacity: 0;
+	pointer-events: none;
+	background: radial-gradient(circle at 50% 50%, var(--ti-hi, #f0e4ff) 0%, var(--ti-mid, #a855f7) 75%, var(--ti-deep, #7c3aed) 100%);
+}
+.intro-flash.out {
+	transition: opacity 1s ease;
+}
+.intro-ring {
+	display: none;
 }

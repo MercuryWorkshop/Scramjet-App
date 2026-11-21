@@ -520,6 +520,10 @@ void main() {
 			S.saturation = next.length ? 0 : 1.1;
 			render();
 		};
+		ctl.canvas = canvas;
+		ctl.setFocal = (x, y) => {
+			S.focal = [x, y];
+		};
 		ctl.setIntro = (on) => {
 			S.intro = !!on;
 			if (on) state.reveal = 0;
