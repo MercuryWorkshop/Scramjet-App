@@ -5,10 +5,14 @@
 	const root = document.documentElement;
 
 	const OPTIONS = [
-		{ id: "purple", label: "Purple galaxy", galaxy: true, thumb: "radial-gradient(circle at 70% 30%, #a855f7, #3b0f7a 45%, #09060f 75%)" },
-		{ id: "blue", label: "Blue galaxy", galaxy: true, thumb: "radial-gradient(circle at 70% 30%, #5aa9ff, #123a8a 45%, #060a14 75%)" },
-		{ id: "green", label: "Green galaxy", galaxy: true, thumb: "radial-gradient(circle at 70% 30%, #5be39a, #0f5c3a 45%, #05100a 75%)" },
-		{ id: "red", label: "Red galaxy", galaxy: true, thumb: "radial-gradient(circle at 70% 30%, #ff7a6b, #7a1d1d 45%, #120606 75%)" },
+		{ id: "purple", label: "Purple galaxy", galaxy: true, thumb: "radial-gradient(circle at 30% 40%, #fff 0 1.5px, transparent 2.5px), radial-gradient(circle at 70% 30%, #a855f7, #3b0f7a 45%, #09060f 80%)" },
+		{ id: "blue", label: "Blue galaxy", galaxy: true, thumb: "radial-gradient(circle at 30% 40%, #fff 0 1.5px, transparent 2.5px), radial-gradient(circle at 70% 30%, #5aa9ff, #123a8a 45%, #060a14 80%)" },
+		{ id: "green", label: "Green galaxy", galaxy: true, thumb: "radial-gradient(circle at 30% 40%, #fff 0 1.5px, transparent 2.5px), radial-gradient(circle at 70% 30%, #5be39a, #0f5c3a 45%, #05100a 80%)" },
+		{ id: "red", label: "Red galaxy", galaxy: true, thumb: "radial-gradient(circle at 30% 40%, #fff 0 1.5px, transparent 2.5px), radial-gradient(circle at 70% 30%, #ff7a6b, #7a1d1d 45%, #120606 80%)" },
+		{ id: "pink", label: "Pink galaxy", galaxy: true, thumb: "radial-gradient(circle at 30% 40%, #fff 0 1.5px, transparent 2.5px), radial-gradient(circle at 70% 30%, #f472b6, #7e1d57 45%, #12060d 80%)" },
+		{ id: "gold", label: "Gold galaxy", galaxy: true, thumb: "radial-gradient(circle at 30% 40%, #fff 0 1.5px, transparent 2.5px), radial-gradient(circle at 70% 30%, #fbbf24, #7a4a07 45%, #120d04 80%)" },
+		{ id: "white", label: "White galaxy", galaxy: true, thumb: "radial-gradient(circle at 30% 40%, #fff 0 1.5px, transparent 2.5px), radial-gradient(circle at 70% 30%, #e5e7eb, #3f4658 45%, #08090c 80%)" },
+		{ id: "rainbow", label: "Rainbow galaxy", galaxy: true, thumb: "radial-gradient(circle at 25% 35%, #ff6b6b 0 6px, transparent 7px), radial-gradient(circle at 60% 25%, #5aa9ff 0 6px, transparent 7px), radial-gradient(circle at 70% 65%, #5be39a 0 6px, transparent 7px), radial-gradient(circle at 35% 70%, #fbbf24 0 6px, transparent 7px), #0b0814" },
 		{ id: "grid", label: "Green grid", thumb: "linear-gradient(rgba(34,197,94,.55) 1px, transparent 1px) 0 0/12px 12px, linear-gradient(90deg, rgba(34,197,94,.55) 1px, transparent 1px) 0 0/12px 12px, #04110a" },
 		{ id: "plain", label: "Plain dark", thumb: "#0b0b10" },
 		{ id: "image", label: "My image", thumb: "" },

@@ -894,9 +894,6 @@ html[data-bg="grid"] #bg-layer {
 :root[data-theme="light"][data-bg="grid"] #bg-layer { background-color: #f3fff8; background-image:
 	linear-gradient(rgba(22, 163, 74, 0.25) 1px, transparent 1px), linear-gradient(90deg, rgba(22, 163, 74, 0.25) 1px, transparent 1px);
 	background-size: 44px 44px, 44px 44px; }
-html[data-bg="blue"] #galaxy { filter: hue-rotate(-45deg); }
-html[data-bg="green"] #galaxy { filter: hue-rotate(-120deg); }
-html[data-bg="red"] #galaxy { filter: hue-rotate(100deg); }
 @media (prefers-reduced-motion: reduce) { html[data-bg="grid"] #bg-layer { animation: none; } }
 .nav-avatar { width: 1.15rem; height: 1.15rem; border-radius: 50%; object-fit: cover; }
 

@@ -15,6 +15,21 @@
 		return;
 	}
 
+	// The stars are drawn by the WebGL galaxy shader on a canvas underneath; the 2D canvas only draws the black hole
+	let gl = null;
+	if (window.VodiousGL) {
+		const glCanvas = document.createElement("canvas");
+		intro.insertBefore(glCanvas, canvas);
+		gl = window.VodiousGL.create(glCanvas, {
+			palette: window.VodiousGL.paletteFor(),
+			dpr: 1.5,
+			auto: false,
+			interactive: false,
+			glow: 0.45,
+		});
+		if (!gl) glCanvas.remove();
+	}
+
 	// Milliseconds
 	const TIMING = { galaxy: 2800, zoom: 2600, hold: 350, title: 2000, fade: 1000 };
 
@@ -100,6 +115,7 @@
 		canvas.height = Math.round(H * dpr);
 		ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
 		build();
+		if (gl) gl.resize();
 	}
 
 	const cosR = Math.cos(ROLL);
@@ -201,14 +217,21 @@
 		ctx.shadowBlur = 0;
 	}
 
-	function render(spin, s, sTrail) {
+	function render(spin, s, sTrail, dt, zoomP) {
 		ctx.globalCompositeOperation = "source-over";
-		ctx.fillStyle = "#04010a";
-		ctx.fillRect(0, 0, W, H);
-
-		ctx.globalCompositeOperation = "lighter";
-		drawNebula(spin, s);
-		drawStars(spin, s, sTrail);
+		if (gl) {
+			ctx.clearRect(0, 0, W, H);
+			// Stars drift gently, then streak away from the black hole as the fall begins
+			gl.speedUp = 1 + 10 * zoomP * zoomP;
+			gl.advance(dt / 1000, 1.9 * Math.pow(zoomP, 1.6));
+			ctx.globalCompositeOperation = "lighter";
+		} else {
+			ctx.fillStyle = "#04010a";
+			ctx.fillRect(0, 0, W, H);
+			ctx.globalCompositeOperation = "lighter";
+			drawNebula(spin, s);
+			drawStars(spin, s, sTrail);
+		}
 		drawBlackHole(s);
 		ctx.globalCompositeOperation = "source-over";
 	}
@@ -661,7 +684,10 @@
 		stopAudio(fast ? 0.35 : TIMING.fade / 1000);
 		if (fast) intro.classList.add("skipped");
 		intro.classList.add("leaving");
-		setTimeout(() => intro.remove(), (fast ? 500 : TIMING.fade) + 150);
+		setTimeout(() => {
+			if (gl) gl.destroy();
+			intro.remove();
+		}, (fast ? 500 : TIMING.fade) + 150);
 	}
 
 	// While sound is blocked and there is still sound to come, the first click
@@ -733,7 +759,7 @@
 			showTitle();
 			return;
 		}
-		render(spin, s, sTrail);
+		render(spin, s, sTrail, dt, zoomP);
 		raf = requestAnimationFrame(frame);
 	}
 
