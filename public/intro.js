@@ -5,6 +5,11 @@
 (() => {
 	const intro = document.getElementById("intro");
 	if (!intro) return;
+	// The Home button links to /?home, which skips the intro; the Vodious logo links to / and plays it
+	if (/[?&]home(&|$)/.test(location.search)) {
+		intro.remove();
+		return;
+	}
 
 	const canvas = intro.querySelector("canvas");
 	const ctx = canvas && canvas.getContext ? canvas.getContext("2d") : null;
