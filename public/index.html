@@ -1,66 +1,201 @@
 <!doctype html>
-<html>
+<html lang="en" data-theme="dark">
 	<head>
 		<meta charset="utf-8" />
 		<meta
 			name="viewport"
 			content="width=device-width, initial-scale=1.0, shrink-to-fit=no"
 		/>
-		<title>Scramjet</title>
+		<title>Vodious</title>
 
-		<link rel="shortcut icon" content="favicon.webp" />
-	
+		<link rel="icon" href="favicon.ico" />
+
+		<link rel="preconnect" href="https://fonts.googleapis.com" />
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+		<link
+			rel="stylesheet"
+			href="https://fonts.googleapis.com/css2?family=Orbitron:wght@700;800;900&family=Space+Grotesk:wght@400;500;600;700&display=swap"
+		/>
+
 		<script src="/scram/scramjet.all.js"></script>
 		<script src="/baremux/index.js"></script>
-		
+
 		<link rel="stylesheet" href="index.css" />
 		<script src="register-sw.js" defer></script>
 		<script src="search.js" defer></script>
 		<script src="index.js" defer></script>
+		<script src="home.js" defer></script>
+		<script src="cloak.js" defer></script>
+		<script src="design.js" defer></script>
+		<script src="profile.js" defer></script>
+		<script src="galaxy.js" defer></script>
+		<script src="dive.js" defer></script>
+		<script src="intro.js" defer></script>
 	</head>
 
 	<body>
-		<div title="Scramjet Logo" class="flex-center logo-wrapper header-center">
-			<img class="logo" src="sj.png" alt="Scramjet" />
-			<h1>Scramjet | MW</h1>
+		<div id="intro" aria-hidden="true">
+			<canvas></canvas>
+			<div class="intro-ring"></div>
+			<p class="intro-title">Vodious</p>
+			<p class="intro-skip">Tap or click to skip</p>
 		</div>
-		<div class="flex-center desc left-margin">
-			<p>
-				Scramjet is an experimental interception based web proxy designed to
-				evade internet censorship, bypass arbitrary web browser restrictions and
-				innovate web proxy technologies.
-			</p>
-		</div>
+		<canvas id="galaxy" aria-hidden="true"></canvas>
+		<header class="top">
+			<a class="brand" href="/" title="Vodious">Vodious</a>
+			<nav class="nav" aria-label="Main">
+				<a href="/" class="nav-link">
+					<svg viewBox="0 0 24 24" aria-hidden="true">
+						<path d="M3 11.5 12 4l9 7.5" />
+						<path d="M5.5 10v9.5h13V10" />
+					</svg>
+					Home
+				</a>
+				<a href="games.html" class="nav-link">
+					<svg viewBox="0 0 24 24" aria-hidden="true">
+						<rect x="2.5" y="7" width="19" height="11" rx="5" />
+						<path d="M7.5 10.5v4M5.5 12.5h4" />
+						<circle cx="15.5" cy="11.5" r=".6" />
+						<circle cx="17.8" cy="13.5" r=".6" />
+					</svg>
+					Games
+				</a>
+				<a href="settings.html" class="nav-link nav-gear" aria-label="Settings" title="Settings">
+					<svg viewBox="0 0 24 24" aria-hidden="true">
+						<circle cx="12" cy="12" r="3" />
+						<path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z" />
+					</svg>
+				</a>
+				<button
+					type="button"
+					id="theme-toggle"
+					class="icon-btn"
+					aria-label="Switch to light theme"
+				>
+					<svg viewBox="0 0 24 24" aria-hidden="true">
+						<circle cx="12" cy="12" r="4" />
+						<path
+							d="M12 2.5v2.2M12 19.3v2.2M2.5 12h2.2M19.3 12h2.2M5.3 5.3l1.6 1.6M17.1 17.1l1.6 1.6M5.3 18.7l1.6-1.6M17.1 6.9l1.6-1.6"
+						/>
+					</svg>
+				</button>
+			</nav>
+		</header>
 
-		<form id="sj-form" class="flex-center">
-			<input
-				id="sj-search-engine"
-				value="https://www.google.com/search?q=%s"
-				type="hidden"
-			/>
-			<input id="sj-address" type="text" placeholder="Search the web freely" />
-		</form>
-		<div class="desc left-margin">
-			<p id="sj-error"></p>
-			<pre id="sj-error-code"></pre>
-		</div>
-		<footer>
-			<div>
-				<a
-					title="The Mercury Workshop GitHub organization"
-					href="https://github.com/MercuryWorkshop"
-					>Mercury Workshop</a
-				>
-				<a
-					title="The example demo app for Scramjet"
-					href="https://github.com/MercuryWorkshop/Scramjet-Demo"
-					>GitHub</a
-				>
-				<a title="License information" href="credits.html">Credits</a>
+		<main class="stage">
+			<section class="clock-block" aria-label="Current time">
+				<p id="clock" class="clock">--:--</p>
+				<p id="hello" class="hello"></p>
+			</section>
+
+			<section class="intro">
+				<h1 class="title">Vodious</h1>
+				<p class="tagline">Search the web, play some games, hang out.</p>
+			</section>
+
+			<form id="sj-form" class="finder">
+				<input
+					id="sj-search-engine"
+					value="https://duckduckgo.com/?q=%s"
+					type="hidden"
+				/>
+				<label class="sr-only" for="sj-address">Search or enter a web address</label>
+				<div class="field">
+					<svg class="field-icon" viewBox="0 0 24 24" aria-hidden="true">
+						<circle cx="11" cy="11" r="6.5" />
+						<path d="m20 20-4.2-4.2" />
+					</svg>
+					<input
+						id="sj-address"
+						type="text"
+						placeholder="Search DuckDuckGo or type a URL"
+						autocomplete="off"
+						autocapitalize="off"
+						spellcheck="false"
+					/>
+					<button type="submit" class="go">Go</button>
+				</div>
+			</form>
+
+			<div class="pill-row" role="group" aria-label="Search engine">
+				<button type="button" class="pill" data-engine="duckduckgo" aria-pressed="true">
+					DuckDuckGo
+				</button>
+				<button type="button" class="pill" data-engine="google" aria-pressed="false">
+					Google
+				</button>
 			</div>
-			<div>
-				<span>Scramjet &copy; MW 2025</span>
+
+			<div class="pill-row quick" role="group" aria-label="Quick links">
+				<button type="button" class="pill ghost" data-go="https://www.youtube.com">YouTube</button>
+				<button type="button" class="pill ghost" data-go="https://www.wikipedia.org">Wikipedia</button>
+				<button type="button" class="pill ghost" data-go="https://github.com">GitHub</button>
+				<button type="button" class="pill ghost" data-go="https://weather.com">Weather</button>
 			</div>
+
+			<div class="status" aria-live="polite">
+				<p id="sj-error"></p>
+				<pre id="sj-error-code"></pre>
+			</div>
+
+			<section class="cards" aria-label="Highlights">
+				<a class="card feature" href="games.html">
+					<svg class="card-icon" viewBox="0 0 24 24" aria-hidden="true">
+						<rect x="2.5" y="7" width="19" height="11" rx="5" />
+						<path d="M7.5 10.5v4M5.5 12.5h4" />
+						<circle cx="15.5" cy="11.5" r=".6" />
+						<circle cx="17.8" cy="13.5" r=".6" />
+					</svg>
+					<div class="card-text">
+						<h2>Play games</h2>
+						<p>Jump in and play</p>
+					</div>
+				</a>
+
+				<article class="card fact">
+					<header class="fact-head">
+						<span class="fact-label">
+							<svg viewBox="0 0 24 24" aria-hidden="true">
+								<path d="M9 18h6M10 21h4" />
+								<path d="M12 3a6 6 0 0 0-3.6 10.8c.6.5 1 1.2 1 2V16h5.2v-.2c0-.8.4-1.5 1-2A6 6 0 0 0 12 3Z" />
+							</svg>
+							Fun fact
+						</span>
+						<button
+							type="button"
+							id="fact-refresh"
+							class="icon-btn small"
+							aria-label="Show another fun fact"
+						>
+							<svg viewBox="0 0 24 24" aria-hidden="true">
+								<path d="M20 11a8 8 0 0 0-14.5-4.2L4 8.5" />
+								<path d="M4 4v4.5h4.5" />
+								<path d="M4 13a8 8 0 0 0 14.5 4.2l1.5-1.7" />
+								<path d="M20 20v-4.5h-4.5" />
+							</svg>
+						</button>
+					</header>
+					<p id="fact-text" class="fact-text" aria-live="polite">
+						Honey never spoils. Archaeologists have found 3,000-year-old honey
+						that was still edible.
+					</p>
+				</article>
+			</section>
+		</main>
+
+		<footer class="foot">
+			<span>Vodious, built on Scramjet by</span>
+			<a
+				title="The Mercury Workshop GitHub organization"
+				href="https://github.com/MercuryWorkshop"
+				>Mercury Workshop</a
+			>
+			<a
+				title="The example demo app for Scramjet"
+				href="https://github.com/MercuryWorkshop/Scramjet-Demo"
+				>GitHub</a
+			>
+			<a title="License information" href="credits.html">Credits</a>
 		</footer>
 	</body>
 </html>

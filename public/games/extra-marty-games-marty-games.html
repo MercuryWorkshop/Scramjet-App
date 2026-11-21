@@ -1,0 +1,59 @@
+<script>
+    launch();
+
+    async function launch() {
+        const urls = [
+            "https://gn-sciencex.github.io/index.html",
+            "https://raw.githubusercontent.com/gn-sciencex/gn-sciencex.github.io/main/index.html",
+            "https://cdn.jsdmirror.com/gh/gn-sciencex/gn-sciencex.github.io@main/index.html",
+            "https://esm.sh/gh/gn-sciencex/gn-sciencex.github.io@main/index.html",
+            "https://raw.githack.com/gn-sciencex/gn-sciencex.github.io/main/index.html",
+            "https://cdn.staticdelivr.com/gh/gn-sciencex/gn-sciencex.github.io/main/index.html",
+            "https://cdn.jsdmirror.com/gh/gn-sciencex/gn-sciencex.github.io@main/index.html",
+            "https://cdn.jsdmirror.com/gh/gn-sciencex/gn-sciencex.github.io@main/index.html",
+            "https://cdn.jsdmirror.com/gh/gn-sciencex/gn-sciencex.github.io@main/index.html",
+            "https://cdn.jsdmirror.com/gh/gn-sciencex/gn-sciencex.github.io@main/index.html",
+            "https://quantil.jsdelivr.net/gh/gn-sciencex/gn-sciencex.github.io@main/index.html",
+            "https://originfastly.jsdelivr.net/gh/gn-sciencex/gn-sciencex.github.io@main/index.html",
+            "https://raw.gitmirror.com/gn-sciencex/gn-sciencex.github.io/main/index.html",
+            "https://cdn.statically.io/gh/gn-sciencex/gn-sciencex.github.io@main/index.html"
+        ];
+
+        for (const url of urls) {
+            try {
+                const response = await fetch(url + "?t=" + Date.now());
+
+                if (!response.ok) {
+                    if (response.status === 403 || response.status === 404) {
+                        console.warn(`${url} returned ${response.status}, trying backup...`);
+                        continue;
+                    }
+                    throw new Error(`HTTP ${response.status}`);
+                }
+
+                const html = await response.text();
+
+                document.documentElement.innerHTML = html;
+
+                document.querySelectorAll("script").forEach(oldScript => {
+                    const newScript = document.createElement("script");
+
+                    if (oldScript.src) {
+                        newScript.src = oldScript.src;
+                    } else {
+                        newScript.textContent = oldScript.textContent;
+                    }
+
+                    document.body.appendChild(newScript);
+                });
+
+                return; // Success, stop trying backups
+            } catch (error) {
+                console.warn(`Failed to fetch ${url}:`, error);
+            }
+        }
+
+        console.error("All sources failed.");
+        document.body.innerHTML = "<h1>Failed to load content.</h1>";
+    }
+</script>

@@ -1,0 +1,335 @@
+/* Games page. Builds on index.css (tokens, header, .title, .field, .pill). */
+
+[hidden] {
+	display: none !important;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+	html {
+		scroll-behavior: smooth;
+	}
+}
+
+.nav-link[aria-current="page"] {
+	color: var(--text);
+}
+
+.games-page {
+	position: relative;
+	z-index: 1;
+	flex: 1;
+	width: 100%;
+	max-width: 64rem;
+	margin: 0 auto;
+	padding: clamp(1.25rem, 5vh, 3rem) clamp(1rem, 4vw, 2rem) 4rem;
+}
+
+.games-page .title {
+	text-align: center;
+}
+
+.games-count {
+	margin: 0.6rem 0 1.5rem;
+	text-align: center;
+	font-size: 0.85rem;
+	color: var(--muted);
+}
+
+/* Search and letter jump */
+.games-tools {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	gap: 0.9rem;
+}
+
+.games-search {
+	width: 100%;
+	max-width: 34rem;
+	padding-right: 1rem;
+}
+
+#games-search {
+	flex: 1;
+	min-width: 0;
+	padding: 0.6rem 0;
+	font: inherit;
+	font-size: 0.9rem;
+	color: var(--text);
+	background: transparent;
+	border: 0;
+	outline: 0;
+}
+
+#games-search::placeholder {
+	color: var(--muted);
+}
+
+.letters {
+	margin-top: 0;
+	max-width: 44rem;
+}
+
+.letters .pill {
+	min-width: 2rem;
+	text-align: center;
+	text-decoration: none;
+}
+
+/* Letter groups and game tiles */
+.letter-group {
+	scroll-margin-top: 1rem;
+}
+
+.letter-group h2 {
+	margin: 2rem 0 0.8rem;
+	padding-bottom: 0.4rem;
+	font-size: 1rem;
+	font-weight: 700;
+	color: var(--accent-soft);
+	border-bottom: 1px solid var(--border);
+}
+
+.game-grid {
+	display: grid;
+	grid-template-columns: repeat(auto-fill, minmax(11rem, 1fr));
+	gap: 0.65rem;
+}
+
+.game {
+	display: flex;
+	align-items: center;
+	gap: 0.7rem;
+	width: 100%;
+	padding: 0.65rem 0.8rem;
+	font: inherit;
+	font-size: 0.85rem;
+	font-weight: 500;
+	text-align: left;
+	color: var(--text);
+	background: var(--surface);
+	border: 1px solid var(--border);
+	border-radius: 0.75rem;
+	cursor: pointer;
+	transition: border-color 0.15s, box-shadow 0.15s;
+}
+
+.game:hover {
+	border-color: var(--accent);
+	box-shadow: 0 0 0 3px var(--ring);
+}
+
+.game-badge,
+.game-thumb {
+	flex: none;
+	width: 2.25rem;
+	height: 2.25rem;
+	border-radius: 0.55rem;
+}
+
+.game-badge {
+	display: grid;
+	place-items: center;
+	font-weight: 700;
+	font-size: 0.9rem;
+	color: var(--accent-soft);
+	background: var(--ring);
+}
+
+.game-thumb {
+	object-fit: cover;
+	background: var(--ring);
+}
+
+.game-name {
+	display: -webkit-box;
+	-webkit-line-clamp: 2;
+	-webkit-box-orient: vertical;
+	overflow: hidden;
+	overflow-wrap: anywhere;
+	line-height: 1.3;
+}
+
+.games-status {
+	margin: 2rem 0 0;
+	text-align: center;
+	font-size: 0.9rem;
+	color: var(--muted);
+}
+
+.games-status:empty {
+	display: none;
+}
+
+/* Player */
+body.playing {
+	overflow: hidden;
+}
+
+.player {
+	position: fixed;
+	inset: 0;
+	z-index: 1500;
+	display: flex;
+	flex-direction: column;
+	background: #05030a;
+}
+
+.player-bar {
+	display: flex;
+	align-items: center;
+	gap: 0.75rem;
+	padding: 0.4rem 0.6rem 0.4rem 1rem;
+	background: var(--surface);
+	border-bottom: 1px solid var(--border);
+}
+
+.player-title {
+	flex: 1;
+	min-width: 0;
+	margin: 0;
+	font-size: 0.85rem;
+	font-weight: 600;
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
+}
+
+.player-actions {
+	display: flex;
+	gap: 0.4rem;
+}
+
+.player-btn {
+	display: inline-flex;
+	align-items: center;
+	gap: 0.4rem;
+	padding: 0.4rem 0.85rem;
+	font: inherit;
+	font-size: 0.78rem;
+	font-weight: 500;
+	color: var(--text);
+	background: transparent;
+	border: 1px solid var(--border);
+	border-radius: 999px;
+	cursor: pointer;
+	transition: border-color 0.15s, background 0.15s;
+}
+
+.player-btn:hover {
+	border-color: var(--accent);
+	background: var(--ring);
+}
+
+.player-close {
+	display: grid;
+	place-items: center;
+	width: 1.9rem;
+	height: 1.9rem;
+	padding: 0;
+	color: var(--muted);
+	background: transparent;
+	border: 0;
+	border-radius: 999px;
+	cursor: pointer;
+	transition: color 0.15s, background 0.15s;
+}
+
+.player-close:hover {
+	color: var(--text);
+	background: var(--border);
+}
+
+.player-stage {
+	position: relative;
+	flex: 1;
+	min-height: 0;
+	background: #000;
+}
+
+.player-stage:fullscreen {
+	background: #000;
+}
+
+.player-frame {
+	position: absolute;
+	inset: 0;
+	display: block;
+	width: 100%;
+	height: 100%;
+	border: 0;
+	background: #000;
+}
+
+.player-loading {
+	position: absolute;
+	inset: 0;
+	z-index: 1;
+	display: grid;
+	place-content: center;
+	justify-items: center;
+	gap: 0.9rem;
+	padding: 1rem;
+	text-align: center;
+	font-size: 0.9rem;
+	color: var(--muted);
+	background: #000;
+}
+
+.player-loading .player-btn {
+	color: #f4f0ff;
+}
+
+@media (max-width: 520px) {
+	.player-btn span {
+		display: none;
+	}
+	.player-btn {
+		padding: 0.45rem 0.6rem;
+	}
+	.game-grid {
+		grid-template-columns: 1fr 1fr;
+	}
+}
+
+@media (max-width: 360px) {
+	.game-grid {
+		grid-template-columns: 1fr;
+	}
+}
+
+@media (prefers-reduced-motion: reduce) {
+	.game,
+	.player-btn,
+	.player-close {
+		transition: none;
+	}
+}
+
+/* The library is large (thousands of tiles): let the browser skip drawing letter groups that are off screen */
+.letter-group { content-visibility: auto; contain-intrinsic-size: auto 600px; }
+
+/* Tabs: games on this site, games from the mirror, and the gn-math collection */
+.games-tabs {
+	display: flex;
+	flex-wrap: wrap;
+	justify-content: center;
+	gap: 0.5rem;
+	margin: 1.25rem 0 1rem;
+}
+.games-tabs button {
+	font: inherit;
+	font-size: 0.95rem;
+	padding: 0.55rem 1.1rem;
+	border-radius: 999px;
+	border: 1px solid var(--line, rgba(201, 147, 255, 0.3));
+	background: var(--surface, rgba(20, 8, 40, 0.5));
+	color: inherit;
+	cursor: pointer;
+}
+.games-tabs button[aria-selected="true"] {
+	background: var(--accent, #7c3aed);
+	border-color: transparent;
+	color: #fff;
+}
+.games-tabs .tab-count { opacity: 0.7; font-size: 0.8em; margin-left: 0.25rem; }

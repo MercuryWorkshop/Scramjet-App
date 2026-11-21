@@ -1,0 +1,125 @@
+<html lang="en-us"><head>
+        <meta charset="utf-8">
+        <title>Drive Mad</title>
+        <meta name="description" content="Play Drive Mad on the web.">
+        <meta name="google" content="notranslate">
+        <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+        
+        <base href="https://cdn.jsdmirror.com/gh/SnakierdoorCode/GAMES@main/RIPS/poki/Drivemad/">
+
+        <link rel="stylesheet" href="webapp/fancade.css">
+        <link rel="icon" href="webapp/favicon.ico">
+    </head>
+    <body id="body">
+        <div id="modal_parent">
+            <div id="modal_content">
+                <span id="modal_close_button">×</span>
+                <div id="store_link_modal_content" class="modal_inner"></div>
+                <div id="share_file_modal_content" class="modal_inner"></div>
+            </div>
+        </div>
+        <div id="canvas_border" class="emscripten_border" style="margin-top: 0px;">
+            <div id="play_content" class="middle center" style="display: none;">
+                <div class="edge">
+                    <div class="box">
+                        <div class="black">
+                            <img src="webapp/cover.jpg" class="cover" alt="Drive Mad Cover Art" style="cursor: pointer;" onclick="if(window.tryStartGame) { window.tryStartGame(); }">
+                            <p class="title">Drive Mad</p>
+                            <p class="author">Fancade</p>
+                        </div>
+                    </div>
+                </div>
+                <div id="progress_or_play">
+                    <progress id="progress" class="loading" value="73" max="100"></progress>
+                </div>
+                <p class="description"></p>
+            </div>
+            <canvas class="emscripten" id="canvas" tabindex="-1" width="801" height="914" style="border-radius: 0px; width: 668px; height: 762px;"></canvas>
+            <div id="gradient" style="left: 0px; width: 668px; height: 762px; border-radius: 0px; display: none;"></div>
+            <div id="webview_content" style="left: 0px; width: 668px; height: 762px; border-radius: 0px;"></div>
+        </div>
+        <script>
+            window.pokiInited = true;
+            window.theDomLoaded = true;
+            window.pokiDebug = false;
+
+            var Module = {
+                locateFile: function(path) {
+                    if (path.indexOf('index.data') !== -1 || path.endsWith('.data')) {
+                        return 'webapp/drivemad.data';
+                    }
+                    if (path.endsWith('.wasm')) {
+                        return 'webapp/drivemad.wasm';
+                    }
+                    return 'webapp/' + path;
+                },
+                canvas: document.getElementById('canvas'),
+                onRuntimeInitialized: function() {
+                    var loader = document.getElementById('play_content');
+                    if (loader) loader.style.display = 'none';
+                    if (typeof tryStartGame === 'function') tryStartGame();
+                }
+            };
+            window.PokiSDK = {
+                init: function(options) {
+                    if (options && typeof options.submitScore === 'function') {
+                        options.submitScore(function(levelID, score) {});
+                    }
+                    return Promise.resolve();
+                },
+                gameLoadingStart: function() {},
+                gameLoadingFinished: function() { 
+                    var loader = document.getElementById('play_content');
+                    if (loader) loader.style.display = 'none';
+                    return Promise.resolve(); 
+                },
+                commercialBreak: function() { return Promise.resolve(); },
+                rewardedBreak: function() { return Promise.resolve(false); },
+                showLeaderboard: function() {},
+                gameplayStart: function() {},
+                gameplayStop: function() {},
+                customEvent: function() {},
+                measure: function() {},
+                getURLParam: function() { return ''; },
+                getLanguage: function() { return (navigator.language || 'en').toLowerCase().split('-')[0]; },
+                getIsoLanguage: function() { return undefined; },
+                isAdBlocked: function() { return false; },
+                getUser: function() { return Promise.resolve({}); },
+                getToken: function() { return Promise.resolve(''); },
+                login: function() { return Promise.resolve(); },
+                destroyAd: function() {},
+                displayAd: function() { return Promise.resolve(true); },
+                shareableURL: function() { return Promise.reject(); }
+            };
+            console.log("ripped by musashi, credits to fancade for making the game and poki for hosting it");
+        </script>
+        
+        <script type="text/javascript" src="webapp/source_min.js" crossorigin="anonymous"></script>
+        <script>
+            window.pokiInited = true;
+            window.theDomLoaded = true;
+
+            document.addEventListener('DOMContentLoaded', function() {
+                window.theDomLoaded = true;
+                if (typeof domContentLoaded === 'function') {
+                    domContentLoaded();
+                }
+            });
+            window.addEventListener('load', function() {
+                window.pokiInited = true;
+                if (typeof initPokiSdk === 'function') {
+                    initPokiSdk();
+                }
+                if (typeof domContentLoaded === 'function') {
+                    domContentLoaded();
+                }
+                if (typeof tryStartGame === 'function') {
+                    tryStartGame();
+                }
+            });
+        </script>
+        <script type="text/javascript" src="webapp/index.js" crossorigin="anonymous"></script>
+    
+
+<script type="module" src="https://static.cloudflareinsights.com/beacon.min.js/vce701823e78c4301a35b7e07294d87301792088814092" integrity="sha512-UKNk8GbxkABxKcXYuLkO16EleLGUkcvJWtpSNmExE0Too3ZaFAxTscNWEc1OdAv5/BikHawapSCaiD2XCmp+Bw==" data-cf-beacon='{"version":"2024.11.0","token":"6639332d24284d4c85ebca0acc4aef67","r":1,"spa":2}' crossorigin="anonymous"></script>
+</body></html>

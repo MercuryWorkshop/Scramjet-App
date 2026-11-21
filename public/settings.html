@@ -1,0 +1,158 @@
+<!doctype html>
+<html lang="en" data-theme="dark">
+	<head>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>Settings - Vodious</title>
+
+		<script>
+			// Arriving from the home page's black hole dive: the CSS and galaxy.js play the matching "coming out" animation
+			try {
+				var dived = Number(sessionStorage.getItem("vodious-dive"));
+				sessionStorage.removeItem("vodious-dive");
+				if (dived && Date.now() - dived < 10000) document.documentElement.classList.add("from-dive");
+			} catch (e) {}
+		</script>
+
+		<link rel="icon" href="favicon.ico" />
+
+		<link rel="preconnect" href="https://fonts.googleapis.com" />
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+		<link
+			rel="stylesheet"
+			href="https://fonts.googleapis.com/css2?family=Orbitron:wght@700;800;900&family=Space+Grotesk:wght@400;500;600;700&display=swap"
+		/>
+
+		<link rel="stylesheet" href="index.css" />
+		<link rel="stylesheet" href="settings.css" />
+		<script src="home.js" defer></script>
+		<script src="cloak.js" defer></script>
+		<script src="design.js" defer></script>
+		<script src="profile.js" defer></script>
+		<script src="galaxy.js" defer></script>
+			</head>
+
+	<body>
+		<canvas id="galaxy" aria-hidden="true"></canvas>
+
+		<header class="top">
+			<a class="brand" href="/" title="Vodious">Vodious</a>
+			<nav class="nav" aria-label="Main">
+				<a href="/" class="nav-link">
+					<svg viewBox="0 0 24 24" aria-hidden="true">
+						<path d="M3 11.5 12 4l9 7.5" />
+						<path d="M5.5 10v9.5h13V10" />
+					</svg>
+					Home
+				</a>
+				<a href="games.html" class="nav-link">
+					<svg viewBox="0 0 24 24" aria-hidden="true">
+						<rect x="2.5" y="7" width="19" height="11" rx="5" />
+						<path d="M7.5 10.5v4M5.5 12.5h4" />
+						<circle cx="15.5" cy="11.5" r=".6" />
+						<circle cx="17.8" cy="13.5" r=".6" />
+					</svg>
+					Games
+				</a>
+				<a href="settings.html" class="nav-link nav-gear" aria-label="Settings" title="Settings" aria-current="page">
+					<svg viewBox="0 0 24 24" aria-hidden="true">
+						<circle cx="12" cy="12" r="3" />
+						<path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z" />
+					</svg>
+				</a>
+				<button
+					type="button"
+					id="theme-toggle"
+					class="icon-btn"
+					aria-label="Switch to light theme"
+				>
+					<svg viewBox="0 0 24 24" aria-hidden="true">
+						<circle cx="12" cy="12" r="4" />
+						<path
+							d="M12 2.5v2.2M12 19.3v2.2M2.5 12h2.2M19.3 12h2.2M5.3 5.3l1.6 1.6M17.1 17.1l1.6 1.6M5.3 18.7l1.6-1.6M17.1 6.9l1.6-1.6"
+						/>
+					</svg>
+				</button>
+			</nav>
+		</header>
+
+		<main class="settings-page">
+				<nav class="subtabs" aria-label="Settings sections"><a href="settings.html" class="subtab" aria-current="page">Cloak &amp; panic</a><a href="design.html" class="subtab">Design</a><a href="profile.html" class="subtab">Profile</a></nav>
+				<h1 class="title">Settings</h1>
+				<p class="settings-sub">Change how Vodious looks in your tab bar, and open it inside another page.</p>
+
+				<section class="set-card" aria-labelledby="cloak-h">
+					<h2 id="cloak-h">Tab cloak</h2>
+					<p class="set-note">Pick the name and icon shown on this browser tab.</p>
+					<div id="cloak-presets" class="presets" role="radiogroup" aria-label="Tab disguise"></div>
+					<div class="set-fields">
+						<label class="set-field">
+							<span>Custom title</span>
+							<input id="cloak-title" type="text" placeholder="Leave empty to use the choice above" autocomplete="off" spellcheck="false" />
+						</label>
+						<label class="set-field">
+							<span>Custom icon address</span>
+							<input id="cloak-icon" type="url" placeholder="https://example.com/icon.png" autocomplete="off" spellcheck="false" />
+						</label>
+					</div>
+					<div id="cloak-preview" class="tab-preview" aria-label="Tab preview">
+						<img alt="" width="16" height="16" />
+						<span></span>
+					</div>
+				</section>
+
+				<section class="set-card" aria-labelledby="open-h">
+					<h2 id="open-h">Open cloaked</h2>
+					<p class="set-note">Opens Vodious inside a blank page that uses the name and icon above.</p>
+					<div class="set-row">
+						<button type="button" id="open-blank" class="set-btn">Open in about:blank</button>
+						<button type="button" id="open-blob" class="set-btn">Open as blob:</button>
+					</div>
+					<label class="set-field inline">
+						<span>Then send this tab to</span>
+						<select id="cloak-redirect">
+							<option value="none">Stay here</option>
+							<option value="google">Google</option>
+							<option value="newtab">New Tab (Google)</option>
+							<option value="classroom">Google Classroom</option>
+							<option value="docs">Google Docs</option>
+						</select>
+					</label>
+					<p id="cloak-status" class="set-status" role="status"></p>
+					<button type="button" id="cloak-reset" class="set-link">Reset to Vodious</button>
+				</section>
+							<section class="set-card" aria-labelledby="panic-h">
+					<h2 id="panic-h">Panic key</h2>
+					<p class="set-note">Press this key on any page to jump straight to another site.</p>
+					<div class="set-row">
+						<button type="button" id="panic-set" class="set-keybtn" aria-label="Choose the panic key">Not set</button>
+						<button type="button" id="panic-clear" class="set-link">Remove</button>
+					</div>
+					<label class="set-field inline">
+						<span>Then go to</span>
+						<select id="panic-dest">
+							<option value="google">Google</option>
+							<option value="newtab">New Tab (Google)</option>
+							<option value="classroom">Google Classroom</option>
+							<option value="docs">Google Docs</option>
+							<option value="custom">Another site...</option>
+						</select>
+					</label>
+					<label class="set-field" style="margin-top:0.6rem">
+						<input id="panic-url" type="text" placeholder="example.com" autocomplete="off" spellcheck="false" hidden />
+					</label>
+					<div class="set-row" style="margin-top:0.9rem">
+						<button type="button" id="panic-test" class="set-link">Try the destination in a new tab</button>
+					</div>
+					<p id="panic-status" class="set-status" role="status"></p>
+					<p class="set-note" style="margin:0.25rem 0 0">Tip: pick a key you will not type in a search box, or add Ctrl or Alt. It cannot fire while a game from another website has focus.</p>
+				</section>
+			</main>
+
+			<footer class="foot">
+				<span>Vodious, built on Scramjet by</span>
+				<a href="https://github.com/MercuryWorkshop" title="The Mercury Workshop GitHub organization">Mercury Workshop</a>
+				<a href="credits.html" title="License information">Credits</a>
+			</footer>
+		</body>
+</html>

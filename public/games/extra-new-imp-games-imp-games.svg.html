@@ -1,0 +1,134 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="100%" height="100%" style="display:block">
+
+<title>Classroom</title>
+
+<style>
+    *{box-sizing:border-box}
+    html,body{margin:0;height:100%;background:#0b0d12;color:#eef1f7;overflow:hidden;
+        font-family:ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;-webkit-font-smoothing:antialiased}
+    #app{position:fixed;inset:0;width:100%;height:100%;border:0;display:none;background:#fff}
+    #app.ready{display:block}
+    #boot{position:fixed;inset:0;display:grid;place-content:center;justify-items:center;gap:16px;text-align:center;padding:24px}
+    #boot.gone{display:none}
+    .spinner{width:42px;height:42px;border:4px solid rgba(255,255,255,.15);border-top-color:#fff;border-radius:50%;animation:spin .85s linear infinite}
+    @keyframes spin{to{transform:rotate(360deg)}}
+    .msg{color:#9aa4b5;font-size:13.5px;letter-spacing:.2px}
+    .err{color:#ffb6b6;font-size:14px;max-width:520px;line-height:1.55}
+    .retry{margin-top:6px;padding:10px 18px;border-radius:10px;border:1px solid rgba(255,255,255,.22);
+        background:rgba(255,255,255,.06);color:#eef1f7;font:inherit;font-size:13.5px;cursor:pointer}
+</style>
+
+<foreignObject width="100%" height="100%">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<meta name="title" content="Classroom"/>
+<meta name="description" content="Classroom SVG web wrapper"/>
+</head>
+<body>
+
+<div id="boot">
+    <div class="spinner"></div>
+    <div class="msg" id="bootMsg">Loading Classroom…</div>
+</div>
+
+<iframe id="app"
+    allow="autoplay; fullscreen; pointer-lock; gamepad; clipboard-read; clipboard-write"
+    sandbox="allow-scripts allow-same-origin allow-forms allow-popups allow-popups-to-escape-sandbox allow-pointer-lock allow-orientation-lock allow-modals allow-downloads"></iframe>
+
+<script>//<![CDATA[
+(function () {
+"use strict";
+
+var BASE      = "https://studythemes.com/";
+var SRC       = BASE;
+var CACHE_KEY = "inknetworks_site_html_cache_v1";
+
+var boot = document.getElementById("boot");
+var msg  = document.getElementById("bootMsg");
+var app  = document.getElementById("app");
+
+function inject(html) {
+    if (!/<base\b/i.test(html)) {
+        if (/<head([^>]*)>/i.test(html)) {
+            html = html.replace(/<head([^>]*)>/i, '<head$1><base href="' + BASE + '">');
+        } else {
+            html = '<base href="' + BASE + '">' + html;
+        }
+    }
+
+    app.srcdoc = html;
+    app.classList.add("ready");
+    boot.classList.add("gone");
+    document.title = "Classroom";
+}
+
+function directFallback() {
+    /* If cross-origin fetch is blocked, try ordinary iframe navigation. */
+    app.removeAttribute("srcdoc");
+    app.src = SRC;
+    app.classList.add("ready");
+    boot.classList.add("gone");
+}
+
+function fail(reason) {
+    boot.classList.remove("gone");
+    app.classList.remove("ready");
+    boot.innerHTML =
+        '<div class="err">Couldn\'t load Classroom.<br/><span style="color:#9aa4b5;font-size:13px">' + reason + '</span></div>' +
+        '<button class="retry" onclick="location.reload()">Try again</button>';
+}
+
+function fetchFresh(onSuccess, onFail) {
+    fetch(SRC, { cache: "no-store", credentials: "omit" })
+        .then(function (r) {
+            if (!r.ok) throw new Error("Server returned " + r.status);
+            return r.text();
+        })
+        .then(function (html) {
+            if (!html || html.length < 50) throw new Error("Response looked empty.");
+            try { localStorage.setItem(CACHE_KEY, html); } catch (e) {}
+            onSuccess(html);
+        })
+        .catch(onFail);
+}
+
+function load() {
+    var cached;
+    try { cached = localStorage.getItem(CACHE_KEY); } catch (e) {}
+
+    if (cached && cached.length > 50) {
+        inject(cached);
+        fetchFresh(function (html) {
+            if (html !== cached) {
+                try { localStorage.setItem(CACHE_KEY, html); } catch (e) {}
+            }
+        }, function () { /* cached copy stays visible */ });
+    } else {
+        setTimeout(function () {
+            if (!app.classList.contains("ready")) msg.textContent = "Still loading…";
+        }, 4000);
+
+        fetchFresh(inject, function (e) {
+            /* A remote site may reject fetch() from an SVG because of CORS.
+               In that case, try loading the URL directly in the iframe. */
+            msg.textContent = "Fetch blocked; trying direct load…";
+            try {
+                directFallback();
+            } catch (fallbackError) {
+                fail((e && e.message ? e.message : "Network error") + "; direct load also failed.");
+            }
+        });
+    }
+}
+
+load();
+
+})();//]]></script>
+
+</body>
+</html>
+</foreignObject>
+
+</svg>
