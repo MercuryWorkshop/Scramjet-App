@@ -177,44 +177,109 @@
 		}
 	}
 
+	// Ring colours follow the galaxy colour chosen on the Design page
+	const hexRgb = (h) => {
+		const m = /^#?([0-9a-f]{2})([0-9a-f]{2})([0-9a-f]{2})$/i.exec(h);
+		return m ? [parseInt(m[1], 16), parseInt(m[2], 16), parseInt(m[3], 16)] : [168, 85, 247];
+	};
+	const ringPalette = (window.VodiousGL && window.VodiousGL.paletteFor()) || [];
+	const RING = (ringPalette.length >= 4 ? ringPalette : ["#c084fc", "#a855f7", "#e9d5ff", "#7c3aed"]).map(hexRgb);
+	const rgba = (c, a, mix) => {
+		// mix 0..1 pulls the colour toward white
+		const m = mix || 0;
+		return "rgba(" + c.map((v) => Math.round(v + (255 - v) * m)).join(",") + "," + a + ")";
+	};
+
+	// A black hole with a lensed accretion disk: the black shadow, a thin bright photon ring, the disk's light bent
+	// over the top and under the bottom of the shadow, and the flat disk crossing in front. One side of the disk is
+	// brighter (Doppler beaming).
 	function drawBlackHole(s) {
 		const R = HOLE * U * s;
+		const glowC = RING[0];
+		const midC = RING[1];
+		const lightC = RING[2];
+		const deepC = RING[3];
+		const blur = (n) => Math.min(n, 46);
 
-		// Glow around the hole
-		const glow = ctx.createRadialGradient(cx, cy, R * 0.9, cx, cy, R * 4.2);
-		glow.addColorStop(0, "rgba(255,214,255,0.85)");
-		glow.addColorStop(0.25, "rgba(200,120,255,0.55)");
-		glow.addColorStop(0.6, "rgba(110,45,200,0.22)");
-		glow.addColorStop(1, "rgba(60,20,120,0)");
+		ctx.save();
+		ctx.globalCompositeOperation = "lighter";
+
+		// Soft glow in the ring colour
+		const glow = ctx.createRadialGradient(cx, cy, R * 0.9, cx, cy, R * 5);
+		glow.addColorStop(0, rgba(glowC, 0.42));
+		glow.addColorStop(0.25, rgba(midC, 0.22));
+		glow.addColorStop(0.6, rgba(deepC, 0.08));
+		glow.addColorStop(1, rgba(deepC, 0));
 		ctx.fillStyle = glow;
 		ctx.fillRect(0, 0, W, H);
 
-		// Accretion disk seen almost edge-on, drawn behind the hole
-		ctx.save();
 		ctx.translate(cx, cy);
-		ctx.rotate(-0.25);
-		ctx.beginPath();
-		ctx.ellipse(0, 0, R * 2.5, R * 0.62, 0, 0, Math.PI * 2);
-		ctx.strokeStyle = "rgba(240,180,255,0.3)";
-		ctx.lineWidth = R * 0.5;
-		ctx.stroke();
-		ctx.strokeStyle = "rgba(255,230,255,0.85)";
-		ctx.lineWidth = Math.max(1, R * 0.04);
-		ctx.stroke();
-		ctx.restore();
+		ctx.rotate(-0.2);
 
-		// The hole itself and its bright rim
+		// Lensed light of the far side of the disk: a bright ring hugging the shadow, thickest above and below
+		for (let pass = 0; pass < 2; pass++) {
+			ctx.beginPath();
+			ctx.arc(0, 0, R * (pass ? 1.1 : 1.2), 0, Math.PI * 2);
+			ctx.lineWidth = R * (pass ? 0.16 : 0.34);
+			let strokeStyle;
+			if (ctx.createConicGradient) {
+				strokeStyle = ctx.createConicGradient(Math.PI * 0.5, 0, 0);
+			} else {
+				strokeStyle = ctx.createLinearGradient(-R, 0, R, 0);
+			}
+			strokeStyle.addColorStop(0, rgba(lightC, pass ? 0.95 : 0.5, 0.35));
+			strokeStyle.addColorStop(0.25, rgba(midC, pass ? 0.55 : 0.3));
+			strokeStyle.addColorStop(0.5, rgba(lightC, pass ? 0.5 : 0.25, 0.2));
+			strokeStyle.addColorStop(0.75, rgba(deepC, pass ? 0.45 : 0.25));
+			strokeStyle.addColorStop(1, rgba(lightC, pass ? 0.95 : 0.5, 0.35));
+			ctx.strokeStyle = strokeStyle;
+			ctx.shadowColor = rgba(midC, 0.9);
+			ctx.shadowBlur = blur(R * 0.5);
+			ctx.stroke();
+		}
+		ctx.shadowBlur = 0;
+
+		// The shadow
 		ctx.globalCompositeOperation = "source-over";
 		ctx.beginPath();
-		ctx.arc(cx, cy, R, 0, Math.PI * 2);
+		ctx.arc(0, 0, R, 0, Math.PI * 2);
 		ctx.fillStyle = "#000";
 		ctx.fill();
-		ctx.strokeStyle = "rgba(255,225,255,0.95)";
-		ctx.lineWidth = Math.max(1.5, R * 0.035);
-		ctx.shadowColor = "#c084fc";
-		ctx.shadowBlur = 18;
+
+		// Photon ring: very thin and very bright, right at the edge of the shadow
+		ctx.globalCompositeOperation = "lighter";
+		ctx.beginPath();
+		ctx.arc(0, 0, R * 1.015, 0, Math.PI * 2);
+		ctx.lineWidth = Math.max(1.2, R * 0.03);
+		ctx.strokeStyle = rgba(lightC, 0.95, 0.6);
+		ctx.shadowColor = rgba(glowC, 1);
+		ctx.shadowBlur = blur(R * 0.25);
 		ctx.stroke();
 		ctx.shadowBlur = 0;
+
+		// The disk itself, seen nearly edge-on: a thin flat band crossing in front of the shadow
+		const half = R * 3.1;
+		const thick = R * 0.11;
+		const band = ctx.createLinearGradient(-half, 0, half, 0);
+		band.addColorStop(0, rgba(deepC, 0));
+		band.addColorStop(0.15, rgba(deepC, 0.35));
+		band.addColorStop(0.38, rgba(midC, 0.7));
+		band.addColorStop(0.5, rgba(lightC, 0.8, 0.3));
+		band.addColorStop(0.7, rgba(lightC, 1, 0.55));
+		band.addColorStop(0.85, rgba(midC, 0.6));
+		band.addColorStop(1, rgba(deepC, 0));
+		for (let pass = 0; pass < 2; pass++) {
+			const t = thick * (pass ? 0.35 : 1);
+			ctx.beginPath();
+			ctx.moveTo(-half, 0);
+			ctx.quadraticCurveTo(0, -t * 2, half, 0);
+			ctx.quadraticCurveTo(0, t * 2, -half, 0);
+			ctx.fillStyle = band;
+			ctx.shadowColor = rgba(midC, 0.9);
+			ctx.shadowBlur = pass ? 0 : blur(R * 0.3);
+			ctx.fill();
+		}
+		ctx.restore();
 	}
 
 	function render(spin, s, sTrail, dt, zoomP) {
