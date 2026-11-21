@@ -1,4 +1,4 @@
-// Home page behavior: clock, theme, search engine pills, quick links, fun facts.
+// Home page behavior: clock, search engine pills, quick links, fun facts.
 // Kept separate from index.js so the proxy logic is untouched.
 (() => {
 	const $ = (selector) => document.querySelector(selector);
@@ -20,29 +20,9 @@
 		},
 	};
 
-	/* Theme */
+	/* The site is always in light mode */
 	const root = document.documentElement;
-	const themeButton = $("#theme-toggle");
-
-	function applyTheme(theme) {
-		root.dataset.theme = theme;
-		if (themeButton) {
-			themeButton.setAttribute(
-				"aria-label",
-				theme === "dark" ? "Switch to light theme" : "Switch to dark theme"
-			);
-		}
-	}
-
-	applyTheme(store.get("vodious-theme") === "light" ? "light" : "dark");
-
-	if (themeButton) {
-		themeButton.addEventListener("click", () => {
-			const next = root.dataset.theme === "dark" ? "light" : "dark";
-			applyTheme(next);
-			store.set("vodious-theme", next);
-		});
-	}
+	root.dataset.theme = "light";
 
 	/* Clock and greeting */
 	const clock = $("#clock");
