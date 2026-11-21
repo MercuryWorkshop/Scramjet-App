@@ -1,6 +1,6 @@
 "use strict";
 // Intro animation: purple galaxy -> fall into the black hole -> title pops -> fade to the home page.
-// Sound is synthesized live with the Web Audio API (no audio files).
+// No sound.
 // Click, tap or press any key to skip. Skipped entirely when the visitor prefers reduced motion.
 (() => {
 	const intro = document.getElementById("intro");
@@ -30,7 +30,7 @@
 			dpr: 1.5,
 			auto: false,
 			interactive: false,
-			glow: 0.45,
+			glow: 0.3,
 		});
 		if (!gl) glCanvas.remove();
 	}
@@ -188,7 +188,13 @@
 		return m ? [parseInt(m[1], 16), parseInt(m[2], 16), parseInt(m[3], 16)] : [168, 85, 247];
 	};
 	const ringPalette = (window.VodiousGL && window.VodiousGL.paletteFor()) || [];
-	const RING = (ringPalette.length >= 4 ? ringPalette : ["#c084fc", "#a855f7", "#e9d5ff", "#7c3aed"]).map(hexRgb);
+	const RAINBOW = !!window.VodiousGL && ringPalette.length === 0;
+	const RING = (ringPalette.length >= 4
+		? ringPalette
+		: RAINBOW
+			? ["#ffa0b4", "#ffe08a", "#9af0c0", "#9cc4ff"]
+			: ["#c084fc", "#a855f7", "#e9d5ff", "#7c3aed"]
+	).map(hexRgb);
 	const rgba = (c, a, mix) => {
 		// mix 0..1 pulls the colour toward white
 		const m = mix || 0;
@@ -264,13 +270,13 @@
 
 		// The disk itself, seen nearly edge-on: a thin flat band crossing in front of the shadow
 		const half = R * 3.1;
-		const thick = R * 0.11;
+		const thick = R * 0.15;
 		const band = ctx.createLinearGradient(-half, 0, half, 0);
 		band.addColorStop(0, rgba(deepC, 0));
 		band.addColorStop(0.15, rgba(deepC, 0.35));
 		band.addColorStop(0.38, rgba(midC, 0.7));
-		band.addColorStop(0.5, rgba(lightC, 0.8, 0.3));
-		band.addColorStop(0.7, rgba(lightC, 1, 0.55));
+		band.addColorStop(0.5, rgba(lightC, 1, 0.85));
+		band.addColorStop(0.7, rgba(lightC, 1, 0.75));
 		band.addColorStop(0.85, rgba(midC, 0.6));
 		band.addColorStop(1, rgba(deepC, 0));
 		for (let pass = 0; pass < 2; pass++) {
@@ -287,8 +293,8 @@
 		ctx.restore();
 	}
 
-	// The fall aims at the bright ring just outside the black shadow, not at the shadow itself
-	const PIVOT_R = 1.22;
+	// The fall aims at the white band across the middle of the black hole
+	const PIVOT_R = 0;
 	function render(spin, s, sTrail, dt, zoomP) {
 		const R0 = HOLE * U;
 		const px = cx + Math.cos(-0.2) * R0 * PIVOT_R;
@@ -327,6 +333,11 @@
 	intro.style.setProperty("--ti-mid", "rgb(" + RING[1].join(",") + ")");
 	const flash = document.createElement("div");
 	flash.className = "intro-flash";
+	if (RAINBOW) {
+		intro.classList.add("rainbow");
+		flash.style.background = "linear-gradient(115deg, #ffc2cf, #ffe9a8 22%, #c4f5d8 44%, #b9d8ff 66%, #e2c8ff 88%)";
+		if (title) title.dataset.text = title.textContent;
+	}
 	intro.insertBefore(flash, title);
 	const ring = intro.querySelector(".intro-ring");
 	const hint = intro.querySelector(".intro-skip");
@@ -343,422 +354,6 @@
 	// Milliseconds since the animation started (same clock as requestAnimationFrame)
 	const elapsed = () => (t0 ? performance.now() - t0 : 0);
 
-	/* ---------------------------------------------------------------------
-	 * Sound. Everything is synthesized with the Web Audio API.
-	 *
-	 * Browsers keep a new AudioContext "suspended" until the visitor has
-	 * interacted with the page. If sound is blocked, the intro still plays
-	 * silently, the hint changes to say so, and the first click or key press
-	 * turns sound on without skipping. Sounds are triggered from the
-	 * animation's own clock, so they stay in sync even when sound starts late.
-	 * ------------------------------------------------------------------ */
-	const AudioCtor = window.AudioContext || window.webkitAudioContext;
-	const HINT_SKIP = hint ? hint.textContent : "";
-	const HINT_SOUND = "Click or press a key for sound, then again to skip";
-	let audio = null;
-
-	function setHint(soundLocked) {
-		if (hint) hint.textContent = soundLocked ? HINT_SOUND : HINT_SKIP;
-	}
-
-	function makeNoise(c, brown) {
-		const length = Math.floor(c.sampleRate * 3);
-		const buffer = c.createBuffer(1, length, c.sampleRate);
-		const data = buffer.getChannelData(0);
-		let lastOut = 0;
-		for (let i = 0; i < length; i++) {
-			const white = Math.random() * 2 - 1;
-			if (brown) {
-				lastOut = (lastOut + 0.02 * white) / 1.02;
-				data[i] = lastOut * 3.5;
-			} else {
-				data[i] = white;
-			}
-		}
-		return buffer;
-	}
-
-	function noiseSource(c, buffer, loop) {
-		const source = c.createBufferSource();
-		source.buffer = buffer;
-		source.loop = loop;
-		return source;
-	}
-
-	function createAudio() {
-		if (!AudioCtor) return null;
-		try {
-			const c = new AudioCtor();
-			const master = c.createGain();
-			master.gain.value = 0.6;
-			// Gentle limiter so the impact can't clip
-			const limiter = c.createDynamicsCompressor();
-			limiter.threshold.value = -14;
-			limiter.knee.value = 12;
-			limiter.ratio.value = 6;
-			limiter.attack.value = 0.003;
-			limiter.release.value = 0.25;
-			master.connect(limiter);
-			limiter.connect(c.destination);
-			return {
-				ctx: c,
-				master,
-				white: makeNoise(c, false),
-				brown: makeNoise(c, true),
-				drone: false,
-				whoosh: false,
-				impact: false,
-				stopped: false,
-				unlockTried: false,
-			};
-		} catch (err) {
-			return null;
-		}
-	}
-
-	// Low cosmic sub-bass drone: slow beating sines plus soft "space wind".
-	// It swells and rises in pitch as the camera falls in, then cuts out
-	// just before the impact.
-	function startDrone(t) {
-		const { ctx: c, master, brown } = audio;
-		const now = c.currentTime;
-		const toEnd = Math.max(0.1, (ZOOM_END - t) / 1000);
-		const end = now + toEnd;
-		const progress = clamp(t / ZOOM_END, 0, 1);
-		const level = 0.2;
-		const rise = Math.min(t >= TIMING.galaxy ? 0.6 : 1.6, toEnd - 0.05);
-
-		const filter = c.createBiquadFilter();
-		filter.type = "lowpass";
-		filter.Q.value = 0.8;
-		filter.frequency.setValueAtTime(130 + 190 * progress, now);
-		filter.frequency.linearRampToValueAtTime(320, end);
-
-		const lfo = c.createOscillator();
-		const lfoDepth = c.createGain();
-		lfo.frequency.value = 0.11;
-		lfoDepth.gain.value = 22;
-		lfo.connect(lfoDepth);
-		lfoDepth.connect(filter.frequency);
-
-		const g = c.createGain();
-		g.gain.setValueAtTime(0.0001, now);
-		g.gain.exponentialRampToValueAtTime(level, now + rise);
-		g.gain.linearRampToValueAtTime(level * 1.3, end);
-		g.gain.exponentialRampToValueAtTime(0.0001, end + 0.25);
-		filter.connect(g);
-		g.connect(master);
-
-		const voices = [
-			["sine", 41, 0.5],
-			["sine", 41.7, 0.5], // beats against the first voice
-			["triangle", 82.4, 0.12],
-		];
-		const sources = [lfo];
-		for (const [type, freq, amp] of voices) {
-			const osc = c.createOscillator();
-			const vg = c.createGain();
-			osc.type = type;
-			osc.frequency.setValueAtTime(freq * (1 + 0.35 * progress), now);
-			osc.frequency.linearRampToValueAtTime(freq * 1.35, end);
-			vg.gain.value = amp;
-			osc.connect(vg);
-			vg.connect(filter);
-			sources.push(osc);
-		}
-
-		const wind = noiseSource(c, brown, true);
-		const windLow = c.createBiquadFilter();
-		const windGain = c.createGain();
-		windLow.type = "lowpass";
-		windLow.frequency.value = 260;
-		windGain.gain.value = 0.15;
-		wind.connect(windLow);
-		windLow.connect(windGain);
-		windGain.connect(g);
-		sources.push(wind);
-
-		for (const s of sources) {
-			s.start(now);
-			s.stop(end + 0.4);
-		}
-	}
-
-	// Rising suction sweep. Its pitch, brightness and loudness follow the same
-	// curve as the camera zoom, so it peaks as the screen goes black, then is
-	// sucked into silence.
-	function startWhoosh(t) {
-		const { ctx: c, master, white } = audio;
-		const p0 = clamp((t - TIMING.galaxy) / TIMING.zoom, 0, 1);
-		const remaining = ((1 - p0) * TIMING.zoom) / 1000;
-		if (remaining < 0.2) return;
-
-		const now = c.currentTime;
-		const end = now + remaining;
-		const N = 64;
-		const ease = new Float32Array(N);
-		for (let i = 0; i < N; i++) {
-			const p = p0 + (1 - p0) * (i / (N - 1));
-			ease[i] = Math.pow(p, 2.2); // matches the camera's zoom easing
-		}
-		const curve = (fn) => Float32Array.from(ease, fn);
-
-		// Airy noise band that sweeps upward
-		const noise = noiseSource(c, white, true);
-		const band = c.createBiquadFilter();
-		band.type = "bandpass";
-		band.Q.value = 1.6;
-		band.frequency.setValueCurveAtTime(
-			curve((v) => 140 * Math.pow(6200 / 140, v)),
-			now,
-			remaining
-		);
-		const noiseGain = c.createGain();
-		noiseGain.gain.value = 0;
-		noiseGain.gain.setValueCurveAtTime(curve((v) => 0.9 * v), now, remaining);
-		noiseGain.gain.setValueAtTime(0.9, end + 0.005);
-		noiseGain.gain.linearRampToValueAtTime(0, end + 0.16);
-
-		// The sound swirls from ear to ear, faster and faster
-		let swirl = null;
-		if (c.createStereoPanner) {
-			const pan = c.createStereoPanner();
-			const panLfo = c.createOscillator();
-			const panDepth = c.createGain();
-			panLfo.frequency.setValueCurveAtTime(
-				curve((v) => 0.25 * Math.pow(12.8, v)),
-				now,
-				remaining
-			);
-			panDepth.gain.value = 0.75;
-			panLfo.connect(panDepth);
-			panDepth.connect(pan.pan);
-			swirl = { pan, panLfo };
-		}
-		noise.connect(band);
-		if (swirl) {
-			band.connect(swirl.pan);
-			swirl.pan.connect(noiseGain);
-		} else {
-			band.connect(noiseGain);
-		}
-		noiseGain.connect(master);
-
-		// Rising pitched layer underneath
-		const saw = c.createOscillator();
-		saw.type = "sawtooth";
-		saw.frequency.setValueCurveAtTime(curve((v) => 55 * Math.pow(20, v)), now, remaining);
-		const sawLow = c.createBiquadFilter();
-		sawLow.type = "lowpass";
-		sawLow.Q.value = 2.5;
-		sawLow.frequency.setValueCurveAtTime(
-			curve((v) => 200 * Math.pow(13, v)),
-			now,
-			remaining
-		);
-		const sawGain = c.createGain();
-		sawGain.gain.value = 0;
-		sawGain.gain.setValueCurveAtTime(curve((v) => 0.17 * v), now, remaining);
-		sawGain.gain.setValueAtTime(0.17, end + 0.005);
-		sawGain.gain.linearRampToValueAtTime(0, end + 0.16);
-		saw.connect(sawLow);
-		sawLow.connect(sawGain);
-		sawGain.connect(master);
-
-		const sources = [noise, saw];
-		if (swirl) sources.push(swirl.panLfo);
-		for (const s of sources) {
-			s.start(now);
-			s.stop(end + 0.3);
-		}
-	}
-
-	// Deep cinematic bass impact with a soft sci-fi shimmer on top.
-	function playImpact() {
-		const { ctx: c, master, white, brown } = audio;
-		const t = c.currentTime + 0.03;
-
-		const tone = (type, f0, f1, fall, peak, decay, lowpass) => {
-			const osc = c.createOscillator();
-			const g = c.createGain();
-			osc.type = type;
-			osc.frequency.setValueAtTime(f0, t);
-			osc.frequency.exponentialRampToValueAtTime(f1, t + fall);
-			g.gain.setValueAtTime(0.0001, t);
-			g.gain.linearRampToValueAtTime(peak, t + 0.008);
-			g.gain.exponentialRampToValueAtTime(0.0001, t + decay);
-			let tail = osc;
-			if (lowpass) {
-				const lp = c.createBiquadFilter();
-				lp.type = "lowpass";
-				lp.frequency.value = lowpass;
-				osc.connect(lp);
-				tail = lp;
-			}
-			tail.connect(g);
-			g.connect(master);
-			osc.start(t);
-			osc.stop(t + decay + 0.1);
-		};
-
-		// Sub boom and body
-		tone("sine", 130, 34, 0.9, 1.0, 2.8);
-		tone("triangle", 72, 46, 0.6, 0.55, 1.6, 260);
-
-		// Short crack at the front of the hit
-		const crack = noiseSource(c, white, false);
-		const crackLow = c.createBiquadFilter();
-		crackLow.type = "lowpass";
-		crackLow.frequency.setValueAtTime(3200, t);
-		crackLow.frequency.exponentialRampToValueAtTime(140, t + 0.35);
-		const crackGain = c.createGain();
-		crackGain.gain.setValueAtTime(0.0001, t);
-		crackGain.gain.linearRampToValueAtTime(0.9, t + 0.004);
-		crackGain.gain.exponentialRampToValueAtTime(0.0001, t + 0.42);
-		crack.connect(crackLow);
-		crackLow.connect(crackGain);
-		crackGain.connect(master);
-		crack.start(t, Math.random() * 1.5);
-		crack.stop(t + 0.5);
-
-		// Low rumble tail
-		const rumble = noiseSource(c, brown, true);
-		const rumbleLow = c.createBiquadFilter();
-		rumbleLow.type = "lowpass";
-		rumbleLow.frequency.value = 150;
-		const rumbleGain = c.createGain();
-		rumbleGain.gain.setValueAtTime(0.0001, t);
-		rumbleGain.gain.linearRampToValueAtTime(0.7, t + 0.05);
-		rumbleGain.gain.exponentialRampToValueAtTime(0.0001, t + 3.2);
-		rumble.connect(rumbleLow);
-		rumbleLow.connect(rumbleGain);
-		rumbleGain.connect(master);
-		rumble.start(t);
-		rumble.stop(t + 3.4);
-
-		// Shimmer: glassy partials, a bright upward glide and a high air swell,
-		// all through a soft echo
-		const bus = c.createGain();
-		bus.gain.value = 0.9;
-		bus.connect(master);
-		const echo = c.createDelay(1);
-		echo.delayTime.value = 0.23;
-		const echoFeedback = c.createGain();
-		echoFeedback.gain.value = 0.38;
-		const echoTone = c.createBiquadFilter();
-		echoTone.type = "lowpass";
-		echoTone.frequency.value = 4800;
-		const echoWet = c.createGain();
-		echoWet.gain.value = 0.5;
-		bus.connect(echo);
-		echo.connect(echoTone);
-		echoTone.connect(echoFeedback);
-		echoFeedback.connect(echo);
-		echoTone.connect(echoWet);
-		echoWet.connect(master);
-
-		const partials = [
-			[1046.5, 0.03],
-			[1568.0, 0.026],
-			[2093.0, 0.02],
-			[2637.0, 0.016],
-			[3520.0, 0.012],
-		];
-		partials.forEach(([freq, amp], i) => {
-			const start = t + 0.04 + i * 0.07;
-			const osc = c.createOscillator();
-			const g = c.createGain();
-			osc.type = "sine";
-			osc.frequency.value = freq;
-			osc.detune.value = (Math.random() * 2 - 1) * 8;
-			const vibrato = c.createOscillator();
-			const vibratoDepth = c.createGain();
-			vibrato.frequency.value = 5.3;
-			vibratoDepth.gain.value = freq * 0.003;
-			vibrato.connect(vibratoDepth);
-			vibratoDepth.connect(osc.frequency);
-			g.gain.setValueAtTime(0.0001, start);
-			g.gain.exponentialRampToValueAtTime(amp, start + 0.45);
-			g.gain.exponentialRampToValueAtTime(0.0001, t + 3.6);
-			osc.connect(g);
-			if (c.createStereoPanner) {
-				const pan = c.createStereoPanner();
-				pan.pan.value = (Math.random() * 2 - 1) * 0.6;
-				g.connect(pan);
-				pan.connect(bus);
-			} else {
-				g.connect(bus);
-			}
-			osc.start(start);
-			vibrato.start(start);
-			osc.stop(t + 3.8);
-			vibrato.stop(t + 3.8);
-		});
-
-		const glide = c.createOscillator();
-		const glideGain = c.createGain();
-		glide.type = "sine";
-		glide.frequency.setValueAtTime(380, t);
-		glide.frequency.exponentialRampToValueAtTime(3400, t + 0.7);
-		glideGain.gain.setValueAtTime(0.0001, t);
-		glideGain.gain.exponentialRampToValueAtTime(0.03, t + 0.25);
-		glideGain.gain.exponentialRampToValueAtTime(0.0001, t + 1.1);
-		glide.connect(glideGain);
-		glideGain.connect(bus);
-		glide.start(t);
-		glide.stop(t + 1.2);
-
-		const air = noiseSource(c, white, true);
-		const airHigh = c.createBiquadFilter();
-		airHigh.type = "highpass";
-		airHigh.frequency.value = 7000;
-		const airGain = c.createGain();
-		airGain.gain.setValueAtTime(0.0001, t);
-		airGain.gain.exponentialRampToValueAtTime(0.018, t + 0.35);
-		airGain.gain.exponentialRampToValueAtTime(0.0001, t + 2.4);
-		air.connect(airHigh);
-		airHigh.connect(airGain);
-		airGain.connect(bus);
-		air.start(t);
-		air.stop(t + 2.5);
-	}
-
-	// Start whichever sounds are due. Safe to call every frame.
-	function updateAudio(t) {
-		if (!audio || audio.stopped || audio.ctx.state !== "running") return;
-		if (!audio.drone) {
-			audio.drone = true;
-			if (t < ZOOM_END - 200) startDrone(t);
-		}
-		if (!audio.whoosh && t >= TIMING.galaxy && t < ZOOM_END) {
-			audio.whoosh = true;
-			startWhoosh(t);
-		}
-	}
-
-	// Fade everything out and release the audio hardware
-	function stopAudio(seconds) {
-		if (!audio || audio.stopped) return;
-		audio.stopped = true;
-		const c = audio.ctx;
-		try {
-			const now = c.currentTime;
-			const gain = audio.master.gain;
-			gain.cancelScheduledValues(now);
-			gain.setValueAtTime(gain.value, now);
-			gain.linearRampToValueAtTime(0, now + seconds);
-		} catch (err) {
-			/* nothing to fade */
-		}
-		setTimeout(() => {
-			try {
-				c.close().catch(() => {});
-			} catch (err) {
-				/* already closed */
-			}
-		}, (seconds + 0.3) * 1000);
-	}
-
 	function finish(fast) {
 		if (finishing) return;
 		finishing = true;
@@ -771,7 +366,6 @@
 		window.removeEventListener("click", onGesture);
 		clearTimeout(watchdog);
 		window.removeEventListener("resize", resize);
-		stopAudio(fast ? 0.35 : TIMING.fade / 1000);
 		if (fast) intro.classList.add("skipped");
 		intro.classList.add("leaving");
 		setTimeout(() => {
@@ -790,8 +384,7 @@
 		intro.remove();
 	};
 
-	// While sound is blocked and there is still sound to come, the first click
-	// or key press only turns sound on. Every other gesture skips the intro.
+	// Any click, tap or key press skips the intro
 	function onGesture(e) {
 		if (e && e.type === "keydown" && (e.metaKey || e.ctrlKey || e.altKey)) return;
 		finish(true);
@@ -816,10 +409,6 @@
 		flash.classList.add("out");
 		flash.style.opacity = "0";
 		if (title) title.classList.add("show");
-		if (audio && !audio.stopped && !audio.impact && audio.ctx.state === "running") {
-			audio.impact = true;
-			playImpact();
-		}
 		titleTimer = setTimeout(() => finish(false), TIMING.title);
 	}
 
@@ -842,8 +431,6 @@
 		const t = now - t0;
 		const dt = Math.min(50, now - last);
 		last = now;
-
-		updateAudio(t);
 
 		const zoomP = clamp((t - TIMING.galaxy) / TIMING.zoom, 0, 1);
 		spin += dt * 0.00012 * (1 + 5 * zoomP * zoomP);
@@ -877,19 +464,6 @@
 	const skipBtn = intro.querySelector(".intro-skip-btn");
 	// Safety net: whatever happens, the intro is gone a few seconds after it should have ended
 	watchdog = setTimeout(() => finish(true), TIMING.galaxy + TIMING.zoom + TIMING.hold + TIMING.title + TIMING.fade + 3000);
-
-	audio = createAudio();
-	if (audio) {
-		audio.ctx.addEventListener("statechange", () => {
-			if (audio && !audio.stopped && audio.ctx.state === "running") {
-				setHint(false);
-				updateAudio(elapsed());
-			}
-		});
-		// Works straight away where autoplay is allowed; otherwise stays suspended
-		audio.ctx.resume().catch(() => {});
-
-	}
 
 	raf = requestAnimationFrame(frame);
 })();

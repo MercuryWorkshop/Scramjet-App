@@ -920,3 +920,26 @@ html[data-bg="grid"] #bg-layer {
 .intro-ring {
 	display: none;
 }
+
+/* Rainbow choice: a light rainbow title */
+#intro.rainbow .intro-title {
+	background: linear-gradient(90deg, #ffb3c1, #ffe3a0, #c4f5d8, #b9d8ff, #e2c8ff);
+	-webkit-background-clip: text;
+	background-clip: text;
+	-webkit-text-fill-color: transparent;
+	color: transparent;
+	text-shadow: none;
+}
+#intro.rainbow .intro-title::before {
+	content: attr(data-text);
+	position: absolute;
+	inset: 0;
+	padding-left: 0.25em;
+	z-index: -1;
+	background: inherit;
+	-webkit-background-clip: text;
+	background-clip: text;
+	-webkit-text-fill-color: transparent;
+	filter: blur(18px);
+	opacity: 0.75;
+}

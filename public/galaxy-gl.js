@@ -280,7 +280,7 @@ void main() {
 			hueShift: 140,
 			speed: 1,
 			glowIntensity: opts.glow != null ? opts.glow : 0.3,
-			saturation: opts.saturation != null ? opts.saturation : 0,
+			saturation: opts.saturation != null ? opts.saturation : (opts.palette && opts.palette.length ? 0 : 1.1),
 			mouseRepulsion: opts.interactive !== false,
 			repulsionStrength: 2,
 			twinkleIntensity: 0.3,
