@@ -780,6 +780,16 @@
 		}, (fast ? 500 : TIMING.fade) + 150);
 	}
 
+	// Lets the page cut this intro short right away (the logo replays it, even while the last one is fading out)
+	window.VodiousIntroStop = () => {
+		finish(true);
+		if (gl) {
+			gl.destroy();
+			gl = null;
+		}
+		intro.remove();
+	};
+
 	// While sound is blocked and there is still sound to come, the first click
 	// or key press only turns sound on. Every other gesture skips the intro.
 	function onGesture(e) {
