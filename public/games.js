@@ -27,7 +27,7 @@
 	const behind = [$(".top"), $(".games-page"), $(".foot")].filter(Boolean);
 
 	const tabButtons = [...document.querySelectorAll("#games-tabs [data-tab]")];
-	let tab = "site"; // "site": hosted on this site, "mirror": from the jsdmirror CDN, "static": from staticdelivr, "gn": gn-math
+	let tab = "site"; // "site": hosted on this site, "mirror": from the jsdmirror CDN, "static": from staticdelivr, "gn": gn-math, "axe": Axe Guys games
 	let games = [];
 	let sections = [];
 	let current = null; // the game being played
@@ -58,7 +58,7 @@
 		const image = typeof entry.image === "string" ? safeUrl(entry.image.trim()) : "";
 		// Links relative to this site are games hosted on this site; full http(s) links live on other hosts
 		const local = !/^[a-z][a-z0-9+.-]*:/i.test(entry.url.trim());
-		const src = entry.s === "static" || entry.s === "gn" ? entry.s : local ? "site" : "mirror";
+		const src = entry.s === "static" || entry.s === "gn" || entry.s === "axe" ? entry.s : local ? "site" : "mirror";
 		return { name, url, image, local, src, mode: entry.mode === 1 || entry.mode === 2 ? entry.mode : 0 };
 	}
 
