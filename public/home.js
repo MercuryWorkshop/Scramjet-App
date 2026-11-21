@@ -20,9 +20,9 @@
 		},
 	};
 
-	/* The site is always in light mode */
+	/* The site is always in dark mode */
 	const root = document.documentElement;
-	root.dataset.theme = "light";
+	root.dataset.theme = "dark";
 
 	/* Clock and greeting */
 	const clock = $("#clock");
