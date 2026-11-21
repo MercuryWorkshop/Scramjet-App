@@ -54,3 +54,10 @@
 .set-row { align-items: center; }
 
 [hidden] { display: none !important; }
+
+.subtabs { display: flex; gap: .4rem; flex-wrap: wrap; margin: 0 0 1rem; }
+.subtab { display: inline-flex; align-items: center; gap: .4rem; padding: .4rem .9rem; border-radius: 999px; border: 1px solid var(--border, rgba(255,255,255,.15)); color: var(--muted, inherit); text-decoration: none; font-size: .9rem; }
+.subtab:hover { color: var(--text, inherit); }
+.subtab[aria-current="page"] { background: var(--accent, #8b5cf6); color: #fff; border-color: transparent; }
+.subtab .nav-avatar { width: 1.3rem; height: 1.3rem; }
+.nav-gear svg { width: 1.3rem; height: 1.3rem; }

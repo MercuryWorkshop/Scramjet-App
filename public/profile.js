@@ -83,7 +83,7 @@
 	// Small profile picture in the menu, when one is chosen
 	function applyNav() {
 		const src = avatarSrc();
-		document.querySelectorAll(".nav-link[data-view='profile'], .nav-link[href='profile.html']").forEach((a) => {
+		document.querySelectorAll(".subtab[data-view='profile'], .subtab[href='profile.html']").forEach((a) => {
 			let img = a.querySelector(".nav-avatar");
 			const icon = a.querySelector("svg");
 			if (src) {
